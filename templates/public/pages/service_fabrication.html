@@ -1,0 +1,103 @@
+{% extends "public/base_public.html" %}
+
+{% block content %}
+
+<section class="service-detail-page py-5">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-12">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{{ url_for('services') }}">Services</a></li>
+            <li class="breadcrumb-item active">Fabrication Services</li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div class="col-md-6">
+        <img src="{{ url_for('static', filename='image/fabriation.jpg') }}" class="img-fluid rounded shadow" alt="Fabrication Services">
+      </div>
+      <div class="col-md-6">
+        <h1>All Type of Fabrication</h1>
+        <p class="lead">Expert fabrication services for all types of industrial and commercial requirements.</p>
+        <p>We provide comprehensive fabrication solutions with precision engineering and quality craftsmanship. Our team has extensive experience in handling various fabrication projects.</p>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <h2 class="mb-4">Our Fabrication Services</h2>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="service-feature p-4 bg-light rounded">
+              <i class="fas fa-industry fa-3x text-primary mb-3"></i>
+              <h4>Industrial Fabrication</h4>
+              <p>Heavy-duty industrial fabrication for manufacturing plants and facilities.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="service-feature p-4 bg-light rounded">
+              <i class="fas fa-tools fa-3x text-primary mb-3"></i>
+              <h4>Custom Fabrication</h4>
+              <p>Custom-designed fabrication solutions tailored to your specific needs.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="service-feature p-4 bg-light rounded">
+              <i class="fas fa-cog fa-3x text-primary mb-3"></i>
+              <h4>Precision Engineering</h4>
+              <p>High-precision fabrication with attention to detail and quality.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="service-feature p-4 bg-light rounded">
+              <i class="fas fa-wrench fa-3x text-primary mb-3"></i>
+              <h4>Metal Fabrication</h4>
+              <p>Complete metal fabrication services for various applications.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="service-feature p-4 bg-light rounded">
+              <i class="fas fa-hammer fa-3x text-primary mb-3"></i>
+              <h4>Structural Fabrication</h4>
+              <p>Structural steel and metal fabrication for construction projects.</p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="service-feature p-4 bg-light rounded">
+              <i class="fas fa-shield-alt fa-3x text-primary mb-3"></i>
+              <h4>Quality Assured</h4>
+              <p>All fabrication work meets international quality standards.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12">
+        <h3 class="mb-3">Why Choose Our Fabrication Services?</h3>
+        <ul class="list-unstyled">
+          <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Experienced and skilled fabrication team</li>
+          <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> State-of-the-art equipment and machinery</li>
+          <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Quality materials and components</li>
+          <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Timely project completion</li>
+          <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Competitive pricing</li>
+          <li class="mb-2"><i class="fas fa-check-circle text-success me-2"></i> Comprehensive after-sales support</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col-12 text-center">
+        <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">Get Quote</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+

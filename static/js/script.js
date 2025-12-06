@@ -1,28 +1,97 @@
-// Example interactivity (you can expand this)
-document.querySelectorAll('.btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    alert("This button is for demo purpose only!");
-  });
-});
-document.getElementById('openPopup').addEventListener('click', function() {
-  document.getElementById('popupForm').style.display = 'flex';
-});
-
-document.getElementById('closePopup').addEventListener('click', function() {
-  document.getElementById('popupForm').style.display = 'none';
-});
-window.onclick = function(event) {
-  if (event.target == document.getElementById("popupForm")) {
-    document.getElementById("popupForm").style.display = "none";
+// Slick Slider Initialization
+$(document).ready(function(){
+  if ($('.hero-slider-container').length) {
+    $('.hero-slider-container').slick({
+      dots: true,
+      infinite: true,
+      speed: 500,
+      fade: true,
+      cssEase: 'linear',
+      autoplay: true,
+      autoplaySpeed: 4000,
+      arrows: true,
+      prevArrow: '<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>',
+      nextArrow: '<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>'
+    });
   }
-}
-
-// Email button action
-document.getElementById('sendEmailBtn').addEventListener('click', function() {
-  const email = 'you@yourdomain.com';
-  const subject = encodeURIComponent('Inquiry from OM Industries');
-  const body = encodeURIComponent('Hello OM Industries,\n\nI would like to know about...');
-  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
 });
 
-
+// Rating Input Styling for both regular and modal
+document.addEventListener('DOMContentLoaded', function() {
+  // Handle regular rating input
+  const ratingInputs = document.querySelectorAll('.rating-input input[type="radio"]');
+  const starLabels = document.querySelectorAll('.rating-input .star-label');
+  
+  ratingInputs.forEach((input, index) => {
+    input.addEventListener('change', function() {
+      starLabels.forEach((label, labelIndex) => {
+        if (labelIndex <= index) {
+          label.classList.add('active');
+        } else {
+          label.classList.remove('active');
+        }
+      });
+    });
+  });
+  
+  // Set initial active state for regular input
+  const checkedInput = document.querySelector('.rating-input input[type="radio"]:checked');
+  if (checkedInput) {
+    const checkedIndex = Array.from(ratingInputs).indexOf(checkedInput);
+    starLabels.forEach((label, labelIndex) => {
+      if (labelIndex <= checkedIndex) {
+        label.classList.add('active');
+      }
+    });
+  }
+  
+  // Handle modal rating input
+  const modalRatingInputs = document.querySelectorAll('.rating-input-modal input[type="radio"]');
+  const modalStarLabels = document.querySelectorAll('.rating-input-modal .star-label-modal');
+  
+  modalRatingInputs.forEach((input, index) => {
+    input.addEventListener('change', function() {
+      modalStarLabels.forEach((label, labelIndex) => {
+        if (labelIndex <= index) {
+          label.classList.add('active');
+        } else {
+          label.classList.remove('active');
+        }
+      });
+    });
+  });
+  
+  // Set initial active state for modal input
+  const modalCheckedInput = document.querySelector('.rating-input-modal input[type="radio"]:checked');
+  if (modalCheckedInput) {
+    const modalCheckedIndex = Array.from(modalRatingInputs).indexOf(modalCheckedInput);
+    modalStarLabels.forEach((label, labelIndex) => {
+      if (labelIndex <= modalCheckedIndex) {
+        label.classList.add('active');
+      }
+    });
+  }
+  
+  // Reset modal form when modal is closed
+  const feedbackModal = document.getElementById('feedbackModal');
+  if (feedbackModal) {
+    feedbackModal.addEventListener('hidden.bs.modal', function () {
+      const form = feedbackModal.querySelector('form');
+      if (form) {
+        form.reset();
+        // Reset to default rating
+        const defaultInput = feedbackModal.querySelector('input[type="radio"][value="5"]');
+        if (defaultInput) {
+          defaultInput.checked = true;
+          modalStarLabels.forEach((label, labelIndex) => {
+            if (labelIndex <= 0) { // 5 stars is first (index 0)
+              label.classList.add('active');
+            } else {
+              label.classList.remove('active');
+            }
+          });
+        }
+      }
+    });
+  }
+});

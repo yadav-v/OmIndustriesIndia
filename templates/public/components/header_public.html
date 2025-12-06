@@ -6,15 +6,15 @@
       </a>
 
       <ul class="nav mainMenu justify-content-center">
-        <li><a href="#" class="nav-link active">Home</a></li>
-        <li><a href="#" class="nav-link">About</a></li>
-        <li><a href="#" class="nav-link">Services</a></li>
-        <li><a href="#" class="nav-link">Equipments</a></li>
-        <li><a href="#" class="nav-link">Contact</a></li>
+        <li><a href="{{ url_for('home') }}" class="nav-link {{ 'active' if request.endpoint == 'home' else '' }}">Home</a></li>
+        <li><a href="{{ url_for('about') }}" class="nav-link {{ 'active' if request.endpoint == 'about' else '' }}">About</a></li>
+        <li><a href="{{ url_for('services') }}" class="nav-link {{ 'active' if 'service' in request.endpoint else '' }}">Services</a></li>
+        <li><a href="{{ url_for('feedback') }}" class="nav-link {{ 'active' if request.endpoint == 'feedback' else '' }}">Feedback</a></li>
+        <li><a href="{{ url_for('contact') }}" class="nav-link {{ 'active' if request.endpoint == 'contact' else '' }}">Contact</a></li>
       </ul>
 
       <div class="text-end">
-        <button type="button" class="btn btn-sm btn-outline-primary me-2">Login</button>
+        <a href="{{ url_for('admin_login') }}" class="btn btn-sm btn-outline-primary me-2">Admin Login</a>
       </div>
     </header>
   </div>

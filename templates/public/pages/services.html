@@ -1,0 +1,50 @@
+{% extends "public/base_public.html" %}
+
+{% block content %}
+
+<section class="services-page py-5">
+  <div class="container">
+    <h1 class="text-center mb-5">Our Services</h1>
+    
+    <div class="row g-4">
+      <!-- Service 1 -->
+      <div class="col-md-4">
+        <div class="service-item-card h-100 shadow-sm rounded overflow-hidden">
+          <img src="{{ url_for('static', filename='image/cngmanufacture.jpg') }}" class="img-fluid w-100" style="height: 250px; object-fit: cover;" alt="CNG Hydrotesting Plant">
+          <div class="p-4">
+            <h3>CNG Hydrotesting Plant Manufacturer</h3>
+            <p>Complete manufacturing solutions for CNG hydrotesting plants with all necessary equipment and components.</p>
+            <a href="{{ url_for('service_cng') }}" class="btn btn-primary">View Details</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 2 -->
+      <div class="col-md-4">
+        <div class="service-item-card h-100 shadow-sm rounded overflow-hidden">
+          <img src="{{ url_for('static', filename='image/img1.jpeg') }}" class="img-fluid w-100" style="height: 250px; object-fit: cover;" alt="Cylinder Bracket">
+          <div class="p-4">
+            <h3>Cylinder Bracket</h3>
+            <p>High-quality cylinder brackets available with and without rings for secure and safe cylinder storage.</p>
+            <a href="{{ url_for('service_cylinder') }}" class="btn btn-primary">View Details</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 3 -->
+      <div class="col-md-4">
+        <div class="service-item-card h-100 shadow-sm rounded overflow-hidden">
+          <img src="{{ url_for('static', filename='image/fabriation.jpg') }}" class="img-fluid w-100" style="height: 250px; object-fit: cover;" alt="Fabrication">
+          <div class="p-4">
+            <h3>All Type of Fabrication</h3>
+            <p>Expert fabrication services for all types of industrial and commercial requirements with precision and quality.</p>
+            <a href="{{ url_for('service_fabrication') }}" class="btn btn-primary">View Details</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+

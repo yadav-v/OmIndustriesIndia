@@ -246,3 +246,312 @@ footer {
   cursor: pointer;
   font-size: 24px;
 }
+
+/* Hero Slider */
+.hero-slider {
+  position: relative;
+  height: 600px;
+  overflow: hidden;
+}
+
+.hero-slider-container {
+  height: 100%;
+}
+
+.hero-slide {
+  height: 600px;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 5%;
+}
+
+.hero-slide::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 1;
+}
+
+.hero-slide .hero-content {
+  position: relative;
+  z-index: 2;
+  color: white;
+  max-width: 600px;
+}
+
+.hero-slide h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: white;
+}
+
+.hero-slide p {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+  color: white;
+}
+
+/* Slick Slider Customization */
+.slick-prev, .slick-next {
+  z-index: 3;
+  width: 50px;
+  height: 50px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 50%;
+  border: none;
+  color: white;
+  font-size: 20px;
+}
+
+.slick-prev:hover, .slick-next:hover {
+  background: rgba(255,255,255,0.5);
+}
+
+.slick-prev {
+  left: 30px;
+}
+
+.slick-next {
+  right: 30px;
+}
+
+.slick-dots {
+  bottom: 30px;
+}
+
+.slick-dots li button:before {
+  color: white;
+  font-size: 12px;
+}
+
+/* Rating Input */
+.rating-input, .rating-input-modal {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.rating-input input[type="radio"],
+.rating-input-modal input[type="radio"] {
+  display: none;
+}
+
+.rating-input .star-label,
+.rating-input-modal .star-label-modal {
+  cursor: pointer;
+  font-size: 2rem;
+  color: #ddd;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.rating-input-modal .star-label-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  min-width: 40px;
+}
+
+.rating-input .star-label:hover,
+.rating-input .star-label:hover ~ .star-label,
+.rating-input input[type="radio"]:checked ~ .star-label,
+.rating-input .star-label.active,
+.rating-input-modal .star-label-modal:hover,
+.rating-input-modal .star-label-modal:hover ~ .star-label-modal,
+.rating-input-modal input[type="radio"]:checked ~ .star-label-modal,
+.rating-input-modal .star-label-modal.active {
+  color: #ffc107;
+  transform: scale(1.1);
+}
+
+
+/* Rating Display */
+.rating-display {
+  font-size: 1rem;
+}
+
+.rating-display i {
+  font-size: 1.1rem;
+}
+
+/* Feedback Card Styling */
+.feedback-card {
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.feedback-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1) !important;
+}
+
+.feedback-avatar .avatar-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.feedback-message {
+  font-style: italic;
+  color: #555;
+  line-height: 1.6;
+  min-height: 60px;
+}
+
+/* Google Forms-like styling */
+.feedback-card {
+  border-left: 4px solid #4285f4;
+}
+
+.feedback-card:hover {
+  border-left-color: #1a73e8;
+}
+
+.avatar-circle {
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Modal rating styling improvements */
+.rating-input-modal {
+  padding: 10px 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.rating-input-modal .star-label-modal {
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin: 0 2px;
+}
+
+.rating-input-modal .star-label-modal:hover {
+  background: rgba(255, 193, 7, 0.1);
+}
+
+.rating-input-modal input[type="radio"]:checked ~ .star-label-modal {
+  background: rgba(255, 193, 7, 0.2);
+}
+
+/* Section Titles */
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #103155;
+  margin-bottom: 2rem;
+}
+
+/* Service Cards */
+.service-card img {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.service-item-card {
+  transition: transform 0.3s;
+}
+
+.service-item-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Feedback Cards */
+.feedback-card {
+  transition: transform 0.3s;
+}
+
+.feedback-card:hover {
+  transform: translateY(-3px);
+}
+
+/* Contact Page */
+.contact-item {
+  text-align: center;
+}
+
+.contact-item i {
+  display: block;
+  margin-bottom: 10px;
+}
+
+/* About Section */
+.about-section {
+  background: white;
+}
+
+/* Services Section */
+.services-section {
+  background: #f8f9fa;
+}
+
+/* Equipment Items */
+.equipment-item {
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.equipment-item:hover {
+  transform: translateY(-5px);
+}
+
+/* Product Items */
+.product-item {
+  transition: transform 0.3s;
+}
+
+.product-item:hover {
+  transform: translateY(-5px);
+}
+
+/* Service Features */
+.service-feature {
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.service-feature:hover {
+  transform: translateY(-5px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .hero-slide h1 {
+    font-size: 1.8rem;
+  }
+  
+  .hero-slide p {
+    font-size: 1rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .slick-prev, .slick-next {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
+  }
+  
+  .slick-prev {
+    left: 10px;
+  }
+  
+  .slick-next {
+    right: 10px;
+  }
+}

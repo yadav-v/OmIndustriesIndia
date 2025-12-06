@@ -1,5 +1,23 @@
-<header style="background:#222; padding:15px; color:#00e676;">
-    <h2>Admin Panel</h2>
-    <a href="/admin/dashboard" style="color:#00e676;">Dashboard</a> |
-    <a href="/admin/users" style="color:#00e676;">Users</a>
+<header class="bg-dark text-white p-3 mb-4">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h3 class="mb-0"><i class="fas fa-user-shield me-2"></i>Admin Panel</h3>
+      </div>
+      <nav>
+        <a href="{{ url_for('admin_dashboard') }}" class="text-white text-decoration-none me-3">
+          <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+        </a>
+        <a href="{{ url_for('admin_feedback') }}" class="text-white text-decoration-none me-3">
+          <i class="fas fa-comments me-1"></i>Feedbacks
+        </a>
+        <a href="{{ url_for('admin_contacts') }}" class="text-white text-decoration-none me-3">
+          <i class="fas fa-envelope me-1"></i>Contacts
+        </a>
+        <a href="{{ url_for('admin_logout') }}" class="text-white text-decoration-none">
+          <i class="fas fa-sign-out-alt me-1"></i>Logout
+        </a>
+      </nav>
+    </div>
+  </div>
 </header>
