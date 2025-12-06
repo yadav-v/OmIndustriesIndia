@@ -16,7 +16,7 @@ body {
   margin: auto;
 }
 
-header {
+.header {
   background-color: white;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   position: sticky;
@@ -112,21 +112,28 @@ nav a:hover {
 
 /* SERVICES */
 .services {
-  padding: 60px 0;
+  padding: 10px ;
   text-align: center;
+  background-color: #0077b6;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .service-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 25px;
+   padding: 100px 5%;
   margin-top: 25px;
+  margin-right: 95px;
+  margin-left: 95px;
+  margin-bottom: auto;
 }
 
 .service-box {
-  background-color: white;
+  background-color: rgb(218, 218, 218);
   padding: 25px;
-  border-radius: 10px;
+  border-radius: 20px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
   transition: transform 0.3s;
 }
