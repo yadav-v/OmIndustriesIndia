@@ -5,7 +5,9 @@ conn.execute("""
 CREATE TABLE IF NOT EXISTS feedback (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
+    rating INTEGER NOT NULL,
     message TEXT NOT NULL,
+    status TEXT DEFAULT 'pending',
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )
 """)

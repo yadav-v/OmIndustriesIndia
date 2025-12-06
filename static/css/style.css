@@ -2,61 +2,29 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
+  
 }
 
 body {
   background-color: #f9f9f9;
+  font-family: 'Inter', sans-serif;
   color: #333;
 }
 
 .container {
-  width: 90%;
   max-width: 1200px;
-  margin: auto;
-}
-
-.header {
-  background-color: white;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 0;
+  width: 100%;
 }
 
 .logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  width: 100px;
 }
-
-.logo img {
-  width: 35px;
-  height: 35px;
+.mainMenu .nav-link{
+  font-size: 18px;
+    color: #103155;
 }
-
-nav ul {
-  display: flex;
-  list-style: none;
-  gap: 25px;
-}
-
-nav a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-}
-
-nav a:hover {
-  color: #0077b6;
-}
+.mainMenu .nav-link.active, .mainMenu .nav-link:hover {
+    color: #009ee2;}
 
 /* HERO */
 .hero {

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+</head>
+<body>
+
+{% include "admin/components/header_admin.html" %}
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+{% include "admin/components/footer_admin.html" %}
+
+</body>
+</html>
