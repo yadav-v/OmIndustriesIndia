@@ -1,20 +1,29 @@
 // Slick Slider Initialization
-$(document).ready(function(){
-  if ($('.hero-slider-container').length) {
-    $('.hero-slider-container').slick({
-      dots: true,
+$(document).ready(function () {
+  if ($('.heroSlider').length) {
+
+    $('.heroSlider').slick({
+      dots: false,
       infinite: true,
       speed: 500,
       fade: true,
       cssEase: 'linear',
       autoplay: true,
       autoplaySpeed: 4000,
-      arrows: true,
-      prevArrow: '<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>',
-      nextArrow: '<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>'
+      arrows: false   // disable default arrows
+    });
+
+    // Custom Btn Events
+    $('.hero-prev').click(function () {
+      $('.heroSlider').slick('slickPrev');
+    });
+
+    $('.hero-next').click(function () {
+      $('.heroSlider').slick('slickNext');
     });
   }
 });
+
 
 // Rating Input Styling for both regular and modal
 document.addEventListener('DOMContentLoaded', function() {
