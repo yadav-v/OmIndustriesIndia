@@ -5,19 +5,32 @@
   
 }
 
+
 body {
-  background-color: #f9f9f9;
+  background-color: #fff;
   font-family: 'Inter', sans-serif;
-  color: #333;
+  color: #101010;
 }
 
 .container {
   max-width: 1200px;
   width: 100%;
 }
+.bg-dark{
+  background-color: #113255!important;
+}
+.bg-primary{
+  background-color: #06a0e3!important;
+}
+.font12{
+  font-size: 12px;
+}
+.font14{
+  font-size: 14px;
+}
 
 .logo {
-  width: 100px;
+  width: 70px;
 }
 .mainMenu .nav-link{
   font-size: 18px;
@@ -27,56 +40,67 @@ body {
     color: #009ee2;}
 
 /* HERO */
-.hero {
-  
- color: white;
- text-align: left;
- background-image: url("image/back.jpg");
-  padding: 100px 5%;
+.heroSliderWrap, .heroSlider {
+  width: 100%;
+  height: calc(100vh - 140px);
+  min-height: 400px;
+  position: relative;
+  background: #ccc;
+  overflow: hidden;
+}
+.heroSlider .slick-list, .heroSlider .slick-track{
+height: 100%;
+}
+.heroSlide-item {
+  width: 100%;
+  height: calc(100vh - 140px);
+  min-height: 400px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   position: relative;
 }
 
-.hero::after {
-  content: "";
+.heroSlide-item .overlay {
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.3);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.55); /* dark overlay */
 }
 
-.hero-content {
+.heroSlide-content {
   position: relative;
   z-index: 2;
-  max-width: 500px;
+}
+.custom-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  background: rgba(0, 0, 0, 0.5);
+  border: none;
+  color: #fff;
+  font-size: 22px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 
-.hero h1 {
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin-bottom: 20px;
+.hero-prev { left: 20px; }
+.hero-next { right: 20px; }
+
+.custom-arrow:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+.heroSlide-content h2{
+  font-size: 75px;
+  font-weight: bold;
 }
 
-.buttons {
-  display: flex;
-  gap: 15px;
-}
 
-.btn {
-  text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 6px;
-  font-weight: 600;
-}
-
-.primary {
-  background-color: #27ae60;
-  color: white;
-}
-
-.secondary {
-  background-color: #1d3557;
-  color: white;
-}
 
 /* SERVICES */
 .services {
@@ -247,91 +271,6 @@ footer {
   font-size: 24px;
 }
 
-/* Hero Slider */
-.hero-slider {
-  position: relative;
-  height: 600px;
-  overflow: hidden;
-}
-
-.hero-slider-container {
-  height: 100%;
-}
-
-.hero-slide {
-  height: 600px;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 0 5%;
-}
-
-.hero-slide::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
-  z-index: 1;
-}
-
-.hero-slide .hero-content {
-  position: relative;
-  z-index: 2;
-  color: white;
-  max-width: 600px;
-}
-
-.hero-slide h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 20px;
-  color: white;
-}
-
-.hero-slide p {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
-  color: white;
-}
-
-/* Slick Slider Customization */
-.slick-prev, .slick-next {
-  z-index: 3;
-  width: 50px;
-  height: 50px;
-  background: rgba(255,255,255,0.3);
-  border-radius: 50%;
-  border: none;
-  color: white;
-  font-size: 20px;
-}
-
-.slick-prev:hover, .slick-next:hover {
-  background: rgba(255,255,255,0.5);
-}
-
-.slick-prev {
-  left: 30px;
-}
-
-.slick-next {
-  right: 30px;
-}
-
-.slick-dots {
-  bottom: 30px;
-}
-
-.slick-dots li button:before {
-  color: white;
-  font-size: 12px;
-}
 
 /* Rating Input */
 .rating-input, .rating-input-modal {
@@ -529,29 +468,7 @@ footer {
 
 /* Responsive */
 @media (max-width: 768px) {
-  .hero-slide h1 {
-    font-size: 1.8rem;
-  }
-  
-  .hero-slide p {
-    font-size: 1rem;
-  }
-  
-  .section-title {
-    font-size: 2rem;
-  }
-  
-  .slick-prev, .slick-next {
-    width: 40px;
-    height: 40px;
-    font-size: 16px;
-  }
-  
-  .slick-prev {
-    left: 10px;
-  }
-  
-  .slick-next {
-    right: 10px;
-  }
+  .heroSlide-content h2{
+  font-size: 48px;
+}
 }

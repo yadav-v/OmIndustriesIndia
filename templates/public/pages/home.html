@@ -3,8 +3,53 @@
 {% block content %}
 
 <!-- Hero Section with Slick Slider -->
-<section id="home" class="hero-slider">
-  <div class="hero-slider-container">
+<section class="heroSliderWrap">
+  <!-- Hero Section -->
+  <div class="heroSlider">
+    <div class="heroSlide-item d-flex align-items-center justify-content-center"
+      style="background-image: url('{{ url_for('static', filename='image/back.jpg') }}');">
+      <div class="overlay"></div>
+
+      <div class="heroSlide-content text-center text-white container">
+        <h2>High Quality CNG Hydroplants, Trusted Performance</h2>
+        <p>Leading manufacturer of CNG Hydrotesting Plants and industrial equipment</p>
+        <div class="d-flex justify-content-center align-items-center gap-3">
+          <a href="{{ url_for('contact') }}" class="btn btn-success">Contact Us</a>
+          <a href="{{ url_for('services') }}" class="btn btn-primary">View Services</a>
+        </div>
+      </div>
+    </div>
+    <div class="heroSlide-item d-flex align-items-center justify-content-center"
+      style="background-image: url('{{ url_for('static', filename='image/cylinderbracket.jpg') }}');">
+      <div class="overlay"></div>
+
+      <div class="heroSlide-content text-center text-white container">
+        <h2>Premium Quality Cylinder Brackets</h2>
+        <p>Durable and reliable solutions for your cylinder storage needs</p>
+        <div class="d-flex justify-content-center align-items-center gap-3">
+          <a href="{{ url_for('contact') }}" class="btn btn-success">Contact Us</a>
+          <a href="{{ url_for('services') }}" class="btn btn-primary">View Services</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="heroSlide-item d-flex align-items-center justify-content-center"
+      style="background-image: url('{{ url_for('static', filename='image/fabrication.jpg') }}');">
+      <div class="overlay"></div>
+
+      <div class="heroSlide-content text-center text-white container">
+        <h2>Expert Fabrication Services</h2>
+        <p>Custom fabrication solutions for all your industrial needs</p>
+        <div class="d-flex justify-content-center align-items-center gap-3">
+          <a href="{{ url_for('contact') }}" class="btn btn-success">Contact Us</a>
+          <a href="{{ url_for('services') }}" class="btn btn-primary">View Services</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="hero-prev custom-arrow"><i class="fas fa-chevron-left"></i></button>
+    <button class="hero-next custom-arrow"><i class="fas fa-chevron-right"></i></button>
+
     <div class="hero-slide" style="background-image: url('{{ url_for('static', filename='image/back.jpg') }}');">
       <div class="hero-content">
         <h1>High Quality CNG Hydroplants, Trusted Performance</h1>
@@ -14,7 +59,6 @@
           <a href="{{ url_for('services') }}" class="btn secondary">Our Services</a>
         </div>
       </div>
-    </div>
     <div class="hero-slide" style="background-image: url('{{ url_for('static', filename='image/cylinderbracket.jpg') }}');">
       <div class="hero-content">
         <h1>Premium Quality Cylinder Brackets</h1>
@@ -35,7 +79,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
 </section>
 
 <!-- About Section -->
@@ -44,14 +88,18 @@
     <div class="row align-items-center">
       <div class="col-md-6">
         <h2 class="section-title">About Om Industries India</h2>
-        <p class="lead">We are a leading manufacturer and supplier of CNG Hydrotesting Plants, Cylinder Brackets, and Fabrication Services.</p>
-        <p>With years of experience in the industry, we provide high-quality, reliable solutions for all your industrial needs. Our commitment to excellence and customer satisfaction has made us a trusted partner for businesses across India.</p>
+        <p class="lead">We are a leading manufacturer and supplier of CNG Hydrotesting Plants, Cylinder Brackets, and
+          Fabrication Services.</p>
+        <p>With years of experience in the industry, we provide high-quality, reliable solutions for all your industrial
+          needs. Our commitment to excellence and customer satisfaction has made us a trusted partner for businesses
+          across India.</p>
         <a href="{{ url_for('about') }}" class="btn primary mt-3">Learn More About Us</a>
       </div>
       <div class="col-md-6">
         <div class="row">
           <div class="col-6 mb-3">
-            <img src="{{ url_for('static', filename='image/manufacture.jpg') }}" class="img-fluid rounded" alt="Manufacturing">
+            <img src="{{ url_for('static', filename='image/manufacture.jpg') }}" class="img-fluid rounded"
+              alt="Manufacturing">
           </div>
           <div class="col-6 mb-3">
             <img src="{{ url_for('static', filename='image/safety.jpg') }}" class="img-fluid rounded" alt="Safety">
@@ -75,7 +123,8 @@
     <div class="row g-4">
       <div class="col-md-4">
         <div class="service-card text-center p-4 bg-white rounded shadow-sm h-100">
-          <img src="{{ url_for('static', filename='image/cngmanufacture.jpg') }}" class="img-fluid rounded mb-3" alt="CNG Hydrotesting Plant">
+          <img src="{{ url_for('static', filename='image/cngmanufacture.jpg') }}" class="img-fluid rounded mb-3"
+            alt="CNG Hydrotesting Plant">
           <h4>CNG Hydrotesting Plant</h4>
           <p>Complete manufacturing solutions for CNG hydrotesting plants with all necessary equipment.</p>
           <a href="{{ url_for('service_cng') }}" class="btn btn-outline-primary">Learn More</a>
@@ -83,7 +132,8 @@
       </div>
       <div class="col-md-4">
         <div class="service-card text-center p-4 bg-white rounded shadow-sm h-100">
-          <img src="{{ url_for('static', filename='image/cylinderbracket.jpg') }}" class="img-fluid rounded mb-3" alt="Cylinder Bracket">
+          <img src="{{ url_for('static', filename='image/cylinderbracket.jpg') }}" class="img-fluid rounded mb-3"
+            alt="Cylinder Bracket">
           <h4>Cylinder Bracket</h4>
           <p>High-quality cylinder brackets with and without rings for secure storage solutions.</p>
           <a href="{{ url_for('service_cylinder') }}" class="btn btn-outline-primary">Learn More</a>
@@ -91,7 +141,8 @@
       </div>
       <div class="col-md-4">
         <div class="service-card text-center p-4 bg-white rounded shadow-sm h-100">
-          <img src="{{ url_for('static', filename='image/fabrication.jpeg') }}" class="img-fluid rounded mb-3" alt="Fabrication">
+          <img src="{{ url_for('static', filename='image/fabrication.jpeg') }}" class="img-fluid rounded mb-3"
+            alt="Fabrication">
           <h4>Fabrication Services</h4>
           <p>Expert fabrication services for all types of industrial and commercial requirements.</p>
           <a href="{{ url_for('service_fabrication') }}" class="btn btn-outline-primary">Learn More</a>
@@ -124,12 +175,11 @@
               <div class="rating-display">
                 {% set rating = feedback['rating']|int %}
                 {% for i in range(1, 6) %}
-                  {% if i <= rating %}
-                    <i class="fas fa-star text-warning"></i>
+                {% if i <= rating %} <i class="fas fa-star text-warning"></i>
                   {% else %}
-                    <i class="far fa-star text-warning"></i>
+                  <i class="far fa-star text-warning"></i>
                   {% endif %}
-                {% endfor %}
+                  {% endfor %}
               </div>
             </div>
           </div>
