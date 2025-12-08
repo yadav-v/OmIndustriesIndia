@@ -469,6 +469,6 @@ footer {
 /* Responsive */
 @media (max-width: 768px) {
   .heroSlide-content h2{
-  font-size: 48px;
+  font-size: 28px;
 }
 }
