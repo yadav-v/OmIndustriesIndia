@@ -7,7 +7,7 @@
 
 
 body {
-  background-color: #fff;
+  background-color: #A6D8F5;
   font-family: 'Inter', sans-serif;
   color: #101010;
 }
@@ -32,6 +32,8 @@ body {
 .logo {
   width: 70px;
 }
+
+
 .mainMenu .nav-link{
   font-size: 18px;
     color: #103155;
@@ -45,7 +47,8 @@ body {
   height: calc(100vh - 140px);
   min-height: 400px;
   position: relative;
-  background: #ccc;
+
+  background: #ffffff;
   overflow: hidden;
 }
 .heroSlider .slick-list, .heroSlider .slick-track{
@@ -99,7 +102,10 @@ height: 100%;
   font-size: 75px;
   font-weight: bold;
 }
-
+/* homepage */
+.about-page{
+  background: #A6D8F5;
+}
 
 
 /* SERVICES */
