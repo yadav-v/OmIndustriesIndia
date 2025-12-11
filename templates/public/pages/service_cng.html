@@ -10,7 +10,7 @@
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
             <li class="breadcrumb-item"><a href="{{ url_for('services') }}">Services</a></li>
-            <li class="breadcrumb-item active">CNG Hydrotesting Plants</li>
+            <li class="breadcrumb-item active">Hydrotesting Machinery</li>
           </ol>
         </nav>
       </div>
@@ -18,11 +18,7 @@
 
     <div class="row mb-5">
       <div class="col-md-6">
-        <img src="{{ url_for('static', filename='image/cnghydro.jpg') }}" class="img-fluid rounded shadow" alt="CNG Hydrotesting Plant">
-      </div>
-      <div class="col-md-6">
-        <h1>CNG Hydrotesting Plant Manufacturer</h1>
-
+        <h1>CNG Hydrotesting Machinery</h1>
         <p class="lead">We are a leading manufacturer of CNG Hydrotesting Plants, providing complete solutions with all necessary equipment and components.</p>
         <p>Our hydrotesting plants are designed to meet international safety standards and are certified for quality and reliability.</p>
       </div>
@@ -33,20 +29,29 @@
         <h2 class="mb-4">Our Products & Equipment</h2>
         <div class="row g-4">
           <div class="col-md-4">
+            <div class="product-card" style="
+      background-image: url('{{ url_for('static', filename='image/waterjacket.jpg') }}');">
+            <a href="{{ url_for('water_jacket_detail') }}" class="text-decoration-none text-dark">
             <div class="equipment-item p-3 bg-light rounded">
+              
               <i class="fas fa-cog fa-2x text-primary mb-2"></i>
-              <h5>1. Water Jacket</h5>
-              <p>High-quality water jacket systems for hydrotesting operations.</p>
+              <h5>Water Jacket Type Testing Machine</h5>
+              <p>The Water Jacket Type Hydro Testing Machine is used to test the strength...</p>
+            </div>
+            </a>
             </div>
           </div>
           <div class="col-md-4">
+            <a href="{{ url_for('cylinder_wise_detail') }}" class="text-decoration-none text-dark">
             <div class="equipment-item p-3 bg-light rounded">
               <i class="fas fa-cog fa-2x text-primary mb-2"></i>
-              <h5>2. Cylinder Wise</h5>
+              <h5> Cylinder Wise</h5>
               <p>Precision cylinder-wise testing equipment.</p>
             </div>
+            </a>
           </div>
           <div class="col-md-4">
+           
             <div class="equipment-item p-3 bg-light rounded">
               <i class="fas fa-cog fa-2x text-primary mb-2"></i>
               <h5>3. Heat Air Blower</h5>
@@ -55,6 +60,7 @@
             </div>
           </div>
           <div class="col-md-4">
+            <a href="{{ url_for('hydro_pump') }}" class="text-decoration-none text-dark"></a>
             <div class="equipment-item p-3 bg-light rounded">
               <i class="fas fa-cog fa-2x text-primary mb-2"></i>
               <h5>4. Hydro Pump</h5>
@@ -62,6 +68,7 @@
             </div>
           </div>
           <div class="col-md-4">
+            <a href="{{ url_for('oil_removal') }}" class="text-decoration-none text-dark"></a>
             <div class="equipment-item p-3 bg-light rounded">
               <i class="fas fa-cog fa-2x text-primary mb-2"></i>
               <h5>5. Oil Remove Stand</h5>
@@ -104,6 +111,7 @@
             </div>
           </div>
           <div class="col-md-4">
+            <a href="{{ url_for('degassing') }}" class="text-decoration-none text-dark"></a>
             <div class="equipment-item p-3 bg-light rounded">
               <i class="fas fa-cog fa-2x text-primary mb-2"></i>
               <h5>11. Gas Director</h5>

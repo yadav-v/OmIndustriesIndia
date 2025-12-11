@@ -1,0 +1,42 @@
+{% extends "public/base_public.html" %}
+
+{% block content %}
+<section class="py-5">
+  <div class="container">
+    
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('services') }}">Services</a></li>
+        <li class="breadcrumb-item active">Water Jacket Type Testing Machine</li>
+      </ol>
+    </nav>
+
+    <div class="row">
+      <div class="col-md-6">
+        <img src="{{ url_for('static', filename='image/waterjacket.jpg') }}" 
+             class="img-fluid rounded shadow" alt="Water Jacket Testing Machine">
+      </div>
+
+      <div class="col-md-6">
+        <h1>Water Jacket Type Hydro Testing Machine</h1>
+        <p class="lead">Designed for precise volumetric expansion testing of CNG cylinders.</p>
+
+        <p>The Water Jacket Type Hydro Testing Machine measures permanent and elastic expansion of the cylinder under controlled pressure. It ensures accurate, safe, and government-approved testing.</p>
+
+        <h4 class="mt-4">Features</h4>
+        <ul>
+          <li>High-accuracy volumetric measurement</li>
+          <li>Leak-proof water jacket chamber</li>
+          <li>Strong MS/SS fabrication</li>
+          <li>Automatic pressure control system</li>
+          <li>Emergency safety interlocks</li>
+        </ul>
+
+        <a href="{{ url_for('contact') }}" class="btn btn-primary mt-3">Get Quote</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+{% endblock %}

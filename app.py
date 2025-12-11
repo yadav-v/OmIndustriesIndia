@@ -110,6 +110,26 @@ def about():
 @app.route("/services")
 def services():
     return render_template("public/pages/services.html", title="Services - Om Industries India")
+# about water jacket 
+@app.route('/water-jacket-testing-machine')
+def water_jacket_detail():
+    return render_template('public/water_jacket_detail.html')
+#cylinder wise details
+@app.route('/cylinder-wise-testing-machine')
+def cylinder_wise_detail():
+    return render_template('public/cylinder_wise_detail.html')
+#hydro-pump
+@app.route('/hydro-pump')
+def hydro_pump():
+    return render_template('public/hydro_pump.html')
+
+@app.route('/degassing')
+def degassing():
+    return render_template('public/degassing.html')
+
+@app.route('/oil-removal')
+def oil_removal():
+    return render_template('public/oil_removal.html')
 
 @app.route("/services/cng-hydrotesting-plant")
 def service_cng():
