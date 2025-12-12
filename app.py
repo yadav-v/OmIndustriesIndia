@@ -119,7 +119,7 @@ def water_jacket_detail():
 def cylinder_wise_detail():
     return render_template('public/cylinder_wise_detail.html')
 #hydro-pump
-@app.route('/hydro-pump')
+@app.route('/hydro-pump-machine')
 def hydro_pump():
     return render_template('public/hydro_pump.html')
 
