@@ -142,7 +142,12 @@ def service_cylinder():
 @app.route("/services/fabrication")
 def service_fabrication():
     return render_template("public/pages/service_fabrication.html", title="Fabrication Services - Om Industries India")
-
+@app.route("/service-inspect")
+def service_inspect():
+    return render_template("public/pages/service_inspect.html", title="Inspection Services")
+@app.route("/service_heatdrying")
+def service_heatdrying():
+    return render_template("public/pages/service_heatdrying.html", title="Heat and DRYING SERVICE")
 @app.route("/contact", methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
