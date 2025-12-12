@@ -7,7 +7,7 @@
 
 
 body {
-  background-color: #A6D8F5;
+  background-color: #01185c;
   font-family: 'Inter', sans-serif;
   color: #101010;
 }
@@ -17,7 +17,7 @@ body {
   width: 100%;
 }
 .bg-dark{
-  background-color: #113255!important;
+  background-color: #06a0e3!important;
 }
 .bg-primary{
   background-color: #06a0e3!important;
@@ -36,10 +36,41 @@ body {
 
 .mainMenu .nav-link{
   font-size: 18px;
-    color: #103155;
+    color: #ffffff;
+    padding: 6px 20px;
+    text-decoration: none;
+    transition: .5s;
+
 }
 .mainMenu .nav-link.active, .mainMenu .nav-link:hover {
-    color: #009ee2;}
+    color: #00b3ff;
+    transform: scale(1) translateY(0);
+    border-bottom: 3px solid #a4deff;
+    border-radius:25px;
+  transform: scale(1) translateY(0);
+    opacity: 1;
+    z-index: -1;
+}
+header {
+    position: relative;
+    padding-bottom: 70px; /* Makes hover area bigger */
+}
+
+header .mainMenu {
+    position: relative;
+    background: none;
+    padding: 0;
+    margin: 0;
+    z-index: 10;
+    transform: scale(1);
+}
+
+
+
+
+.hero-slider {
+    margin-top: 80px; /* pushes slider down */
+}
 
 /* HERO */
 .heroSliderWrap, .heroSlider {
@@ -112,7 +143,7 @@ height: 100%;
 .services {
   padding: 10px ;
   text-align: center;
-  background-color: #0077b6;
+  background-color: #00a6ff;
   margin-left: auto;
   margin-right: auto;
 }
