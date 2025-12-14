@@ -59,7 +59,17 @@
               <span class="badge bg-warning">Pending</span>
             {% endif %}
           </td>
-          <td>{{ feedback['date'][:10] }}</td>
+          <td>
+            {% if feedback['date'] %}
+              {% if feedback['date'] is string %}
+                {{ feedback['date'][:10] }}
+              {% else %}
+                {{ feedback['date'].strftime('%Y-%m-%d') }}
+              {% endif %}
+            {% else %}
+              N/A
+            {% endif %}
+          </td>
           <td>
             {% if feedback['status'] != 'approved' %}
             <a href="{{ url_for('admin_feedback_action', feedback_id=feedback['id'], action='approve') }}" 

@@ -53,7 +53,15 @@
               </div>
               <p class="feedback-message mb-3">"{{ feedback['message'] }}"</p>
               <div class="text-end">
-                <small class="text-muted">{{ feedback['date'][:10] if feedback['date'] else '' }}</small>
+                <small class="text-muted">
+                  {% if feedback['date'] %}
+                    {% if feedback['date'] is string %}
+                      {{ feedback['date'][:10] }}
+                    {% else %}
+                      {{ feedback['date'].strftime('%Y-%m-%d') }}
+                    {% endif %}
+                  {% endif %}
+                </small>
               </div>
             </div>
           </div>
