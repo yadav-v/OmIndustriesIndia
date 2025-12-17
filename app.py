@@ -124,7 +124,7 @@ def execute_query(conn, query, params=None):
 
 def init_db():
     """Initialize database tables and migrate if needed"""
-    conn = get_db_connection()
+    conn = _db_connection()
     cursor = conn.cursor()
     
     if USE_POSTGRES:
@@ -267,7 +267,7 @@ def init_db():
 # -------- PUBLIC ROUTES ----------
 @app.route("/")
 def home():
-    conn = get_db_connection()
+    conn = _db_connection()
     # Get approved feedbacks for display
     cursor = execute_query(conn, "SELECT * FROM feedback WHERE status = 'approved' ORDER BY date DESC LIMIT 6")
     feedbacks = cursor.fetchall()
@@ -328,7 +328,7 @@ def contact():
         message = request.form.get('message')
         
         # Store in database
-        conn = get_db_connection()
+        conn = _db_connection()
         execute_query(conn, 
             "INSERT INTO contacts (name, email, phone, message) VALUES (?, ?, ?, ?)",
             (name, email, phone, message)
@@ -362,7 +362,7 @@ def feedback():
         rating = int(request.form.get('rating', 5))
         message = request.form.get('message')
         
-        conn = get_db_connection()
+        conn = _db_connection()
         execute_query(conn,
             "INSERT INTO feedback (name, rating, message, status) VALUES (?, ?, ?, 'pending')",
             (name, rating, message)
@@ -374,7 +374,7 @@ def feedback():
         return redirect(url_for('feedback'))
     
     # Get approved feedbacks
-    conn = get_db_connection()
+    conn = _db_connection()
     cursor = execute_query(conn, "SELECT * FROM feedback WHERE status = 'approved' ORDER BY date DESC")
     feedbacks = cursor.fetchall()
     conn.close()
@@ -475,7 +475,7 @@ def admin_dashboard():
     if not session.get('admin_logged_in'):
         return redirect(url_for('admin_login'))
     
-    conn = get_db_connection()
+    conn = _db_connection()
     
     # Get counts
     cursor = execute_query(conn, "SELECT COUNT(*) as count FROM feedback")
@@ -504,7 +504,7 @@ def admin_feedback():
     if not session.get('admin_logged_in'):
         return redirect(url_for('admin_login'))
     
-    conn = get_db_connection()
+    conn = _db_connection()
     cursor = execute_query(conn, "SELECT * FROM feedback ORDER BY date DESC")
     feedbacks = cursor.fetchall()
     conn.close()
@@ -516,7 +516,7 @@ def admin_feedback_action(feedback_id, action):
     if not session.get('admin_logged_in'):
         return redirect(url_for('admin_login'))
     
-    conn = get_db_connection()
+    conn = _db_connection()
     
     if action == 'approve':
         execute_query(conn, "UPDATE feedback SET status = 'approved' WHERE id = ?", (feedback_id,))
@@ -538,7 +538,7 @@ def admin_contacts():
     if not session.get('admin_logged_in'):
         return redirect(url_for('admin_login'))
     
-    conn = get_db_connection()
+    conn = _db_connection()
     cursor = execute_query(conn, "SELECT * FROM contacts ORDER BY date DESC")
     contacts = cursor.fetchall()
     conn.close()
