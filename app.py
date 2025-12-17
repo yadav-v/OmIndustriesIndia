@@ -28,8 +28,7 @@ USE_POSTGRES = DATABASE_URL is not None
 # Admin credentials
 ADMIN_USERNAME = 'admin'
 ADMIN_PASSWORD = 'admin123'
-
-def get_db_connection():
+def _db_connection():
     """Get database connection - uses PostgreSQL if DATABASE_URL is set, otherwise SQLite"""
     if USE_POSTGRES:
         try:
