@@ -7,7 +7,7 @@
 
 
 body {
-  background-color: #abbbed;
+  background-color: #6384e6;
   font-family: 'Inter', sans-serif;
   color: #101010;
 }
@@ -17,10 +17,10 @@ body {
   width: 100%;
 }
 .bg-dark{
-  background-color: #abbbed!important;
+  background-color: #4a6ed9!important;
 }
 .bg-primary{
-  background-color: #abbbed!important;
+  background-color: #2955d7!important;
 }
 .font12{
   font-size: 12px;
