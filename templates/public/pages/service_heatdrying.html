@@ -2,62 +2,34 @@
 
 {% block content %}
 
-<section class="service-detail-page py-5">
+<!-- Page Header -->
+<section class="page-header animate__animated animate__fadeIn">
   <div class="container">
-    <div class="row mb-4">
-      <div class="col-12">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ url_for('services') }}">Services</a></li>
-            <li class="breadcrumb-item active">Hydrotesting Machinery</li>
-          </ol>
-        </nav>
+    <h1 class="animate__animated animate__fadeInDown">Heating & Drying</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-white text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('services') }}" class="text-white text-decoration-none">Services</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Heating & Drying</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section class="section-padding">
+  <div class="container">
+    <div class="row g-5 align-items-center mb-5">
+      <div class="col-lg-6" data-aos="fade-right">
+        <h6 class="text-primary fw-bold text-uppercase mb-2">Industrial Processing</h6>
+        <h2 class="section-title">Industrial Heating & Drying</h2>
+        <p class="lead text-primary mb-4">Advanced machinery designed for efficient cylinder drying and industrial heat treatment processes.</p>
+        <p class="text-muted mb-4">Our heating and drying machines are essential for removing residual moisture from cylinders after hydrotesting. Residual moisture can cause internal corrosion, compromising cylinder safety. Our systems use controlled hot air circulation to ensure 100% internal dryness, preparing cylinders for immediate service or painting. Available in various batch capacities to suit your production volume.</p>
       </div>
-    </div>
-
-    <div class="row mb-5">
-      <div class="col-md-6">
-        <h1>Heating and Drying Machines</h1>
-        <p class="lead">We are a leading manufacturer of CNG Hydrotesting Plants, providing complete solutions with all necessary equipment and components.</p>
-        <p>Our hydrotesting plants are designed to meet international safety standards and are certified for quality and reliability.</p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-12">
-        <h2 class="mb-4">Our Products & Equipment</h2>
-          <div class="col-md-4">
-            <div class="equipment-item p-3 bg-light rounded">
-              <i class="fas fa-cog fa-2x text-primary mb-2"></i>
-              <h5>Heat Air Blower</h5>
-              <p>Advanced ultrasonic rolling machines for quality testing.</p>
-            </div>
-          </div>
-            
-          <div class="col-md-4">
-            <div class="equipment-item p-3 bg-light rounded">
-              <i class="fas fa-cog fa-2x text-primary mb-2"></i>
-              <h5> Ultrasonic Rolling Machine</h5>
-              <p>Advanced ultrasonic rolling machines for quality testing.</p>
-            </div>
-          </div>
-            
-          <div class="col-md-4">
-            <div class="equipment-item p-3 bg-light rounded">
-              <i class="fas fa-cog fa-2x text-primary mb-2"></i>
-              <h5> Ultrasonic Machine</h5>
-              <p>Precision ultrasonic testing machines.</p>
-            </div>
-          </div>
-
-    <div class="row mt-5">
-      <div class="col-12 text-center">
-        <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">Get Quote</a>
+      <div class="col-lg-6" data-aos="fade-left">
+        <img src="{{ url_for('static', filename='image/img1.jpeg') }}" class="img-fluid rounded-3 shadow-lg" alt="Heating and Drying">
       </div>
     </div>
   </div>
 </section>
 
 {% endblock %}
-

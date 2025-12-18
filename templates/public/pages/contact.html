@@ -2,14 +2,32 @@
 
 {% block content %}
 
-<section class="contact-page py-5">
+<!-- Page Header -->
+<section class="page-header animate__animated animate__fadeIn">
   <div class="container">
-    <h1 class="text-center mb-5">Contact Us</h1>
+    <h1 class="animate__animated animate__fadeInDown">Contact Us</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-white text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Contact Us</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h6 class="text-primary fw-bold text-uppercase mb-2">Get In Touch</h6>
+      <h2 class="section-title">We'd Love to Hear From You</h2>
+      <p class="text-muted col-lg-8 mx-auto mt-3">Whether you have a question about our products, pricing, or industrial solutions, our team is ready to help you with expert advice.</p>
+    </div>
     
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert">
+          <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show rounded-3 shadow-sm mb-4" role="alert">
+            <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' }} me-2"></i>
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
           </div>
@@ -17,90 +35,117 @@
       {% endif %}
     {% endwith %}
 
-    <div class="row g-4">
+    <div class="row g-5">
       <!-- Contact Information -->
-      <div class="col-md-4">
-        <div class="contact-info h-100 p-4 bg-light rounded">
-          <h3 class="mb-4">Get in Touch</h3>
+      <div class="col-lg-4" data-aos="fade-right">
+        <div class="modern-card p-5 bg-primary text-white h-100">
+          <h3 class="fw-bold mb-4">Contact Information</h3>
+          <p class="opacity-75 mb-5">Fill out the form and our team will get back to you within 24 hours.</p>
           
-          <div class="contact-item mb-4">
-            <i class="fas fa-map-marker-alt fa-2x text-primary mb-2"></i>
-            <h5>Address</h5>
-            <p>Om Industries India<br>
-            Shop No.16 D Samrat Silk Mill Compound,LBS Marg <br>
-            Vikhroli(W) Mumbai-79
-            </p>
+          <div class="d-flex mb-4">
+            <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; flex-shrink: 0;">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div>
+              <h5 class="fw-bold mb-1">Our Location</h5>
+              <p class="opacity-75 mb-0">Shop No.16 D Samrat Silk Mill Compound, LBS Marg, Vikhroli(W), Mumbai-400079</p>
+            </div>
           </div>
 
-          <div class="contact-item mb-4">
-            <i class="fas fa-envelope fa-2x text-primary mb-2"></i>
-            <h5>Email</h5>
-            <p><a href="mailto:omindustriesindia2024@gmail.com">omindustriesindia2024@gmail.com</a></p>
+          <div class="d-flex mb-4">
+            <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; flex-shrink: 0;">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div>
+              <h5 class="fw-bold mb-1">Email Us</h5>
+              <p class="opacity-75 mb-0">omindustriesindia2024@gmail.com</p>
+            </div>
           </div>
 
-          <div class="contact-item mb-4">
-            <i class="fas fa-phone fa-2x text-primary mb-2"></i>
-            <h5>Phone</h5>
-            <p><a href="tel:+919892718710">+91 9892718710</a></p>
-            <p><a href="tel:+919820813231">+91 9820813231</a></p>
+          <div class="d-flex mb-4">
+            <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; flex-shrink: 0;">
+              <i class="fas fa-phone-alt"></i>
+            </div>
+            <div>
+              <h5 class="fw-bold mb-1">Call Us</h5>
+              <p class="opacity-75 mb-0">+91 9892718710<br>+91 9820813231</p>
+            </div>
           </div>
 
-          <div class="contact-item">
-            <i class="fas fa-clock fa-2x text-primary mb-2"></i>
-            <h5>Business Hours</h5>
-            <p>Monday - Saturday: 9:00 AM - 9:00 PM<br>
-            Sunday: 9:00 AM - 5:00 PM</p>
+          <div class="d-flex">
+            <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; flex-shrink: 0;">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div>
+              <h5 class="fw-bold mb-1">Working Hours</h5>
+              <p class="opacity-75 mb-0">Mon - Sat: 9 AM - 9 PM<br>Sun: 9 AM - 5 PM</p>
+            </div>
+          </div>
+
+          <div class="mt-5 pt-4 border-top border-light border-opacity-25">
+            <h6 class="fw-bold mb-3">Follow Us</h6>
+            <div class="d-flex">
+              <a href="#" class="btn btn-sm btn-outline-light rounded-circle me-2" style="width: 35px; height: 35px;"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-light rounded-circle me-2" style="width: 35px; height: 35px;"><i class="fab fa-twitter"></i></a>
+              <a href="#" class="btn btn-sm btn-outline-light rounded-circle" style="width: 35px; height: 35px;"><i class="fab fa-linkedin-in"></i></a>
+            </div>
           </div>
         </div>
       </div>
 
       <!-- Contact Form -->
-      <div class="col-md-8">
-        <div class="contact-form p-4 bg-white rounded shadow-sm">
-          <h3 class="mb-4">Send us a Message</h3>
-          <form method="POST" action="{{ url_for('contact') }}">
-            <div class="mb-3">
-              <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
-              <input type="text" class="form-control" id="name" name="name" required>
+      <div class="col-lg-8" data-aos="fade-left">
+        <div class="modern-card p-5 bg-white border-0 shadow-sm">
+          <h3 class="fw-bold mb-4 text-dark">Send us a Message</h3>
+          <form method="POST" action="{{ url_for('contact') }}" class="row g-4">
+            <div class="col-md-6">
+              <label for="name" class="form-label fw-bold">Full Name <span class="text-danger">*</span></label>
+              <input type="text" class="form-control bg-light py-3 border-0" id="name" name="name" required placeholder="Enter your name">
             </div>
-            <div class="mb-3">
-              <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-              <input type="email" class="form-control" id="email" name="email" required>
+            <div class="col-md-6">
+              <label for="email" class="form-label fw-bold">Email Address <span class="text-danger">*</span></label>
+              <input type="email" class="form-control bg-light py-3 border-0" id="email" name="email" required placeholder="Enter your email">
             </div>
-            <div class="mb-3">
-              <label for="phone" class="form-label">Phone</label>
-              <input type="tel" class="form-control" id="phone" name="phone">
+            <div class="col-md-12">
+              <label for="phone" class="form-label fw-bold">Phone Number</label>
+              <input type="tel" class="form-control bg-light py-3 border-0" id="phone" name="phone" placeholder="Enter your phone number">
             </div>
-            <div class="mb-3">
-              <label for="message" class="form-label">Message <span class="text-danger">*</span></label>
-              <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+            <div class="col-md-12">
+              <label for="message" class="form-label fw-bold">Your Message <span class="text-danger">*</span></label>
+              <textarea class="form-control bg-light py-3 border-0" id="message" name="message" rows="6" required placeholder="How can we help you?"></textarea>
             </div>
-            <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-primary rounded-pill px-5 py-3 fw-bold">
+                Send Message <i class="fas fa-paper-plane ms-2"></i>
+              </button>
+            </div>
           </form>
         </div>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- Map Section -->
-    <div class="row mt-5">
-      <div class="col-12">
-        <h3 class="mb-3">Find Us on Map</h3>
-        <div class="map-container rounded shadow-sm overflow-hidden" style="height: 400px; background: #f0f0f0;">
+<!-- Map Section -->
+<section class="section-padding py-0 overflow-hidden">
+  <div class="container-fluid p-0">
+    <div class="row g-0">
+      <div class="col-12" data-aos="fade-up">
+        <div class="map-container shadow-lg" style="height: 500px; filter: grayscale(0.2) contrast(1.1);">
+          <!-- Vikhroli West, Mumbai coordinates -->
           <iframe 
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3503.1234567890123!2d77.12345678901234!3d28.12345678901234!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDA3JzI0LjQiTiA3N8KwMDcnMjQuNCJF!5e0!3m2!1sen!2sin!4v1234567890123!5m2!1sen!2sin" 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.123456789!2d72.9234567!3d19.1112345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTnCsDA2JzQwLjQiTiA3MsKwNTUnMjQuNCJF!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" 
             width="100%" 
-            height="400" 
+            height="500" 
             style="border:0;" 
             allowfullscreen="" 
             loading="lazy" 
             referrerpolicy="no-referrer-when-downgrade">
           </iframe>
         </div>
-        <p class="text-muted mt-2"><small>Note: Update the map embed URL with your actual business location coordinates.</small></p>
       </div>
     </div>
   </div>
 </section>
 
 {% endblock %}
-
