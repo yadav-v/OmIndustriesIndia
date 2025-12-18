@@ -7,7 +7,7 @@
 
 
 body {
-  background-color: #abbbed;
+  background-color: #ffffff;
   font-family: 'Inter', sans-serif;
   color: #101010;
 }
@@ -36,7 +36,7 @@ body {
 
 .mainMenu .nav-link{
   font-size: 18px;
-    color: #ffffff;
+    color: #083da0;
     padding: 6px 20px;
     text-decoration: none;
     transition: .5s;
