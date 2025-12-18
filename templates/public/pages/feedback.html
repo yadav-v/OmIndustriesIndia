@@ -2,19 +2,38 @@
 
 {% block content %}
 
-<section class="feedback-page py-5">
+<!-- Page Header -->
+<section class="page-header animate__animated animate__fadeIn">
   <div class="container">
-    <div class="d-flex justify-content-between align-items-center mb-5">
-      <h1 class="mb-0">Customer Feedback</h1>
-      <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#feedbackModal">
-        <i class="fas fa-plus me-2"></i>Add Your Feedback
-      </button>
+    <h1 class="animate__animated animate__fadeInDown">Customer Feedback</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-white text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Feedback</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="row align-items-center mb-5" data-aos="fade-up">
+      <div class="col-md-8">
+        <h6 class="text-primary fw-bold text-uppercase mb-2">Testimonials</h6>
+        <h2 class="section-title mb-0">What Our Customers Say</h2>
+      </div>
+      <div class="col-md-4 text-md-end mt-4 mt-md-0">
+        <button type="button" class="btn btn-primary rounded-pill px-4 py-2 shadow" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+          <i class="fas fa-plus me-2"></i>Share Your Feedback
+        </button>
+      </div>
     </div>
     
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
         {% for category, message in messages %}
-          <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show" role="alert">
+          <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show rounded-3 shadow-sm mb-4" role="alert">
+            <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-circle' }} me-2"></i>
             {{ message }}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
           </div>
@@ -23,60 +42,53 @@
     {% endwith %}
 
     <!-- Display Feedbacks -->
-    <div class="row">
-      <div class="col-12">
-        <h2 class="animate__animated animate__jackInTheBox text-center mb-4">What Our Customers Say</h2>
-        {% if feedbacks %}
-        <div class="row g-4">
-          {% for feedback in feedbacks %}
-          <div class="col-md-6 col-lg-4">
-            <div class="feedback-card p-4 bg-white rounded shadow-sm h-100 border">
-              <div class="d-flex align-items-center mb-3">
-                <div class="feedback-avatar me-3">
-                  <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center">
-                    {{ feedback['name'][0].upper() }}
-                  </div>
-                </div>
-                <div class="flex-grow-1">
-                  <h5 class="mb-1">{{ feedback['name'] }}</h5>
-                  <div class="rating-display">
-                    {% set rating = feedback['rating']|int %}
-                    {% for i in range(1, 6) %}
-                      {% if i <= rating %}
-                        <i class="fas fa-star text-warning"></i>
-                      {% else %}
-                        <i class="far fa-star text-warning"></i>
-                      {% endif %}
-                    {% endfor %}
-                  </div>
-                </div>
+    <div class="row g-4">
+      {% if feedbacks %}
+        {% for feedback in feedbacks %}
+        <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="{{ (loop.index0 % 3) * 100 }}">
+          <div class="modern-card p-4 bg-white h-100 feedback-card border-0">
+            <div class="d-flex align-items-center mb-4">
+              <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center me-3 shadow-sm" style="width: 55px; height: 55px; border-radius: 50%; font-size: 1.25rem; font-weight: bold;">
+                {{ feedback['name'][0].upper() }}
               </div>
-              <p class="feedback-message mb-3">"{{ feedback['message'] }}"</p>
-              <div class="text-end">
-                <small class="text-muted">
-                  {% if feedback['date'] %}
-                    {% if feedback['date'] is string %}
-                      {{ feedback['date'][:10] }}
-                    {% else %}
-                      {{ feedback['date'].strftime('%Y-%m-%d') }}
-                    {% endif %}
-                  {% endif %}
-                </small>
+              <div class="flex-grow-1">
+                <h5 class="mb-1 fw-bold text-dark">{{ feedback['name'] }}</h5>
+                <div class="rating-display">
+                  {% set rating = feedback['rating']|int %}
+                  {% for i in range(1, 6) %}
+                    <i class="fa{% if i <= rating %}s{% else %}r{% endif %} fa-star text-warning small"></i>
+                  {% endfor %}
+                </div>
               </div>
             </div>
+            <p class="feedback-message mb-4 text-muted" style="font-size: 1.1rem; font-style: normal;">"{{ feedback['message'] }}"</p>
+            <div class="d-flex justify-content-between align-items-center border-top pt-3">
+              <span class="badge bg-light text-primary rounded-pill px-3 fw-normal border">Verified Customer</span>
+              <small class="text-muted fst-italic">
+                {% if feedback['date'] %}
+                  {% if feedback['date'] is string %}
+                    {{ feedback['date'][:10] }}
+                  {% else %}
+                    {{ feedback['date'].strftime('%b %d, %Y') }}
+                  {% endif %}
+                {% endif %}
+              </small>
+            </div>
           </div>
-          {% endfor %}
         </div>
-        {% else %}
-        <div class="text-center py-5">
-          <i class="fas fa-comments fa-3x text-muted mb-3"></i>
-          <p class="text-muted">No feedbacks available yet. Be the first to share your experience!</p>
-          <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#feedbackModal">
-            <i class="fas fa-plus me-2"></i>Add Your Feedback
-          </button>
+        {% endfor %}
+      {% else %}
+        <div class="col-12 text-center py-5" data-aos="zoom-in">
+          <div class="bg-white p-5 rounded-3 shadow-sm border">
+            <i class="fas fa-comments fa-4x text-light mb-4"></i>
+            <h3 class="fw-bold">No feedback yet</h3>
+            <p class="text-muted lead mb-4">Be the first to share your experience with Om Industries India.</p>
+            <button type="button" class="btn btn-primary rounded-pill px-5 py-3" data-bs-toggle="modal" data-bs-target="#feedbackModal">
+              <i class="fas fa-plus me-2"></i>Submit Your Review
+            </button>
+          </div>
         </div>
-        {% endif %}
-      </div>
+      {% endif %}
     </div>
   </div>
 </section>
@@ -84,54 +96,52 @@
 <!-- Bootstrap Modal for Feedback Form -->
 <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="feedbackModalLabel">
-          <i class="fas fa-comment-dots me-2"></i>Share Your Feedback
+    <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+      <div class="modal-header bg-primary text-white py-4 border-0">
+        <h5 class="modal-title fw-bold" id="feedbackModalLabel">
+          <i class="fas fa-edit me-2"></i>Write a Review
         </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form method="POST" action="{{ url_for('feedback') }}">
-        <div class="modal-body">
-          <div class="mb-3">
-            <label for="modal_name" class="form-label">Your Name <span class="text-danger">*</span></label>
-            <input type="text" class="form-control" id="modal_name" name="name" required placeholder="Enter your name">
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Rating <span class="text-danger">*</span></label>
-            <div class="rating-input-modal">
-              <input type="radio" name="rating" id="modal_rating5" value="5" checked>
-              <label for="modal_rating5" class="star-label-modal">
-                <i class="fas fa-star"></i>
-              </label>
-              <input type="radio" name="rating" id="modal_rating4" value="4">
-              <label for="modal_rating4" class="star-label-modal">
-                <i class="fas fa-star"></i>
-              </label>
-              <input type="radio" name="rating" id="modal_rating3" value="3">
-              <label for="modal_rating3" class="star-label-modal">
-                <i class="fas fa-star"></i>
-              </label>
-              <input type="radio" name="rating" id="modal_rating2" value="2">
-              <label for="modal_rating2" class="star-label-modal">
-                <i class="fas fa-star"></i>
-              </label>
-              <input type="radio" name="rating" id="modal_rating1" value="1">
-              <label for="modal_rating1" class="star-label-modal">
-                <i class="fas fa-star"></i>
-              </label>
+        <div class="modal-body p-4">
+          <div class="mb-4">
+            <label for="modal_name" class="form-label fw-bold">Your Name <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <span class="input-group-text bg-light border-end-0"><i class="fas fa-user text-muted"></i></span>
+              <input type="text" class="form-control bg-light border-start-0 py-2" id="modal_name" name="name" required placeholder="Enter your full name">
             </div>
-            <small class="text-muted">Click on a star to rate (1-5 stars)</small>
+          </div>
+          <div class="mb-4">
+            <label class="form-label fw-bold">Your Rating <span class="text-danger">*</span></label>
+            <div class="rating-input-modal p-3 bg-light rounded-3 d-flex justify-content-center">
+              <div class="d-flex flex-row-reverse">
+                <input type="radio" name="rating" id="modal_rating5" value="5" checked class="d-none">
+                <label for="modal_rating5" class="star-label-modal px-2 cursor-pointer"><i class="fas fa-star fa-2x"></i></label>
+                
+                <input type="radio" name="rating" id="modal_rating4" value="4" class="d-none">
+                <label for="modal_rating4" class="star-label-modal px-2 cursor-pointer"><i class="fas fa-star fa-2x"></i></label>
+                
+                <input type="radio" name="rating" id="modal_rating3" value="3" class="d-none">
+                <label for="modal_rating3" class="star-label-modal px-2 cursor-pointer"><i class="fas fa-star fa-2x"></i></label>
+                
+                <input type="radio" name="rating" id="modal_rating2" value="2" class="d-none">
+                <label for="modal_rating2" class="star-label-modal px-2 cursor-pointer"><i class="fas fa-star fa-2x"></i></label>
+                
+                <input type="radio" name="rating" id="modal_rating1" value="1" class="d-none">
+                <label for="modal_rating1" class="star-label-modal px-2 cursor-pointer"><i class="fas fa-star fa-2x"></i></label>
+              </div>
+            </div>
           </div>
           <div class="mb-3">
-            <label for="modal_message" class="form-label">Your Feedback <span class="text-danger">*</span></label>
-            <textarea class="form-control" id="modal_message" name="message" rows="5" required placeholder="Share your experience with us..."></textarea>
+            <label for="modal_message" class="form-label fw-bold">Your Message <span class="text-danger">*</span></label>
+            <textarea class="form-control bg-light py-3" id="modal_message" name="message" rows="5" required placeholder="Tell us about your experience..."></textarea>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary">
-            <i class="fas fa-paper-plane me-2"></i>Submit Feedback
+        <div class="modal-footer p-4 border-0">
+          <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary rounded-pill px-5">
+            Submit Review <i class="fas fa-paper-plane ms-2"></i>
           </button>
         </div>
       </form>

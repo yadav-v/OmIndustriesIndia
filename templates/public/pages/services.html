@@ -2,68 +2,114 @@
 
 {% block content %}
 
-<section class="services-page py-5">
+<!-- Page Header -->
+<section class="page-header animate__animated animate__fadeIn">
   <div class="container">
-    <h1 class="text-center mb-5">Our Services</h1>
+    <h1 class="animate__animated animate__fadeInDown">Our Services</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-white text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Our Services</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h6 class="text-primary fw-bold text-uppercase mb-2">Industrial Excellence</h6>
+      <h2 class="section-title">What We Offer</h2>
+      <p class="text-muted col-lg-8 mx-auto mt-3">We provide specialized manufacturing and fabrication solutions for the CNG industry and general industrial requirements. Our services are backed by years of expertise and modern technology.</p>
+    </div>
     
     <div class="row g-4">
       <!-- Service 1 -->
-      <div class="col-md-4">
-        <div class="service-item-card h-100 shadow-sm rounded overflow-hidden">
-          <img src="{{ url_for('static', filename='image/cngmanufacture.jpg') }}" class="img-fluid w-100" style="height: 250px; object-fit: cover;" alt="CNG Hydrotesting Plant">
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="modern-card h-100">
+          <div class="position-relative">
+            <img src="{{ url_for('static', filename='image/cngmanufacture.jpg') }}" class="img-fluid w-100" style="height: 250px; object-fit: cover;" alt="CNG Hydrotesting Plant">
+            <div class="bg-primary text-white px-3 py-1 position-absolute bottom-0 start-0 m-3 rounded-pill small fw-bold">Machinery</div>
+          </div>
           <div class="p-4">
-            <h3>CNG Hydrotesting Machinery</h3>
-            <p>Complete manufacturing solutions for CNG hydrotesting plants with all necessary equipment and components.</p>
-            <a href="{{ url_for('service_cng') }}" class="btn btn-primary">View Details</a>
+            <h4 class="fw-bold mb-3">CNG Hydrotesting</h4>
+            <p class="text-muted">Complete manufacturing solutions for CNG hydrotesting plants with all necessary equipment and precision components built for safety.</p>
+            <hr class="opacity-10 my-4">
+            <a href="{{ url_for('service_cng') }}" class="btn btn-outline-primary btn-sm rounded-pill px-4">Learn More <i class="fas fa-arrow-right ms-2"></i></a>
           </div>
         </div>
       </div>
 
       <!-- Service 2 -->
-      <div class="col-md-4">
-        <div class="service-item-card h-100 shadow-sm rounded overflow-hidden">
-          <img src="{{ url_for('static', filename='image/img1.jpeg') }}" class="img-fluid w-100" style="height: 250px; object-fit: cover;" alt="Cylinder Bracket">
-          <div class="p-4">
-            <h3>Heating & Drying Machine</h3>
-            <p>High-quality cylinder brackets available with and without rings for secure and safe cylinder storage.</p>
-            <a href="{{ url_for('service_heatdrying') }}" class="btn btn-primary">View Details</a>
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="modern-card h-100">
+          <div class="position-relative">
+            <img src="{{ url_for('static', filename='image/img1.jpeg') }}" class="img-fluid w-100" style="height: 250px; object-fit: cover;" alt="Heating & Drying">
+            <div class="bg-primary text-white px-3 py-1 position-absolute bottom-0 start-0 m-3 rounded-pill small fw-bold">Equipment</div>
           </div>
-        </div>
-      </div>
-      <!--Service 3-->
-      <div class="col-md-4">
-        <div class="service-item-card h-100 shadow-sm rounded overflow-hidden">
-          <img src="{{ url_for('static', filename='image/img1.jpeg') }}" class="img-fluid w-100" style="height: 250px; object-fit: cover;" alt="Cylinder Bracket">
           <div class="p-4">
-            <h3>Cylinder Handling Equipment</h3>
-            <p>High-quality cylinder brackets available with and without rings for secure and safe cylinder storage.</p>
-            <a href="{{ url_for('service_cylinder') }}" class="btn btn-primary">View Details</a>
-          </div>
-        </div>
-      </div>
-      <!--service 4-->
-      <div class="col-md-4">
-        <div class="service-item-card h-100 shadow-sm rounded overflow-hidden">
-          <img src="{{ url_for('static', filename='image/img1.jpeg') }}" class="img-fluid w-100" style="height: 250px; object-fit: cover;" alt="Cylinder Bracket">
-          <div class="p-4">
-            <h3>Inspection & Measuring Tools</h3>
-            <p>High-quality cylinder brackets available with and without rings for secure and safe cylinder storage.</p>
-            <a href="{{ url_for('service_inspect') }}" class="btn btn-primary">View Details</a>
+            <h4 class="fw-bold mb-3">Heating & Drying</h4>
+            <p class="text-muted">Specialized heating and drying machines designed for cylinder maintenance and industrial processing with temperature control.</p>
+            <hr class="opacity-10 my-4">
+            <a href="{{ url_for('service_heatdrying') }}" class="btn btn-outline-primary btn-sm rounded-pill px-4">Learn More <i class="fas fa-arrow-right ms-2"></i></a>
           </div>
         </div>
       </div>
 
-
-
-      <!-- Service 5-->
-      <div class="col-md-4">
-        <div class="service-item-card h-100 shadow-sm rounded overflow-hidden">
-          <img src="{{ url_for('static', filename='image/fabrication.jpeg') }}" class="img-fluid w-100" style="height: 250px; object-fit: cover;" alt="Fabrication">
-          <div class="p-4">
-            <h3>All Type of Fabrication</h3>
-            <p>Expert fabrication services for all types of industrial and commercial requirements with precision and quality.</p>
-            <a href="{{ url_for('service_fabrication') }}" class="btn btn-primary">View Details</a>
+      <!-- Service 3 -->
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="modern-card h-100">
+          <div class="position-relative">
+            <img src="{{ url_for('static', filename='image/cylinderbracket.jpg') }}" class="img-fluid w-100" style="height: 250px; object-fit: cover;" alt="Cylinder Handling">
+            <div class="bg-primary text-white px-3 py-1 position-absolute bottom-0 start-0 m-3 rounded-pill small fw-bold">Logistics</div>
           </div>
+          <div class="p-4">
+            <h4 class="fw-bold mb-3">Cylinder Handling</h4>
+            <p class="text-muted">High-quality cylinder brackets available with and without rings for secure, safe cylinder storage and transport handling.</p>
+            <hr class="opacity-10 my-4">
+            <a href="{{ url_for('service_cylinder') }}" class="btn btn-outline-primary btn-sm rounded-pill px-4">Learn More <i class="fas fa-arrow-right ms-2"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 4 -->
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
+        <div class="modern-card h-100">
+          <div class="position-relative">
+            <img src="{{ url_for('static', filename='image/pressure.jpeg') }}" class="img-fluid w-100" style="height: 250px; object-fit: cover;" alt="Inspection Tools">
+            <div class="bg-primary text-white px-3 py-1 position-absolute bottom-0 start-0 m-3 rounded-pill small fw-bold">Testing</div>
+          </div>
+          <div class="p-4">
+            <h4 class="fw-bold mb-3">Inspection Tools</h4>
+            <p class="text-muted">Precision inspection and measuring tools designed for high-accuracy industrial testing and quality assurance operations.</p>
+            <hr class="opacity-10 my-4">
+            <a href="{{ url_for('service_inspect') }}" class="btn btn-outline-primary btn-sm rounded-pill px-4">Learn More <i class="fas fa-arrow-right ms-2"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service 5 -->
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
+        <div class="modern-card h-100">
+          <div class="position-relative">
+            <img src="{{ url_for('static', filename='image/fabrication.jpeg') }}" class="img-fluid w-100" style="height: 250px; object-fit: cover;" alt="Fabrication">
+            <div class="bg-primary text-white px-3 py-1 position-absolute bottom-0 start-0 m-3 rounded-pill small fw-bold">Custom</div>
+          </div>
+          <div class="p-4">
+            <h4 class="fw-bold mb-3">Custom Fabrication</h4>
+            <p class="text-muted">Expert fabrication services for all types of industrial and commercial requirements with precision, quality and durability.</p>
+            <hr class="opacity-10 my-4">
+            <a href="{{ url_for('service_fabrication') }}" class="btn btn-outline-primary btn-sm rounded-pill px-4">Learn More <i class="fas fa-arrow-right ms-2"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact Box -->
+      <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="600">
+        <div class="modern-card h-100 bg-primary text-white p-5 d-flex flex-column justify-content-center">
+          <h3 class="fw-bold mb-4">Need a custom industrial solution?</h3>
+          <p class="opacity-75 mb-4">Talk to our expert engineers about your specific project requirements.</p>
+          <a href="{{ url_for('contact') }}" class="btn btn-warning rounded-pill py-3 fw-bold mt-auto">Contact Our Team</a>
         </div>
       </div>
     </div>

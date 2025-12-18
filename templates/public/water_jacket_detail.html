@@ -1,42 +1,100 @@
 {% extends "public/base_public.html" %}
 
 {% block content %}
-<section class="py-5">
+
+<!-- Page Header -->
+<section class="page-header animate__animated animate__fadeIn">
   <div class="container">
-    
+    <h1 class="animate__animated animate__fadeInDown">Water Jacket Type Testing Machine</h1>
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
-        <li class="breadcrumb-item"><a href="{{ url_for('services') }}">Services</a></li>
-        <li class="breadcrumb-item active">Water Jacket Type Testing Machine</li>
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-white text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('services') }}" class="text-white text-decoration-none">Services</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Water Jacket Testing</li>
       </ol>
     </nav>
-
-    <div class="row">
-      <div class="col-md-6">
-        <img src="{{ url_for('static', filename='image/waterjacket.jpg') }}" 
-             class="img-fluid rounded shadow" alt="Water Jacket Testing Machine">
-      </div>
-
-      <div class="col-md-6">
-        <h1>Water Jacket Type Hydro Testing Machine</h1>
-        <p class="lead">Designed for precise volumetric expansion testing of CNG cylinders.</p>
-
-        <p>The Water Jacket Type Hydro Testing Machine measures permanent and elastic expansion of the cylinder under controlled pressure. It ensures accurate, safe, and government-approved testing.</p>
-
-        <h4 class="mt-4">Features</h4>
-        <ul>
-          <li>High-accuracy volumetric measurement</li>
-          <li>Leak-proof water jacket chamber</li>
-          <li>Strong MS/SS fabrication</li>
-          <li>Automatic pressure control system</li>
-          <li>Emergency safety interlocks</li>
-        </ul>
-
-        <a href="{{ url_for('contact') }}" class="btn btn-primary mt-3">Get Quote</a>
-      </div>
-    </div>
-
   </div>
 </section>
+
+<section class="section-padding">
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-6" data-aos="fade-right">
+        <div class="modern-card p-2 border-0 shadow-lg">
+          <img src="{{ url_for('static', filename='image/waterjacket.jpg') }}" class="img-fluid rounded-3 w-100" alt="Water Jacket Testing Machine">
+        </div>
+      </div>
+
+      <div class="col-lg-6" data-aos="fade-left">
+        <h6 class="text-primary fw-bold text-uppercase mb-2">Advanced Testing Solutions</h6>
+        <h2 class="fw-bold text-dark mb-4">Water Jacket Type Hydro Testing Machine</h2>
+        <p class="lead text-primary mb-4">Designed for precise volumetric expansion testing of CNG cylinders with world-class accuracy.</p>
+
+        <p class="text-muted mb-4">The Water Jacket Type Hydro Testing Machine is a specialized piece of equipment that measures both permanent and elastic expansion of a cylinder under controlled pressure conditions. This method is the most reliable way to ensure that high-pressure cylinders remain safe and compliant with international standards.</p>
+
+        <div class="p-4 bg-light rounded-3 mb-4 border-start border-primary border-4">
+          <h4 class="fw-bold mb-3"><i class="fas fa-list-check text-primary me-2"></i>Key Features</h4>
+          <ul class="list-unstyled">
+            <li class="mb-2 d-flex align-items-center"><i class="fas fa-check-circle text-success me-2"></i> High-accuracy volumetric measurement system</li>
+            <li class="mb-2 d-flex align-items-center"><i class="fas fa-check-circle text-success me-2"></i> Leak-proof water jacket chamber for reliable data</li>
+            <li class="mb-2 d-flex align-items-center"><i class="fas fa-check-circle text-success me-2"></i> Robust MS/SS fabrication for industrial durability</li>
+            <li class="mb-2 d-flex align-items-center"><i class="fas fa-check-circle text-success me-2"></i> Automatic pressure control and monitoring system</li>
+            <li class="mb-2 d-flex align-items-center"><i class="fas fa-check-circle text-success me-2"></i> Advanced emergency safety interlocks</li>
+          </ul>
+        </div>
+
+        <div class="d-flex gap-3">
+          <a href="{{ url_for('contact') }}" class="btn btn-primary rounded-pill px-5 py-3 shadow">Get a Custom Quote</a>
+          <a href="tel:+919892718710" class="btn btn-outline-dark rounded-pill px-4 py-3"><i class="fas fa-phone-alt me-2"></i> Call Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Specifications Section -->
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h2 class="section-title">Technical Specifications</h2>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-10" data-aos="fade-up">
+        <div class="modern-card border-0 shadow-sm overflow-hidden">
+          <table class="table table-hover mb-0">
+            <thead class="bg-primary text-white">
+              <tr>
+                <th class="py-3 ps-4">Parameter</th>
+                <th class="py-3">Value / Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="fw-bold py-3 ps-4">Testing Capacity</td>
+                <td class="py-3">Up to 250 Liters Water Capacity</td>
+              </tr>
+              <tr>
+                <td class="fw-bold py-3 ps-4">Test Pressure</td>
+                <td class="py-3">Max 450 Bar (or customized)</td>
+              </tr>
+              <tr>
+                <td class="fw-bold py-3 ps-4">Material</td>
+                <td class="py-3">Industrial Grade MS/SS 304</td>
+              </tr>
+              <tr>
+                <td class="fw-bold py-3 ps-4">Accuracy</td>
+                <td class="py-3">± 1% Volumetric Expansion</td>
+              </tr>
+              <tr>
+                <td class="fw-bold py-3 ps-4">Control Type</td>
+                <td class="py-3">Manual / Semi-Automatic / PLC Based</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 {% endblock %}

@@ -2,91 +2,115 @@
 
 {% block content %}
 
-<section class="service-detail-page py-5">
+<!-- Page Header -->
+<section class="page-header animate__animated animate__fadeIn">
   <div class="container">
-    <div class="row mb-4">
-      <div class="col-12">
-        <nav aria-label="breadcrumb">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{{ url_for('home') }}">Home</a></li>
-            <li class="breadcrumb-item"><a href="{{ url_for('services') }}">Services</a></li>
-            <li class="breadcrumb-item active">Hydrotesting Machinery</li>
-          </ol>
-        </nav>
-      </div>
-    </div>
+    <h1 class="animate__animated animate__fadeInDown">CNG Hydrotesting Machinery</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-white text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('services') }}" class="text-white text-decoration-none">Services</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Hydrotesting</li>
+      </ol>
+    </nav>
+  </div>
+</section>
 
-    <div class="row mb-5">
-      <div class="col-md-6">
-        <h1>CNG Hydrotesting Machinery</h1>
-        <p class="lead">We are a leading manufacturer of CNG Hydrotesting Plants, providing complete solutions with all necessary equipment and components.</p>
-        <p>Our hydrotesting plants are designed to meet international safety standards and are certified for quality and reliability.</p>
+<section class="section-padding">
+  <div class="container">
+    <div class="row g-5 align-items-center mb-5">
+      <div class="col-lg-6" data-aos="fade-right">
+        <h6 class="text-primary fw-bold text-uppercase mb-2">Primary Specialization</h6>
+        <h2 class="fw-bold text-dark mb-4">Complete CNG Hydrotesting Solutions</h2>
+        <p class="lead text-primary mb-4">We are a leading manufacturer of CNG Hydrotesting Plants, providing world-class turnkey solutions for cylinder testing facilities.</p>
+        <p class="text-muted mb-4">Our hydrotesting plants are engineered to meet stringent international safety standards and are certified for exceptional quality and reliability. We provide every component necessary for a fully operational testing facility, from high-pressure pumps to precision volumetric measurement systems.</p>
+        <div class="row g-3">
+          <div class="col-sm-6">
+            <div class="d-flex align-items-center p-3 bg-light rounded-3">
+              <i class="fas fa-certificate text-success me-3"></i>
+              <span class="fw-bold">PESO Approved</span>
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="d-flex align-items-center p-3 bg-light rounded-3">
+              <i class="fas fa-microchip text-success me-3"></i>
+              <span class="fw-bold">PLC Controlled</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6" data-aos="fade-left">
+        <img src="{{ url_for('static', filename='image/cngmanufacture.jpg') }}" class="img-fluid rounded-3 shadow-lg" alt="CNG Hydrotesting">
       </div>
     </div>
 
     <div class="row">
-      <div class="col-12">
-        <h2 class="mb-4">Our Products & Equipment</h2>
-        <div class="row g-4">
-          <div class="col-md-4">
-            <div class="product-card" style="
-      background-image: url('{{ url_for('static', filename='image/waterjacket.jpg') }}');">
-            <a href="{{ url_for('water_jacket_detail') }}" class="text-decoration-none text-dark">
-            <div class="equipment-item p-3 bg-light rounded">
-              
-              <i class="fas fa-cog fa-2x text-primary mb-2"></i>
-              <h5>Water Jacket Type Testing Machine</h5>
-              <p>The Water Jacket Type Hydro Testing Machine is used to test the strength...</p>
-            </div>
-            </a>
+      <div class="col-12 text-center mb-5" data-aos="fade-up">
+        <h2 class="section-title">Core Testing Equipment</h2>
+      </div>
+      <div class="row g-4">
+        <!-- Equipment 1 -->
+        <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="100">
+          <div class="modern-card h-100 overflow-hidden">
+            <img src="{{ url_for('static', filename='image/waterjacket.jpg') }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;" alt="Water Jacket">
+            <div class="p-4">
+              <h5 class="fw-bold mb-3">Water Jacket Machine</h5>
+              <p class="text-muted small">Precision volumetric expansion testing for high-pressure CNG cylinders with automated data logging.</p>
+              <a href="{{ url_for('water_jacket_detail') }}" class="text-primary fw-bold text-decoration-none small">Learn More <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
           </div>
-          <div class="col-md-4">
-            <a href="{{ url_for('cylinder_wise_detail') }}" class="text-decoration-none text-dark">
-            <div class="equipment-item p-3 bg-light rounded">
-              <i class="fas fa-cog fa-2x text-primary mb-2"></i>
-              <h5> Cylinder Wise</h5>
-              <p>Precision cylinder-wise testing equipment.</p>
+        </div>
+        <!-- Equipment 2 -->
+        <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="200">
+          <div class="modern-card h-100 overflow-hidden">
+            <img src="{{ url_for('static', filename='image/cylinderwise.jpg') }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;" alt="Cylinder Wise">
+            <div class="p-4">
+              <h5 class="fw-bold mb-3">Cylinder Wise Testing</h5>
+              <p class="text-muted small">Individual cylinder assessment units designed for high-speed and accurate industrial pressure testing.</p>
+              <a href="{{ url_for('cylinder_wise_detail') }}" class="text-primary fw-bold text-decoration-none small">Learn More <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
-            </a>
           </div>
-            
-          <div class="col-md-4">
-            <a href="{{ url_for('hydro_pump') }}" class="text-decoration-none text-dark">
-            <div class="equipment-item p-3 bg-light rounded">
-              <i class="fas fa-cog fa-2x text-primary mb-2"></i>
-              <h5>4. Hydro Pump</h5>
-              <p>Reliable hydro pumps for pressure testing.</p>
+        </div>
+        <!-- Equipment 3 -->
+        <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="300">
+          <div class="modern-card h-100 overflow-hidden">
+            <img src="{{ url_for('static', filename='image/pressure.jpeg') }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;" alt="Hydro Pump">
+            <div class="p-4">
+              <h5 class="fw-bold mb-3">Hydro Pump Units</h5>
+              <p class="text-muted small">Robust high-pressure pump systems delivering stable and precise pressure for all testing operations.</p>
+              <a href="{{ url_for('hydro_pump') }}" class="text-primary fw-bold text-decoration-none small">Learn More <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
-            </a>
           </div>
-          <div class="col-md-4">
-            <a href="{{ url_for('oil_removal') }}" class="text-decoration-none text-dark">
-            <div class="equipment-item p-3 bg-light rounded">
-              <i class="fas fa-cog fa-2x text-primary mb-2"></i>
-              <h5>5. Oil Remove Stand</h5>
-              <p>Specialized stands for oil removal processes.</p>
+        </div>
+        <!-- Equipment 4 -->
+        <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="400">
+          <div class="modern-card h-100 overflow-hidden">
+            <img src="{{ url_for('static', filename='image/pressure.jpeg') }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;" alt="Oil Removal">
+            <div class="p-4">
+              <h5 class="fw-bold mb-3">Oil Removal Systems</h5>
+              <p class="text-muted small">Specialized cleaning units designed to remove internal oily residues before testing procedures.</p>
+              <a href="{{ url_for('oil_removal') }}" class="text-primary fw-bold text-decoration-none small">Learn More <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
-          </a>
           </div>
-          <div class="col-md-4">
-            <div class="equipment-item p-3 bg-light rounded">
-              <i class="fas fa-cog fa-2x text-primary mb-2"></i>
-              <h5>13. D Gasing</h5>
-              <p>Degassing systems for cylinder preparation.</p>
+        </div>
+        <!-- Equipment 5 -->
+        <div class="col-md-6 col-lg-4" data-aos="zoom-in" data-aos-delay="500">
+          <div class="modern-card h-100 overflow-hidden">
+            <img src="{{ url_for('static', filename='image/airblower.jpg') }}" class="img-fluid w-100" style="height: 200px; object-fit: cover;" alt="Degassing">
+            <div class="p-4">
+              <h5 class="fw-bold mb-3">Degassing Units</h5>
+              <p class="text-muted small">Essential safety units for evacuating residual gases from cylinders prior to inspection.</p>
+              <a href="{{ url_for('degassing') }}" class="text-primary fw-bold text-decoration-none small">Learn More <i class="fas fa-arrow-right ms-1"></i></a>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="row mt-5">
-      <div class="col-12 text-center">
-        <a href="{{ url_for('contact') }}" class="btn btn-primary btn-lg">Get Quote</a>
-      </div>
+    <div class="text-center mt-5 pt-4" data-aos="fade-up">
+      <a href="{{ url_for('contact') }}" class="btn btn-primary rounded-pill px-5 py-3 shadow">Get Full Technical Catalog</a>
     </div>
   </div>
 </section>
 
 {% endblock %}
-
