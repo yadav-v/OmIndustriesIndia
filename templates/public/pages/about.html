@@ -2,65 +2,101 @@
 
 {% block content %}
 
-<section class="about-page py-5">
+<!-- Page Header -->
+<section class="page-header animate__animated animate__fadeIn">
   <div class="container">
-    <div class="row">
-      <div class="col-12">
-        <h1 class="animate__animated animate__zoomIn text-center mb-5">About Om Industries India</h1>
+    <h1 class="animate__animated animate__fadeInDown">About Us</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-white text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">About Us</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- Company Overview -->
+<section class="section-padding">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6" data-aos="fade-right">
+        <div class="position-relative">
+          <img src="{{ url_for('static', filename='image/manufacture.jpg') }}" class="img-fluid rounded-3 shadow-lg" alt="About Us">
+          <div class="bg-primary text-white p-4 rounded-3 shadow position-absolute bottom-0 start-0 m-n4 d-none d-lg-block">
+            <h3 class="fw-bold mb-0">12+</h3>
+            <p class="small mb-0">Years of Experience</p>
+          </div>
+        </div>
       </div>
+      <div class="col-md-6 mt-5 mt-md-0 ps-md-5" data-aos="fade-left">
+        <h6 class="text-primary fw-bold text-uppercase mb-2">Who We Are</h6>
+        <h2 class="section-title">A Legacy of Quality & Precision</h2>
+        <p class="lead text-dark mb-4">Om Industries India is a leading manufacturer and supplier of CNG Hydrotesting Plants, Cylinder Brackets, and comprehensive Fabrication Services.</p>
+        <p class="text-muted mb-4">With years of industry experience, we have established ourselves as a trusted partner for businesses across India. Our commitment to quality, safety, and customer satisfaction drives everything we do.</p>
+        <p class="text-muted">We specialize in manufacturing high-quality industrial equipment that meets international standards and certifications, including ISO and PESO compliance. Our facility is equipped with modern machinery to ensure precision in every project.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Mission & Vision -->
+<section class="section-padding bg-light">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="100">
+        <div class="modern-card p-5">
+          <div class="d-flex align-items-center mb-4">
+            <div class="bg-primary text-white p-3 rounded-circle me-3">
+              <i class="fas fa-bullseye fa-2x"></i>
+            </div>
+            <h3 class="mb-0 fw-bold">Our Mission</h3>
+          </div>
+          <p class="text-muted lead">To provide world-class manufacturing solutions and services that exceed customer expectations while maintaining the highest standards of quality and safety in the industrial sector.</p>
+        </div>
+      </div>
+      <div class="col-md-6" data-aos="fade-up" data-aos-delay="200">
+        <div class="modern-card p-5">
+          <div class="d-flex align-items-center mb-4">
+            <div class="bg-success text-white p-3 rounded-circle me-3">
+              <i class="fas fa-eye fa-2x"></i>
+            </div>
+            <h3 class="mb-0 fw-bold">Our Vision</h3>
+          </div>
+          <p class="text-muted lead">To be the most trusted and preferred manufacturer of CNG equipment and fabrication services in India, recognized for innovation, quality, and reliability across the globe.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="section-padding">
+  <div class="container">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h6 class="text-primary fw-bold text-uppercase mb-2">Our Strengths</h6>
+      <h2 class="section-title">Why Choose Om Industries?</h2>
     </div>
     
-    <div class="row mb-5">
-      <div class="col-md-6">
-        <img src="{{ url_for('static', filename='image/manufacture.jpg') }}" class="img-fluid rounded shadow" alt="About Us">
+    <div class="row g-4">
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="100">
+        <div class="feature-box text-center">
+          <i class="fas fa-certificate"></i>
+          <h4>Certified Quality</h4>
+          <p class="text-muted">Our manufacturing processes are ISO and PESO certified, ensuring compliance with strict safety standards.</p>
+        </div>
       </div>
-      <div class="col-md-6">
-        <h2 class="animate__animated animate__fadeInUp">Who We Are</h2>
-        <p class="animate__animated animate__fadeInUp lead">Om Industries India is a leading manufacturer and supplier of CNG Hydrotesting Plants, Cylinder Brackets, and comprehensive Fabrication Services.</p>
-        <p class="animate__animated animate__fadeInUp ">With years of industry experience, we have established ourselves as a trusted partner for businesses across India. Our commitment to quality, safety, and customer satisfaction drives everything we do.</p>
-        <p class="animate__animated animate__fadeInUp ">We specialize in manufacturing high-quality industrial equipment that meets international standards and certifications, including ISO and PESO compliance.</p>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="200">
+        <div class="feature-box text-center">
+          <i class="fas fa-tools"></i>
+          <h4>Expert Team</h4>
+          <p class="text-muted">Our team of experienced engineers and technicians brings deep expertise to every project we undertake.</p>
+        </div>
       </div>
-    </div>
-
-    <div class="row mb-5">
-      <div class="col-md-12">
-        <h2 class="animate__animated animate__fadeInUp mb-4">Our Mission</h2>
-        <p class="animate__animated animate__fadeInUp">To provide world-class manufacturing solutions and services that exceed customer expectations while maintaining the highest standards of quality and safety.</p>
-      </div>
-    </div>
-
-    <div class="row mb-5">
-      <div class="col-md-12">
-        <h2 class="animate__animated animate__fadeInUp mb-4">Our Vision</h2>
-        <p class="animate__animated animate__fadeInUp">To be the most trusted and preferred manufacturer of CNG equipment and fabrication services in India, recognized for innovation, quality, and reliability.</p>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <h2 class="animate__animated animate__fadeInUp mb-4">Why Choose Us</h2>
-        <div class="row g-4">
-          <div class="col-md-4">
-            <div class="text-center p-4 bg-light rounded">
-              <i class="fas fa-certificate fa-3x text-primary mb-3"></i>
-              <h4>Certified Quality</h4>
-              <p>ISO and PESO certified manufacturing processes</p>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="text-center p-4 bg-light rounded">
-              <i class="fas fa-tools fa-3x text-primary mb-3"></i>
-              <h4 class="animate__animated animate__fadeInUp">Expert Team</h4>
-              <p>Experienced professionals with industry expertise</p>
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="text-center p-4 bg-light rounded">
-              <i class="fas fa-handshake fa-3x text-primary mb-3"></i>
-              <h4>Customer Focus</h4>
-              <p>Dedicated to customer satisfaction and support</p>
-            </div>
-          </div>
+      <div class="col-md-4" data-aos="zoom-in" data-aos-delay="300">
+        <div class="feature-box text-center">
+          <i class="fas fa-handshake"></i>
+          <h4>Customer Focus</h4>
+          <p class="text-muted">We prioritize our clients' needs, providing dedicated support and customized solutions for every requirement.</p>
         </div>
       </div>
     </div>
