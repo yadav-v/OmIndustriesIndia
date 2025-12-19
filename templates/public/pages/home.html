@@ -5,19 +5,31 @@
 <!-- Hero Section with Slick Slider -->
 <section class="heroSliderWrap">
   <div class="heroSlider">
-    <!-- Slide 1 -->
-    <div class="heroSlide-item d-flex align-items-center"
-      style="background-image: url('{{ url_for('static', filename='image/back.jpg') }}');">
-      <div class="overlay"></div>
-      <div class="container heroSlide-content text-center text-white">
-        <h2 class="animate__animated animate__fadeInDown">High Quality CNG Hydroplants</h2>
-        <p class="animate__animated animate__fadeInUp animate__delay-1s">Leading manufacturer of CNG Hydrotesting Plants and industrial equipment with trusted performance.</p>
-        <div class="d-flex justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s">
-          <a href="{{ url_for('contact') }}" class="btn btn-success">Get a Quote</a>
-          <a href="{{ url_for('services') }}" class="btn btn-outline-light btn-lg rounded-pill px-4">Our Services</a>
-        </div>
-      </div>
+     <!-- Slide 1 -->
+<div class="heroSlide-item"
+     style="background-image: url('{{ url_for('static', filename='image/back.jpg') }}');">
+
+  <div class="overlay"></div>
+
+  <div class="container heroSlide-content text-center text-white">
+    <h2 class="animate__animated animate__fadeInDown">
+      High Quality CNG Hydroplants
+    </h2>
+
+    <p class="animate__animated animate__fadeInUp animate__delay-1s">
+      Leading manufacturer of CNG Hydrotesting Plants and industrial equipment with trusted performance.
+    </p>
+
+    <div class="d-flex justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s">
+      <a href="{{ url_for('contact') }}" class="btn btn-success btn-lg rounded-pill px-4">
+        Get a Quote
+      </a>
+      <a href="{{ url_for('services') }}" class="btn btn-outline-light btn-lg rounded-pill px-4">
+        Our Services
+      </a>
     </div>
+  </div>
+</div>
     
     <!-- Slide 2 -->
     <div class="heroSlide-item d-flex align-items-center"
@@ -47,6 +59,7 @@
       </div>
     </div>
   </div>
+  <div>
   <button class="hero-prev custom-arrow"><i class="fas fa-chevron-left"></i></button>
   <button class="hero-next custom-arrow"><i class="fas fa-chevron-right"></i></button>
 </section>
