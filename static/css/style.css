@@ -122,7 +122,17 @@ html, body {
   opacity: 0.9;
   margin-bottom: 2rem;
 }
-
+.about-hero {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+}
+.about-overlay {
+  background: rgba(8,61,160,0.6);
+  padding: 60px 0;
+  border-radius: var(--border-radius);
+}
 .btn {
   padding: 12px 30px;
   font-weight: 600;
