@@ -23,8 +23,6 @@ body {
   color: var(--text-dark);
   line-height: 1.6;
 }
-
-
 /* Modern Header & Nav */
 .bg-dark {
   background-color: var(--primary-color) !important;
