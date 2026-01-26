@@ -5,39 +5,37 @@
 <!-- Hero Section with Slick Slider -->
 <section class="heroSliderWrap">
   <div class="heroSlider">
-     <!-- Slide 1 -->
-<div class="heroSlide-item"
-     style="background-image: url('{{ url_for('static', filename='image/back.jpg') }}');">
+    <!-- Slide 1 -->
+    <div class="heroSlide-item d-flex align-items-center justify-content-center" style="background-image: url('{{ url_for('static', filename='image/back.jpg') }}');">
+      <div class="overlay"></div>
+      <div class="container heroSlide-content text-center text-white position-relative">
+        <h2 class="animate__animated animate__fadeInDown">
+          High Quality CNG Hydroplants
+        </h2>
 
-  <div class="overlay"></div>
+        <p class="animate__animated animate__fadeInUp animate__delay-1s">
+          Leading manufacturer of CNG Hydrotesting Plants and industrial equipment with trusted performance.
+        </p>
 
-  <div class="container heroSlide-content text-center text-white">
-    <h2 class="animate__animated animate__fadeInDown">
-      High Quality CNG Hydroplants
-    </h2>
-
-    <p class="animate__animated animate__fadeInUp animate__delay-1s">
-      Leading manufacturer of CNG Hydrotesting Plants and industrial equipment with trusted performance.
-    </p>
-
-    <div class="d-flex justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s">
-      <a href="{{ url_for('contact') }}" class="btn btn-success btn-lg rounded-pill px-4">
-        Get a Quote
-      </a>
-      <a href="{{ url_for('services') }}" class="btn btn-outline-light btn-lg rounded-pill px-4">
-        Our Services
-      </a>
+        <div class="d-flex justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s">
+          <a href="{{ url_for('contact') }}" class="btn btn-success btn-lg rounded-pill px-4">
+            Get a Quote
+          </a>
+          <a href="{{ url_for('services') }}" class="btn btn-outline-light btn-lg rounded-pill px-4">
+            Our Services
+          </a>
+        </div>
+      </div>
     </div>
-  </div>
-</div>
-    
+
     <!-- Slide 2 -->
     <div class="heroSlide-item d-flex align-items-center"
       style="background-image: url('{{ url_for('static' , filename='image/cylinderbracket.jpg') }}');">
       <div class="overlay"></div>
       <div class="container heroSlide-content text-center text-white">
         <h2 class="animate__animated animate__fadeInDown">Premium Cylinder Brackets</h2>
-        <p class="animate__animated animate__fadeInUp animate__delay-1s">Durable and reliable solutions for your industrial cylinder storage needs.</p>
+        <p class="animate__animated animate__fadeInUp animate__delay-1s">Durable and reliable solutions for your
+          industrial cylinder storage needs.</p>
         <div class="d-flex justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s">
           <a href="{{ url_for('contact') }}" class="btn btn-success">Contact Us</a>
           <a href="{{ url_for('services') }}" class="btn btn-outline-light btn-lg rounded-pill px-4">Learn More</a>
@@ -60,8 +58,8 @@
     </div>
   </div>
   <div>
-  <button class="hero-prev custom-arrow"><i class="fas fa-chevron-left"></i></button>
-  <button class="hero-next custom-arrow"><i class="fas fa-chevron-right"></i></button>
+    <button class="hero-prev custom-arrow"><i class="fas fa-chevron-left"></i></button>
+    <button class="hero-next custom-arrow"><i class="fas fa-chevron-right"></i></button>
 </section>
 
 <!-- About Section -->
@@ -71,8 +69,11 @@
       <div class="col-md-6" data-aos="fade-right">
         <h6 class="text-primary fw-bold text-uppercase mb-2">Since 2012</h6>
         <h2 class="section-title">Om Industries India</h2>
-        <p class="lead text-dark mb-4">We are a leading manufacturer and supplier of CNG Hydrotesting Plants, Cylinder Brackets, and Fabrication Services.</p>
-        <p class="text-muted">With years of experience in the industry, we provide high-quality, reliable solutions for all your industrial needs. Our commitment to excellence and customer satisfaction has made us a trusted partner for businesses across India.</p>
+        <p class="lead text-dark mb-4">We are a leading manufacturer and supplier of CNG Hydrotesting Plants, Cylinder
+          Brackets, and Fabrication Services.</p>
+        <p class="text-muted">With years of experience in the industry, we provide high-quality, reliable solutions for
+          all your industrial needs. Our commitment to excellence and customer satisfaction has made us a trusted
+          partner for businesses across India.</p>
         <div class="row mt-4 mb-4">
           <div class="col-6">
             <div class="d-flex align-items-center mb-3">
@@ -99,8 +100,10 @@
       </div>
       <div class="col-md-6 mt-5 mt-md-0" data-aos="fade-left">
         <div class="position-relative">
-          <img src="{{ url_for('static', filename='image/cngmanufacture.jpg') }}" alt="About Us" class="img-fluid rounded-3 shadow-lg">
-          <div class="bg-success text-white p-4 rounded-3 shadow position-absolute bottom-0 end-0 m-4 d-none d-lg-block animate__animated animate__pulse animate__infinite">
+          <img src="{{ url_for('static', filename='image/cngmanufacture.jpg') }}" alt="About Us"
+            class="img-fluid rounded-3 shadow-lg">
+          <div
+            class="bg-success text-white p-4 rounded-3 shadow position-absolute bottom-0 end-0 m-4 d-none d-lg-block animate__animated animate__pulse animate__infinite">
             <h4 class="mb-0 fw-bold">10+ Years</h4>
             <p class="mb-0 small">Of Industry Excellence</p>
           </div>
@@ -125,8 +128,10 @@
             <i class="fas fa-gas-pump fa-3x text-primary"></i>
           </div>
           <h4>CNG Hydrotesting</h4>
-          <p class="text-muted">Professional testing plants designed for safety and efficiency in cylinder testing operations.</p>
-          <a href="{{ url_for('service_cng') }}" class="text-primary fw-bold text-decoration-none">Explore More <i class="fas fa-arrow-right ms-1"></i></a>
+          <p class="text-muted">Professional testing plants designed for safety and efficiency in cylinder testing
+            operations.</p>
+          <a href="{{ url_for('service_cng') }}" class="text-primary fw-bold text-decoration-none">Explore More <i
+              class="fas fa-arrow-right ms-1"></i></a>
         </div>
       </div>
       <!-- Service 2 -->
@@ -136,8 +141,10 @@
             <i class="fas fa-tools fa-3x text-primary"></i>
           </div>
           <h4>Custom Fabrication</h4>
-          <p class="text-muted">High-precision fabrication services tailored to meet your unique industrial requirements.</p>
-          <a href="{{ url_for('service_fabrication') }}" class="text-primary fw-bold text-decoration-none">Explore More <i class="fas fa-arrow-right ms-1"></i></a>
+          <p class="text-muted">High-precision fabrication services tailored to meet your unique industrial
+            requirements.</p>
+          <a href="{{ url_for('service_fabrication') }}" class="text-primary fw-bold text-decoration-none">Explore More
+            <i class="fas fa-arrow-right ms-1"></i></a>
         </div>
       </div>
       <!-- Service 3 -->
@@ -147,8 +154,10 @@
             <i class="fas fa-vector-square fa-3x text-primary"></i>
           </div>
           <h4>Cylinder Brackets</h4>
-          <p class="text-muted">Robust and durable brackets for secure cylinder installation and transport solutions.</p>
-          <a href="{{ url_for('service_cylinder') }}" class="text-primary fw-bold text-decoration-none">Explore More <i class="fas fa-arrow-right ms-1"></i></a>
+          <p class="text-muted">Robust and durable brackets for secure cylinder installation and transport solutions.
+          </p>
+          <a href="{{ url_for('service_cylinder') }}" class="text-primary fw-bold text-decoration-none">Explore More <i
+              class="fas fa-arrow-right ms-1"></i></a>
         </div>
       </div>
     </div>
@@ -156,49 +165,61 @@
 </section>
 
 <!-- Product Showcase -->
-<section class="section-padding">
+<section class="section-padding carousel">
   <div class="container">
     <div class="text-center mb-5" data-aos="fade-up">
       <h6 class="text-primary fw-bold text-uppercase mb-2">Quality Products</h6>
       <h2 class="section-title">Our Best Selling Equipment</h2>
     </div>
-    <div class="row g-4">
-      <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
-        <div class="product-card border-0 shadow-sm position-relative" style="background-image: url('{{ url_for('static', filename='image/waterjacket.jpg') }}');">
-          <div class="overlay"></div>
-          <div class="card-content">
-            <h5 class="text-white">Water Jacket Testing</h5>
-            <a href="{{ url_for('water_jacket_detail') }}" class="btn btn-sm btn-success mt-2">View Details</a>
+    <div class="equipment-showcase-wrapper position-relative">
+      <button class="equipment-prev slick-arrow" aria-label="Previous">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <div class="equipment-showcase">
+        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+          <div class="product-card border-0 shadow-sm position-relative"
+            style="background-image: url('{{ url_for('static', filename='image/waterjacket.jpg') }}');">
+            <div class="overlay"></div>
+            <div class="card-content">
+              <h5 class="text-white">Water Jacket Testing</h5>
+              <a href="{{ url_for('water_jacket_detail') }}" class="btn btn-sm btn-success mt-2">View Details</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+          <div class="product-card border-0 shadow-sm position-relative"
+            style="background-image: url('{{ url_for('static', filename='image/cylinderwise.jpg') }}');">
+            <div class="overlay"></div>
+            <div class="card-content">
+              <h5 class="text-white">Cylinder Testing</h5>
+              <a href="{{ url_for('cylinder_wise_detail') }}" class="btn btn-sm btn-success mt-2">View Details</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+          <div class="product-card border-0 shadow-sm position-relative"
+            style="background-image: url('{{ url_for('static', filename='image/hydro_pump.html') }}');">
+            <div class="overlay"></div>
+            <div class="card-content">
+              <h5 class="text-white">Hydro Pumps</h5>
+              <a href="{{ url_for('hydro_pump') }}" class="btn btn-sm btn-success mt-2">View Details</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+          <div class="product-card border-0 shadow-sm position-relative"
+            style="background-image: url('{{ url_for('static', filename='image/degassing.html') }}');">
+            <div class="overlay"></div>
+            <div class="card-content">
+              <h5 class="text-white">Degassing Units</h5>
+              <a href="{{ url_for('degassing') }}" class="btn btn-sm btn-success mt-2">View Details</a>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="200">
-        <div class="product-card border-0 shadow-sm position-relative" style="background-image: url('{{ url_for('static', filename='image/cylinderwise.jpg') }}');">
-          <div class="overlay"></div>
-          <div class="card-content">
-            <h5 class="text-white">Cylinder Testing</h5>
-            <a href="{{ url_for('cylinder_wise_detail') }}" class="btn btn-sm btn-success mt-2">View Details</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="300">
-        <div class="product-card border-0 shadow-sm position-relative" style="background-image: url('{{ url_for('static', filename='image/hydro_pump.html') }}');">
-          <div class="overlay"></div>
-          <div class="card-content">
-            <h5 class="text-white">Hydro Pumps</h5>
-            <a href="{{ url_for('hydro_pump') }}" class="btn btn-sm btn-success mt-2">View Details</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6 col-lg-3" data-aos="fade-up" data-aos-delay="400">
-        <div class="product-card border-0 shadow-sm position-relative" style="background-image: url('{{ url_for('static', filename='image/degassing.html') }}');">
-          <div class="overlay"></div>
-          <div class="card-content">
-            <h5 class="text-white">Degassing Units</h5>
-            <a href="{{ url_for('degassing') }}" class="btn btn-sm btn-success mt-2">View Details</a>
-          </div>
-        </div>
-      </div>
+      <button class="equipment-next slick-arrow" aria-label="Next">
+        <i class="fas fa-chevron-right"></i>
+      </button>
     </div>
   </div>
 </section>
@@ -210,14 +231,15 @@
       <h6 class="text-primary fw-bold text-uppercase mb-2">Testimonials</h6>
       <h2 class="section-title">What Our Customers Say</h2>
     </div>
-    
+
     {% if feedbacks %}
     <div class="row g-4">
       {% for feedback in feedbacks %}
       <div class="col-md-4" data-aos="fade-up" data-aos-delay="{{ loop.index * 100 }}">
         <div class="feedback-card p-4 bg-white shadow-sm h-100 border-0">
           <div class="d-flex align-items-center mb-3">
-            <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; border-radius: 50%; font-weight: bold;">
+            <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center me-3"
+              style="width: 50px; height: 50px; border-radius: 50%; font-weight: bold;">
               {{ feedback['name'][0].upper() }}
             </div>
             <div>
@@ -225,7 +247,7 @@
               <div class="rating-display small">
                 {% set rating = feedback['rating']|int %}
                 {% for i in range(1, 6) %}
-                  <i class="fa{% if i <= rating %}s{% else %}r{% endif %} fa-star text-warning"></i>
+                <i class="fa{% if i <= rating %}s{% else %}r{% endif %} fa-star text-warning"></i>
                 {% endfor %}
               </div>
             </div>

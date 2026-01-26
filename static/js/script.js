@@ -104,3 +104,37 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 });
+
+
+$(document).ready(function () {
+  if ($('.equipment-showcase').length) {
+    $('.equipment-showcase').slick({
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 2000,
+      dots: false,
+      arrows: false,  // disable default arrows
+      infinite: true,
+      responsive: [
+        {
+          breakpoint: 992,
+          settings: { slidesToShow: 2 }
+        },
+        {
+          breakpoint: 576,
+          settings: { slidesToShow: 1 }
+        }
+      ]
+    });
+
+    // Custom Button Events for equipment-showcase
+    $('.equipment-prev').click(function () {
+      $('.equipment-showcase').slick('slickPrev');
+    });
+
+    $('.equipment-next').click(function () {
+      $('.equipment-showcase').slick('slickNext');
+    });
+  }
+});
