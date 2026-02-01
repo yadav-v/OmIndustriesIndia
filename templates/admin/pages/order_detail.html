@@ -1,0 +1,154 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+    <h1><i class="fas fa-file-invoice me-2"></i>Order #{{ order.id }}</h1>
+    <div class="d-flex gap-2">
+      <a href="{{ url_for('admin_order_invoice', order_id=order.id) }}" class="btn btn-success" target="_blank">
+        <i class="fas fa-file-pdf me-2"></i>Download PDF Invoice
+      </a>
+      <a href="{{ url_for('admin_order') }}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Back to Orders
+      </a>
+    </div>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, msg in messages %}
+        <div class="alert alert-{{ 'danger' if category == 'error' else category }} alert-dismissible fade show" role="alert">
+          {{ msg }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card mb-4">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0"><i class="fas fa-user me-2"></i>Order Details</h5>
+        </div>
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-sm-4 text-muted">Name</div>
+            <div class="col-sm-8"><strong>{{ order.name }}</strong></div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-4 text-muted">Phone</div>
+            <div class="col-sm-8"><a href="tel:{{ order.phone }}">{{ order.phone }}</a></div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-4 text-muted">Email</div>
+            <div class="col-sm-8"><a href="mailto:{{ order.email }}">{{ order.email }}</a></div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-4 text-muted">Address</div>
+            <div class="col-sm-8">{{ order.address }}</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-4 text-muted">Price</div>
+            <div class="col-sm-8">₹{{ "%.2f"|format(order.price|float) }}</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-4 text-muted">Quantity</div>
+            <div class="col-sm-8">{{ order.quantity }}</div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-sm-4 text-muted">Total</div>
+            <div class="col-sm-8"><strong>₹{{ "%.2f"|format((order.price|float) * (order.quantity|int)) }}</strong></div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4 text-muted">Order Date</div>
+            <div class="col-sm-8">{{ order.order_date }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0"><i class="fas fa-history me-2"></i>Status Change Log</h5>
+        </div>
+        <div class="card-body">
+          {% if status_log %}
+          <ul class="list-group list-group-flush">
+            {% for log in status_log %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>
+                {% if log.status == 'process' %}
+                  <span class="badge bg-warning text-dark">Process</span>
+                {% elif log.status == 'shipped' %}
+                  <span class="badge bg-info">Shipped</span>
+                {% elif log.status == 'complete' %}
+                  <span class="badge bg-success">Complete</span>
+                {% elif log.status == 'cancel' %}
+                  <span class="badge bg-danger">Cancel</span>
+                {% else %}
+                  <span class="badge bg-secondary">{{ log.status }}</span>
+                {% endif %}
+              </span>
+              <small class="text-muted">{{ log.changed_at }}</small>
+            </li>
+            {% endfor %}
+          </ul>
+          {% else %}
+          <p class="text-muted mb-0">No status changes logged yet.</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-4">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0"><i class="fas fa-edit me-2"></i>Update Status</h5>
+        </div>
+        <div class="card-body">
+          <form method="POST" action="{{ url_for('admin_order_update_status', order_id=order.id) }}">
+            <div class="mb-3">
+              <label class="form-label">Current Status</label>
+              <div>
+                {% set status = order.status|default('process') %}
+                {% if status == 'process' %}
+                  <span class="badge bg-warning text-dark fs-6">Process</span>
+                {% elif status == 'shipped' %}
+                  <span class="badge bg-info fs-6">Shipped</span>
+                {% elif status == 'complete' %}
+                  <span class="badge bg-success fs-6">Complete</span>
+                {% elif status == 'cancel' %}
+                  <span class="badge bg-danger fs-6">Cancel</span>
+                {% else %}
+                  <span class="badge bg-secondary fs-6">{{ status }}</span>
+                {% endif %}
+              </div>
+            </div>
+            <div class="mb-3">
+              <label for="status" class="form-label">Change to</label>
+              <select class="form-select" id="status" name="status" required>
+                <option value="process" {% if status == 'process' %}selected{% endif %}>Process</option>
+                <option value="shipped" {% if status == 'shipped' %}selected{% endif %}>Shipped</option>
+                <option value="complete" {% if status == 'complete' %}selected{% endif %}>Complete</option>
+                <option value="cancel" {% if status == 'cancel' %}selected{% endif %}>Cancel</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="fas fa-sync-alt me-2"></i>Update Status
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-body text-center">
+          <p class="mb-2">Create invoice and download as PDF</p>
+          <a href="{{ url_for('admin_order_invoice', order_id=order.id) }}" class="btn btn-outline-success" target="_blank">
+            <i class="fas fa-download me-2"></i>Download Invoice PDF
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

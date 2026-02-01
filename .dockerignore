@@ -1,0 +1,40 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# Local database
+*.db
+*.sqlite
+*.sqlite3
+
+# Environment (Railway provides vars)
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docs (optional - remove if you want them in image)
+*.md
+!README.md
+
+# Misc
+*.log
