@@ -838,8 +838,11 @@ def admin_order_invoice(order_id):
     except ImportError:
         flash('PDF library (reportlab) not installed. Run: pip install reportlab', 'error')
         return redirect(url_for('admin_order_detail', order_id=order_id))
+
+# Initialize DB tables when app loads (for gunicorn / Railway)
+init_db()
+
 if __name__ == "__main__":
-    init_db()
     # For production, use: gunicorn app:app
     # For local development:
     port = int(os.environ.get('PORT', 5000))
