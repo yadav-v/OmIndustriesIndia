@@ -7,13 +7,14 @@ from datetime import datetime
 import os
 from urllib.parse import urlparse
 
-# Load environment variables from .env file (optional)
+# Load environment variables from .env file (local only - Railway uses its own vars)
 try:
     from dotenv import load_dotenv
-    load_dotenv()
+    # Load from project root (where app.py is) - works regardless of cwd
+    _env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env')
+    load_dotenv(_env_path)
 except ImportError:
-    print("⚠️  python-dotenv not installed. Install with: pip install python-dotenv")
-    print("   App will use system environment variables or defaults.")
+    pass  # Use system env vars
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-change-this-in-production')

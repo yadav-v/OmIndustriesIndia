@@ -159,3 +159,21 @@ SECRET_KEY=your-secret-key-here
 
 **Remember:** Only use ONE `DATABASE_URL` line (not both)!
 
+---
+
+## Railway: .env Does NOT Work
+
+**Important:** When deployed on Railway, the `.env` file is **not used** (it's gitignored and not deployed).
+
+You must add variables in Railway dashboard:
+1. Project → Your service → **Variables**
+2. Add `DATABASE_URL` and `SECRET_KEY` with your values
+
+Local = uses `.env` | Railway = uses Variables in dashboard
+
+---
+
+## Test Connection Locally
+
+Run: `python check_env.py` — verifies .env is loaded and Supabase connection works.
+
