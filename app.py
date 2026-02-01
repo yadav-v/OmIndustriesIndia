@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
 import sqlite3
+from io import BytesIO
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -189,6 +190,32 @@ def init_db():
                 print("Added 'date' column to contacts table")
         except Exception as e:
             print(f"Migration check for contacts table: {e}")
+        
+        # Create orders table
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS orders (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            address TEXT NOT NULL,
+            phone VARCHAR(50) NOT NULL,
+            email VARCHAR(255) NOT NULL,
+            price DECIMAL(12,2) NOT NULL,
+            quantity INTEGER NOT NULL DEFAULT 1,
+            order_date DATE NOT NULL,
+            status VARCHAR(50) DEFAULT 'process',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+        """)
+        
+        # Create order_status_log table
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS order_status_log (
+            id SERIAL PRIMARY KEY,
+            order_id INTEGER NOT NULL REFERENCES orders(id),
+            status VARCHAR(50) NOT NULL,
+            changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+        """)
     else:
         # SQLite syntax
         # Create feedback table
@@ -253,16 +280,42 @@ def init_db():
                     print("Added 'date' column to contacts table")
                 except sqlite3.OperationalError:
                     pass
+        
+        # Create orders table
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS orders (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            address TEXT NOT NULL,
+            phone TEXT NOT NULL,
+            email TEXT NOT NULL,
+            price REAL NOT NULL,
+            quantity INTEGER NOT NULL DEFAULT 1,
+            order_date TEXT NOT NULL,
+            status TEXT DEFAULT 'process',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+        """)
+        
+        # Create order_status_log table
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS order_status_log (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            order_id INTEGER NOT NULL REFERENCES orders(id),
+            status TEXT NOT NULL,
+            changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+        """)
     
     conn.commit()
     conn.close()
     
     if USE_POSTGRES:
         print("✅ Database initialized with Supabase (PostgreSQL - online)")
-        print("   Tables created: feedback, contacts")
+        print("   Tables created: feedback, contacts, orders, order_status_log")
     else:
         print("✅ Database initialized with SQLite (local file: database.db)")
-        print("   Tables created: feedback, contacts")
+        print("   Tables created: feedback, contacts, orders, order_status_log")
 
 # -------- PUBLIC ROUTES ----------
 @app.route("/")
@@ -512,6 +565,279 @@ def admin_contacts():
     
     return render_template("admin/pages/contacts.html", title="Manage Contacts", contacts=contacts)
 
+def _row_to_dict(row):
+    """Convert DB row (dict or Row) to dict for template use"""
+    if row is None:
+        return None
+    d = dict(row) if hasattr(row, 'keys') else {}
+    for k, v in list(d.items()):
+        if hasattr(v, 'strftime'):
+            d[k] = v.strftime('%Y-%m-%d') if 'date' in str(k).lower() or 'at' in str(k).lower() else v.strftime('%Y-%m-%d %H:%M')
+    return d
+
+@app.route("/admin/orders")
+def admin_order():
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
+    conn = _db_connection()
+    cursor = execute_query(conn, "SELECT * FROM orders ORDER BY order_date DESC, id DESC")
+    orders_raw = cursor.fetchall()
+    conn.close()
+    
+    orders = [_row_to_dict(o) for o in (orders_raw or [])] if orders_raw else []
+    
+    return render_template("admin/pages/order.html", title="Manage Orders", orders=orders)
+
+@app.route("/admin/orders/add", methods=['GET', 'POST'])
+def admin_order_add():
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        address = request.form.get('address', '').strip()
+        phone = request.form.get('phone', '').strip()
+        email = request.form.get('email', '').strip()
+        price = request.form.get('price', '0')
+        quantity = request.form.get('quantity', '1')
+        order_date = request.form.get('order_date', '')
+        status = request.form.get('status', 'process')
+        
+        if not name or not address or not phone or not email:
+            flash('Name, address, phone and email are required.', 'error')
+            return redirect(url_for('admin_order_add'))
+        
+        try:
+            price_val = float(price)
+            quantity_val = int(quantity)
+        except (ValueError, TypeError):
+            flash('Invalid price or quantity.', 'error')
+            return redirect(url_for('admin_order_add'))
+        
+        if not order_date:
+            order_date = datetime.now().strftime('%Y-%m-%d')
+        
+        conn = _db_connection()
+        if USE_POSTGRES:
+            cursor = execute_query(conn, """
+                INSERT INTO orders (name, address, phone, email, price, quantity, order_date, status)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id
+            """, (name, address, phone, email, price_val, quantity_val, order_date, status))
+            row = cursor.fetchone()
+            order_id = row['id'] if isinstance(row, dict) else row[0]
+        else:
+            cursor = execute_query(conn, """
+                INSERT INTO orders (name, address, phone, email, price, quantity, order_date, status)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """, (name, address, phone, email, price_val, quantity_val, order_date, status))
+            order_id = cursor.lastrowid if hasattr(cursor, 'lastrowid') else conn.execute("SELECT last_insert_rowid()").fetchone()[0]
+        
+        # Log initial status
+        execute_query(conn, "INSERT INTO order_status_log (order_id, status) VALUES (?, ?)", (order_id, status))
+        conn.commit()
+        conn.close()
+        
+        flash(f'Order #{order_id} added successfully!', 'success')
+        return redirect(url_for('admin_order_detail', order_id=order_id))
+    
+    return render_template("admin/pages/order_add.html", title="Add Order", now=datetime.now())
+
+@app.route("/admin/orders/<int:order_id>")
+def admin_order_detail(order_id):
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
+    conn = _db_connection()
+    cursor = execute_query(conn, "SELECT * FROM orders WHERE id = ?", (order_id,))
+    order = cursor.fetchone()
+    
+    if not order:
+        conn.close()
+        flash('Order not found.', 'error')
+        return redirect(url_for('admin_order'))
+    
+    cursor = execute_query(conn, "SELECT * FROM order_status_log WHERE order_id = ? ORDER BY changed_at DESC", (order_id,))
+    status_log_raw = cursor.fetchall()
+    conn.close()
+    
+    order_dict = _row_to_dict(order)
+    status_log = [_row_to_dict(log) for log in (status_log_raw or [])] if status_log_raw else []
+    
+    return render_template("admin/pages/order_detail.html", title=f"Order #{order_id}", order=order_dict, status_log=status_log)
+
+@app.route("/admin/orders/<int:order_id>/update-status", methods=['POST'])
+def admin_order_update_status(order_id):
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
+    status = request.form.get('status', '').strip()
+    valid_statuses = ('process', 'shipped', 'complete', 'cancel')
+    
+    if status not in valid_statuses:
+        flash('Invalid status.', 'error')
+        return redirect(url_for('admin_order_detail', order_id=order_id))
+    
+    conn = _db_connection()
+    execute_query(conn, "UPDATE orders SET status = ? WHERE id = ?", (status, order_id))
+    execute_query(conn, "INSERT INTO order_status_log (order_id, status) VALUES (?, ?)", (order_id, status))
+    conn.commit()
+    conn.close()
+    
+    flash(f'Status updated to "{status}".', 'success')
+    return redirect(url_for('admin_order_detail', order_id=order_id))
+
+@app.route("/admin/orders/<int:order_id>/invoice")
+def admin_order_invoice(order_id):
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
+    conn = _db_connection()
+    cursor = execute_query(conn, "SELECT * FROM orders WHERE id = ?", (order_id,))
+    order = cursor.fetchone()
+    conn.close()
+    
+    if not order:
+        flash('Order not found.', 'error')
+        return redirect(url_for('admin_order'))
+    
+    try:
+        from reportlab.lib.pagesizes import A4
+        from reportlab.lib import colors
+        from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
+        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+        from reportlab.lib.units import inch
+        
+        buffer = BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=45, leftMargin=45, topMargin=40, bottomMargin=40)
+        
+        o = order
+        name = o['name'] if isinstance(o, dict) else o[1]
+        address = o['address'] if isinstance(o, dict) else o[2]
+        phone = o['phone'] if isinstance(o, dict) else o[3]
+        email = o['email'] if isinstance(o, dict) else o[4]
+        price = float(o['price'] if isinstance(o, dict) else o[5])
+        quantity = int(o['quantity'] if isinstance(o, dict) else o[6])
+        order_date = o['order_date'] if isinstance(o, dict) else o[7]
+        if hasattr(order_date, 'strftime'):
+            order_date = order_date.strftime('%d %b %Y')
+        else:
+            order_date = str(order_date)
+        
+        total = price * quantity
+        
+        # Brand colors
+        dark_blue = colors.HexColor('#1a365d')
+        accent_blue = colors.HexColor('#2c5282')
+        light_grey = colors.HexColor('#f7fafc')
+        border_grey = colors.HexColor('#e2e8f0')
+        text_muted = colors.HexColor('#64748b')
+        
+        styles = getSampleStyleSheet()
+        styles.add(ParagraphStyle(name='InvoiceTitle', fontSize=24, textColor=dark_blue, spaceAfter=2, fontName='Helvetica-Bold'))
+        styles.add(ParagraphStyle(name='CompanyTagline', fontSize=9, textColor=text_muted, spaceAfter=12, fontName='Helvetica'))
+        styles.add(ParagraphStyle(name='SectionLabel', fontSize=8, textColor=text_muted, spaceAfter=4, fontName='Helvetica-Bold'))
+        styles.add(ParagraphStyle(name='CustomerText', fontSize=10, textColor=colors.black, spaceAfter=2, fontName='Helvetica'))
+        styles.add(ParagraphStyle(name='FooterText', fontSize=8, textColor=text_muted, alignment=1, fontName='Helvetica'))
+        
+        # Header: Company name + Invoice label
+        header_data = [[
+            Paragraph('<b>OM INDUSTRIES INDIA</b>', ParagraphStyle('CoName', fontSize=22, textColor=dark_blue, fontName='Helvetica-Bold')),
+            Paragraph(f'<b>INVOICE</b><br/><font size="9" color="#64748b">#{order_id:06d}</font>', ParagraphStyle('InvLabel', fontSize=18, textColor=dark_blue, alignment=2, fontName='Helvetica-Bold'))
+        ]]
+        header_table = Table(header_data, colWidths=[3.8*inch, 2.2*inch])
+        header_table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('TOPPADDING', (0, 0), (-1, -1), 0),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 0),
+        ]))
+        
+        tagline = Paragraph('CNG Cylinder Hydrotesting | Fabrication | Industrial Equipment', styles['CompanyTagline'])
+        spacer_sm = Spacer(1, 0.15*inch)
+        spacer_md = Spacer(1, 0.35*inch)
+        
+        # Bill To + Invoice Info side by side
+        bill_to = f'''
+        <b>Bill To</b><br/>
+        {name}<br/>
+        {address}<br/>
+        Phone: {phone}<br/>
+        Email: {email}
+        '''
+        inv_info = f'''
+        <b>Invoice Date</b><br/>
+        {order_date}<br/><br/>
+        <b>Order Reference</b><br/>
+        #{order_id:06d}
+        '''
+        two_col = [[
+            Paragraph(bill_to, ParagraphStyle('BillTo', fontSize=10, fontName='Helvetica')),
+            Paragraph(inv_info, ParagraphStyle('InvInfo', fontSize=10, fontName='Helvetica', alignment=2))
+        ]]
+        info_table = Table(two_col, colWidths=[3.5*inch, 2.5*inch])
+        info_table.setStyle(TableStyle([
+            ('BOX', (0, 0), (-1, -1), 0.5, border_grey),
+            ('BACKGROUND', (0, 0), (-1, -1), light_grey),
+            ('TOPPADDING', (0, 0), (-1, -1), 12),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
+            ('LEFTPADDING', (0, 0), (-1, -1), 12),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 12),
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+        ]))
+        
+        # Line items table
+        items_data = [['Description', 'Unit Price (₹)', 'Qty', 'Amount (₹)']]
+        items_data.append(['Order Items / Services', f'{price:,.2f}', str(quantity), f'{total:,.2f}'])
+        items_table = Table(items_data, colWidths=[2.8*inch, 1.4*inch, 1*inch, 1.4*inch])
+        items_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), dark_blue),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('ALIGN', (0, 0), (0, -1), 'LEFT'),
+            ('ALIGN', (1, 0), (-1, -1), 'RIGHT'),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('TOPPADDING', (0, 0), (-1, -1), 10),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 10),
+            ('LEFTPADDING', (0, 0), (-1, -1), 12),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+            ('LINEBELOW', (0, 0), (-1, 0), 1, colors.white),
+            ('BOX', (0, 0), (-1, -1), 0.5, border_grey),
+            ('LINEBELOW', (0, -1), (-1, -1), 1.5, dark_blue),
+        ]))
+        
+        # Total row
+        total_data = [[Paragraph('<b>Total Amount</b>', ParagraphStyle('TotalLbl', fontSize=11, fontName='Helvetica-Bold')), Paragraph(f'<b>₹{total:,.2f}</b>', ParagraphStyle('TotalVal', fontSize=12, fontName='Helvetica-Bold', alignment=2))]]
+        total_table = Table(total_data, colWidths=[4.2*inch, 1.4*inch])
+        total_table.setStyle(TableStyle([
+            ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
+            ('ALIGN', (1, 0), (-1, -1), 'RIGHT'),
+            ('TOPPADDING', (0, 0), (-1, -1), 8),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+            ('RIGHTPADDING', (0, 0), (-1, -1), 12),
+        ]))
+        
+        # Footer
+        footer = Paragraph(
+            'Thank you for your business. | Om Industries India | Payment terms as per agreement.',
+            styles['FooterText']
+        )
+        footer_spacer = Spacer(1, 0.4*inch)
+        
+        doc.build([
+            header_table, tagline, spacer_md,
+            info_table, spacer_md,
+            items_table, spacer_sm, total_table,
+            footer_spacer, footer
+        ])
+        
+        buffer.seek(0)
+        return send_file(buffer, mimetype='application/pdf', as_attachment=True, download_name=f'invoice_order_{order_id}.pdf')
+    
+    except ImportError:
+        flash('PDF library (reportlab) not installed. Run: pip install reportlab', 'error')
+        return redirect(url_for('admin_order_detail', order_id=order_id))
 if __name__ == "__main__":
     init_db()
     # For production, use: gunicorn app:app

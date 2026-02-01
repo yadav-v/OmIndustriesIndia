@@ -1,0 +1,78 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1><i class="fas fa-plus-circle me-2"></i>Add Order</h1>
+    <a href="{{ url_for('admin_order') }}" class="btn btn-secondary">
+      <i class="fas fa-arrow-left me-2"></i>Back to Orders
+    </a>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <div class="card">
+        <div class="card-body">
+          <form method="POST" action="{{ url_for('admin_order_add') }}">
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label for="name" class="form-label">Name *</label>
+                <input type="text" class="form-control" id="name" name="name" required placeholder="Customer name">
+              </div>
+              <div class="col-md-6">
+                <label for="phone" class="form-label">Phone *</label>
+                <input type="text" class="form-control" id="phone" name="phone" required placeholder="Phone number">
+              </div>
+              <div class="col-12">
+                <label for="email" class="form-label">Email *</label>
+                <input type="email" class="form-control" id="email" name="email" required placeholder="Email address">
+              </div>
+              <div class="col-12">
+                <label for="address" class="form-label">Address *</label>
+                <textarea class="form-control" id="address" name="address" rows="3" required placeholder="Delivery address"></textarea>
+              </div>
+              <div class="col-md-4">
+                <label for="price" class="form-label">Price (₹) *</label>
+                <input type="number" step="0.01" min="0" class="form-control" id="price" name="price" required value="0">
+              </div>
+              <div class="col-md-4">
+                <label for="quantity" class="form-label">Quantity *</label>
+                <input type="number" min="1" class="form-control" id="quantity" name="quantity" required value="1">
+              </div>
+              <div class="col-md-4">
+                <label for="order_date" class="form-label">Order Date *</label>
+                <input type="date" class="form-control" id="order_date" name="order_date" value="{{ now.strftime('%Y-%m-%d') if now is defined else '' }}">
+              </div>
+              <div class="col-md-6">
+                <label for="status" class="form-label">Status</label>
+                <select class="form-select" id="status" name="status">
+                  <option value="process">Process</option>
+                  <option value="shipped">Shipped</option>
+                  <option value="complete">Complete</option>
+                  <option value="cancel">Cancel</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save me-2"></i>Add Order
+                </button>
+                <a href="{{ url_for('admin_order') }}" class="btn btn-outline-secondary">Cancel</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var dateInput = document.getElementById('order_date');
+    if (!dateInput.value) {
+      var today = new Date().toISOString().split('T')[0];
+      dateInput.value = today;
+    }
+  });
+</script>
+{% endblock %}
