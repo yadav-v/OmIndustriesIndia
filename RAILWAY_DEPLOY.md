@@ -28,6 +28,9 @@
 Optional (for contact form email):
 - `SMTP_SERVER`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `RECIPIENT_EMAIL`
 
+**Local setup:** Copy `.env.example` to `.env` and fill in values.  
+**Railway:** Add variables in project → Variables tab. See [SUPABASE_RAILWAY_SETUP.md](SUPABASE_RAILWAY_SETUP.md) for details.
+
 ## Database Setup
 
 Ensure your Supabase project has the tables. On first deploy, `init_db()` runs via gunicorn startup and creates:
