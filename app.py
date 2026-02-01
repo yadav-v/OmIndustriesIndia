@@ -330,7 +330,20 @@ def service_heatdrying():
 @app.route("/contact", methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
-        # ... existing logic ...
+        name = request.form.get('name', '').strip()
+        email = request.form.get('email', '').strip()
+        phone = request.form.get('phone', '').strip()
+        message = request.form.get('message', '').strip()
+        if name and email and message:
+            conn = _db_connection()
+            execute_query(conn, "INSERT INTO contacts (name, email, phone, message) VALUES (?, ?, ?, ?)",
+                         (name, email, phone or None, message))
+            conn.commit()
+            conn.close()
+            send_contact_email(name, email, phone, message)
+            flash('Thank you! Your message has been sent. We will get back to you soon.', 'success')
+        else:
+            flash('Please fill in name, email and message.', 'error')
         return redirect(url_for('contact'))
     
     return render_template("public/pages/contact.html", title="Contact Us - Om Industries India", now=datetime.now())
@@ -338,7 +351,26 @@ def contact():
 @app.route("/feedback", methods=['GET', 'POST'])
 def feedback():
     if request.method == 'POST':
-        # ... existing logic ...
+        name = request.form.get('name', '').strip()
+        rating = request.form.get('rating', '5')
+        message = request.form.get('message', '').strip()
+        if name and message:
+            try:
+                rating_val = int(rating)
+                if rating_val < 1:
+                    rating_val = 1
+                elif rating_val > 5:
+                    rating_val = 5
+            except (ValueError, TypeError):
+                rating_val = 5
+            conn = _db_connection()
+            execute_query(conn, "INSERT INTO feedback (name, rating, message, status) VALUES (?, ?, ?, 'pending')",
+                         (name, rating_val, message))
+            conn.commit()
+            conn.close()
+            flash('Thank you! Your feedback has been submitted. It will appear after review.', 'success')
+        else:
+            flash('Please fill in your name and message.', 'error')
         return redirect(url_for('feedback'))
     
     # Get approved feedbacks
