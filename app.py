@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, abort
 import sqlite3
+from products_data import PRODUCTS, DIVISIONS
 from io import BytesIO
 import smtplib
 from email.mime.text import MIMEText
@@ -217,6 +218,23 @@ def init_db():
             changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """)
+        
+        # Create services table
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS services (
+            id SERIAL PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            slug VARCHAR(255) NOT NULL UNIQUE,
+            division VARCHAR(255) NOT NULL,
+            division_id VARCHAR(100) NOT NULL,
+            short_desc TEXT,
+            description TEXT,
+            price VARCHAR(100) NOT NULL,
+            image VARCHAR(500) DEFAULT 'image/manufacture.jpg',
+            sort_order INTEGER DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+        """)
     else:
         # SQLite syntax
         # Create feedback table
@@ -307,16 +325,50 @@ def init_db():
             changed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """)
+        
+        # Create services table
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS services (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            slug TEXT NOT NULL UNIQUE,
+            division TEXT NOT NULL,
+            division_id TEXT NOT NULL,
+            short_desc TEXT,
+            description TEXT,
+            price TEXT NOT NULL,
+            image TEXT DEFAULT 'image/manufacture.jpg',
+            sort_order INTEGER DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+        """)
     
-    conn.commit()
+    conn.commit()  # Ensure tables exist before seed
+    # Seed services from products_data if empty
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) as cnt FROM services")
+    row = cursor.fetchone()
+    count = (row['cnt'] if isinstance(row, dict) else row[0]) if row else 0
+    if count == 0:
+        try:
+            for slug, p in PRODUCTS.items():
+                execute_query(conn, """
+                    INSERT INTO services (name, slug, division, division_id, short_desc, description, price, image)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """, (p['name'], p['slug'], p['division'], p['division_id'], p['short_desc'], p['description'], p['price'], p['image']))
+            conn.commit()
+            print("   Seeded services from products_data")
+        except Exception as e:
+            print(f"   Seed services: {e}")
+    
     conn.close()
     
     if USE_POSTGRES:
         print("✅ Database initialized with Supabase (PostgreSQL - online)")
-        print("   Tables created: feedback, contacts, orders, order_status_log")
+        print("   Tables created: feedback, contacts, orders, order_status_log, services")
     else:
         print("✅ Database initialized with SQLite (local file: database.db)")
-        print("   Tables created: feedback, contacts, orders, order_status_log")
+        print("   Tables created: feedback, contacts, orders, order_status_log, services")
 
 # -------- PUBLIC ROUTES ----------
 @app.route("/")
@@ -339,9 +391,37 @@ def about():
 
 @app.route("/services")
 def services():
+    conn = _db_connection()
+    cursor = execute_query(conn, "SELECT * FROM services ORDER BY division_id, sort_order, name")
+    rows = cursor.fetchall()
+    conn.close()
+    products_by_division = {}
+    for row in rows:
+        r = dict(row) if not isinstance(row, dict) else row
+        div_id = r.get('division_id', 'hydrotest')
+        if div_id not in products_by_division:
+            products_by_division[div_id] = []
+        products_by_division[div_id].append(r)
     return render_template("public/pages/services.html", 
                          title="Services - Om Industries India",
+                         now=datetime.now(),
+                         products_by_division=products_by_division,
+                         divisions=DIVISIONS)
+
+@app.route("/services/product/<slug>")
+def product_detail(slug):
+    conn = _db_connection()
+    cursor = execute_query(conn, "SELECT * FROM services WHERE slug = ?", (slug,))
+    row = cursor.fetchone()
+    conn.close()
+    if not row:
+        abort(404)
+    product = dict(row) if not isinstance(row, dict) else row
+    return render_template("public/pages/product_detail.html",
+                         title=f"{product['name']} - Om Industries India",
+                         product=product,
                          now=datetime.now())
+
 # about water jacket 
 @app.route('/water-jacket-testing-machine')
 def water_jacket_detail():
@@ -363,23 +443,6 @@ def degassing():
 def oil_removal():
     return render_template('public/oil_removal.html', now=datetime.now())
 
-@app.route("/services/cng-hydrotesting-plant")
-def service_cng():
-    return render_template("public/pages/service_cng.html", title="CNG Hydrotesting Plant - Om Industries India", now=datetime.now())
-
-@app.route("/services/cylinder-bracket")
-def service_cylinder():
-    return render_template("public/pages/service_cylinder.html", title="Cylinder Bracket - Om Industries India", now=datetime.now())
-
-@app.route("/services/fabrication")
-def service_fabrication():
-    return render_template("public/pages/service_fabrication.html", title="Fabrication Services - Om Industries India", now=datetime.now())
-@app.route("/service-inspect")
-def service_inspect():
-    return render_template("public/pages/service_inspect.html", title="Inspection Services", now=datetime.now())
-@app.route("/service_heatdrying")
-def service_heatdrying():
-    return render_template("public/pages/service_heatdrying.html", title="Heat and DRYING SERVICE", now=datetime.now())
 @app.route("/contact", methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
@@ -399,7 +462,8 @@ def contact():
             flash('Please fill in name, email and message.', 'error')
         return redirect(url_for('contact'))
     
-    return render_template("public/pages/contact.html", title="Contact Us - Om Industries India", now=datetime.now())
+    product = request.args.get('product', '')
+    return render_template("public/pages/contact.html", title="Contact Us - Om Industries India", now=datetime.now(), product=product)
 
 @app.route("/feedback", methods=['GET', 'POST'])
 def feedback():
@@ -871,6 +935,120 @@ def admin_order_invoice(order_id):
     except ImportError:
         flash('PDF library (reportlab) not installed. Run: pip install reportlab', 'error')
         return redirect(url_for('admin_order_detail', order_id=order_id))
+
+def _slugify(text):
+    """Generate URL-friendly slug from name"""
+    import re
+    s = re.sub(r'[^\w\s-]', '', str(text).lower())
+    return re.sub(r'[-\s]+', '-', s).strip('-') or 'service'
+
+@app.route("/admin/services")
+def admin_services():
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
+    conn = _db_connection()
+    cursor = execute_query(conn, "SELECT * FROM services ORDER BY division_id, sort_order, name")
+    services_list = cursor.fetchall()
+    conn.close()
+    
+    services = [dict(r) if not isinstance(r, dict) else r for r in (services_list or [])]
+    
+    return render_template("admin/pages/services.html", title="Manage Services", services=services, divisions=DIVISIONS)
+
+@app.route("/admin/services/add", methods=['GET', 'POST'])
+def admin_service_add():
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        slug = request.form.get('slug', '').strip() or _slugify(name)
+        division_id = request.form.get('division_id', 'hydrotest').strip()
+        division = next((d['name'] for d in DIVISIONS if d['id'] == division_id), division_id.upper().replace('-', ' '))
+        short_desc = request.form.get('short_desc', '').strip()
+        description = request.form.get('description', '').strip()
+        price = request.form.get('price', '').strip() or 'Price on Request'
+        image = request.form.get('image', '').strip() or 'image/manufacture.jpg'
+        
+        if not name:
+            flash('Service name is required.', 'error')
+            return redirect(url_for('admin_service_add'))
+        
+        conn = _db_connection()
+        try:
+            execute_query(conn, """
+                INSERT INTO services (name, slug, division, division_id, short_desc, description, price, image)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """, (name, slug, division, division_id, short_desc or None, description or None, price, image))
+            conn.commit()
+            flash('Service added successfully!', 'success')
+        except Exception as e:
+            flash(f'Error: {str(e)}', 'error')
+        finally:
+            conn.close()
+        return redirect(url_for('admin_services'))
+    
+    return render_template("admin/pages/service_add.html", title="Add Service", divisions=DIVISIONS)
+
+@app.route("/admin/services/<int:service_id>/edit", methods=['GET', 'POST'])
+def admin_service_edit(service_id):
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
+    conn = _db_connection()
+    cursor = execute_query(conn, "SELECT * FROM services WHERE id = ?", (service_id,))
+    service = cursor.fetchone()
+    conn.close()
+    
+    if not service:
+        flash('Service not found.', 'error')
+        return redirect(url_for('admin_services'))
+    
+    svc = dict(service) if not isinstance(service, dict) else service
+    
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        slug = request.form.get('slug', '').strip() or _slugify(name)
+        division_id = request.form.get('division_id', 'hydrotest').strip()
+        division = next((d['name'] for d in DIVISIONS if d['id'] == division_id), division_id.upper().replace('-', ' '))
+        short_desc = request.form.get('short_desc', '').strip()
+        description = request.form.get('description', '').strip()
+        price = request.form.get('price', '').strip() or 'Price on Request'
+        image = request.form.get('image', '').strip() or 'image/manufacture.jpg'
+        
+        if not name:
+            flash('Service name is required.', 'error')
+            return redirect(url_for('admin_service_edit', service_id=service_id))
+        
+        conn = _db_connection()
+        try:
+            execute_query(conn, """
+                UPDATE services SET name=?, slug=?, division=?, division_id=?, short_desc=?, description=?, price=?, image=?
+                WHERE id = ?
+            """, (name, slug, division, division_id, short_desc or None, description or None, price, image, service_id))
+            conn.commit()
+            flash('Service updated successfully!', 'success')
+        except Exception as e:
+            flash(f'Error: {str(e)}', 'error')
+        finally:
+            conn.close()
+        return redirect(url_for('admin_services'))
+    
+    return render_template("admin/pages/service_edit.html", title="Edit Service", service=svc, divisions=DIVISIONS)
+
+@app.route("/admin/services/<int:service_id>/delete", methods=['POST'])
+def admin_service_delete(service_id):
+    if not session.get('admin_logged_in'):
+        return redirect(url_for('admin_login'))
+    
+    conn = _db_connection()
+    execute_query(conn, "DELETE FROM services WHERE id = ?", (service_id,))
+    conn.commit()
+    conn.close()
+    
+    flash('Service deleted.', 'success')
+    return redirect(url_for('admin_services'))
 
 # Initialize DB tables when app loads (for gunicorn / Railway)
 init_db()

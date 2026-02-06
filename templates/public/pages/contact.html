@@ -112,7 +112,7 @@
             </div>
             <div class="col-md-12">
               <label for="message" class="form-label fw-bold">Your Message <span class="text-danger">*</span></label>
-              <textarea class="form-control bg-light py-3 border-0" id="message" name="message" rows="6" required placeholder="How can we help you?"></textarea>
+              <textarea class="form-control bg-light py-3 border-0" id="message" name="message" rows="6" required placeholder="How can we help you?">{% if product %}I am interested in: {{ product }}{% endif %}</textarea>
             </div>
             <div class="col-md-12">
               <button type="submit" class="btn btn-primary rounded-pill px-5 py-3 fw-bold">
