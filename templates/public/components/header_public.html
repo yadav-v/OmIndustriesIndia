@@ -103,17 +103,18 @@
           </li>
         </ul>
     </div>
-    <div class="box">
+    <div class="box" style="position:relative;">
   <input
     type="text"
     id="searchInput"
     placeholder="Search products..."
-    onkeyup="if (event.key === 'Enter') { searchProduct(); }"
-  />
+  >
 
-  <button class="search-btn" onclick="searchProduct()">
+  <button class="search-btn" type="button" onclick="searchNow()">
     <i class="fas fa-search"></i>
   </button>
+
+  <div id="searchResults" class="search-results"></div>
 </div>
 
   </nav>

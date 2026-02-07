@@ -9,6 +9,7 @@ from datetime import datetime
 import os
 from urllib.parse import urlparse
 
+
 # Load environment variables from .env file (local only - Railway uses its own vars)
 try:
     from dotenv import load_dotenv
@@ -1058,3 +1059,24 @@ if __name__ == "__main__":
     # For local development:
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
+
+
+
+from flask import request, jsonify
+
+@app.route("/search")
+def search():
+    q = request.args.get("q", "").lower()
+
+    results = []
+
+    for division in divisions:
+        for product in products_by_division.get(division["id"], []):
+            if q in product["name"].lower() or q in product["short_desc"].lower():
+                results.append({
+                    "name": product["name"],
+                    "slug": product["slug"]
+                })
+
+    return jsonify(results)
+
