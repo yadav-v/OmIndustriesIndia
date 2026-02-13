@@ -326,6 +326,21 @@ footer {
 .avatar-circle {
   background: var(--primary-color) !important;
 }
+.star-label-modal i {
+    color: #ccc;   /* default grey */
+    transition: 0.3s;
+}
+
+/* When radio is checked → color stars */
+input[type="radio"]:checked ~ label i {
+    color: gold;
+}
+
+/* Hover effect */
+.star-label-modal:hover i,
+.star-label-modal:hover ~ label i {
+    color: gold;
+}
 
 /* Page Headers */
 .page-header {
