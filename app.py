@@ -202,7 +202,6 @@ def init_db():
             address TEXT NOT NULL,
             phone VARCHAR(50) NOT NULL,
             email VARCHAR(255) NOT NULL,
-            price DECIMAL(12,2) NOT NULL,
             quantity INTEGER NOT NULL DEFAULT 1,
             order_date DATE NOT NULL,
             status VARCHAR(50) DEFAULT 'process',
@@ -230,7 +229,6 @@ def init_db():
             division_id VARCHAR(100) NOT NULL,
             short_desc TEXT,
             description TEXT,
-            price VARCHAR(100) NOT NULL,
             image VARCHAR(500) DEFAULT 'image/manufacture.jpg',
             sort_order INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -309,7 +307,6 @@ def init_db():
             address TEXT NOT NULL,
             phone TEXT NOT NULL,
             email TEXT NOT NULL,
-            price REAL NOT NULL,
             quantity INTEGER NOT NULL DEFAULT 1,
             order_date TEXT NOT NULL,
             status TEXT DEFAULT 'process',
@@ -337,7 +334,6 @@ def init_db():
             division_id TEXT NOT NULL,
             short_desc TEXT,
             description TEXT,
-            price TEXT NOT NULL,
             image TEXT DEFAULT 'image/manufacture.jpg',
             sort_order INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -354,9 +350,9 @@ def init_db():
         try:
             for slug, p in PRODUCTS.items():
                 execute_query(conn, """
-                    INSERT INTO services (name, slug, division, division_id, short_desc, description, price, image)
+                    INSERT INTO services (name, slug, division, division_id, short_desc, description,  image)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """, (p['name'], p['slug'], p['division'], p['division_id'], p['short_desc'], p['description'], p['price'], p['image']))
+                """, (p['name'], p['slug'], p['division'], p['division_id'], p['short_desc'], p['description'], p['image']))
             conn.commit()
             print("   Seeded services from products_data")
         except Exception as e:
@@ -697,7 +693,6 @@ def admin_order_add():
         address = request.form.get('address', '').strip()
         phone = request.form.get('phone', '').strip()
         email = request.form.get('email', '').strip()
-        price = request.form.get('price', '0')
         quantity = request.form.get('quantity', '1')
         order_date = request.form.get('order_date', '')
         status = request.form.get('status', 'process')
@@ -707,10 +702,10 @@ def admin_order_add():
             return redirect(url_for('admin_order_add'))
         
         try:
-            price_val = float(price)
+           
             quantity_val = int(quantity)
         except (ValueError, TypeError):
-            flash('Invalid price or quantity.', 'error')
+            flash('Invalid  quantity.', 'error')
             return redirect(url_for('admin_order_add'))
         
         if not order_date:
@@ -719,16 +714,16 @@ def admin_order_add():
         conn = _db_connection()
         if USE_POSTGRES:
             cursor = execute_query(conn, """
-                INSERT INTO orders (name, address, phone, email, price, quantity, order_date, status)
+                INSERT INTO orders (name, address, phone, email,  quantity, order_date, status)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id
-            """, (name, address, phone, email, price_val, quantity_val, order_date, status))
+            """, (name, address, phone, email, quantity_val, order_date, status))
             row = cursor.fetchone()
             order_id = row['id'] if isinstance(row, dict) else row[0]
         else:
             cursor = execute_query(conn, """
-                INSERT INTO orders (name, address, phone, email, price, quantity, order_date, status)
+                INSERT INTO orders (name, address, phone, email,  quantity, order_date, status)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """, (name, address, phone, email, price_val, quantity_val, order_date, status))
+            """, (name, address, phone, email, quantity_val, order_date, status))
             order_id = cursor.lastrowid if hasattr(cursor, 'lastrowid') else conn.execute("SELECT last_insert_rowid()").fetchone()[0]
         
         # Log initial status
@@ -805,6 +800,9 @@ def admin_order_invoice(order_id):
         from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
         from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
         from reportlab.lib.units import inch
+        from reportlab.platypus import Image
+        from reportlab.lib.utils import ImageReader
+
         
         buffer = BytesIO()
         doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=45, leftMargin=45, topMargin=40, bottomMargin=40)
@@ -814,15 +812,46 @@ def admin_order_invoice(order_id):
         address = o['address'] if isinstance(o, dict) else o[2]
         phone = o['phone'] if isinstance(o, dict) else o[3]
         email = o['email'] if isinstance(o, dict) else o[4]
-        price = float(o['price'] if isinstance(o, dict) else o[5])
         quantity = int(o['quantity'] if isinstance(o, dict) else o[6])
+        price = float(o['price'] if isinstance(o, dict) else o[5])
+        total = price * quantity
+        # ---------------- GST AUTO DETECTION ----------------
+        company_state = "Maharashtra"
+        customer_state = address.lower()
+        if "maharashtra" in customer_state:
+            cgst = total * 0.09
+            sgst = total * 0.09
+            igst = 0
+            grand_total = total + cgst + sgst
+            tax_rows = [
+                ['Total Before Tax', f'₹{total:,.2f}'],
+                ['Add CGST (9%)', f'₹{cgst:,.2f}'],
+                ['Add SGST (9%)', f'₹{sgst:,.2f}'],
+                ['Total After Tax', f'₹{grand_total:,.2f}'],
+                ]
+        else:
+            igst = total * 0.18
+            cgst = sgst = 0
+            grand_total = total + igst
+            tax_rows = [
+                ['Total Before Tax', f'₹{total:,.2f}'],
+                ['Add IGST (18%)', f'₹{igst:,.2f}'],
+                ['Total After Tax', f'₹{grand_total:,.2f}'],
+                ]
+        # GST Calculation
+        cgst = total * 0.09
+        sgst = total * 0.09
+        grand_total = total + cgst + sgst
+        # Amount in words
+        from num2words import num2words
+        amount_words = num2words(grand_total, lang='en_IN').title() + " Rupees Only"
+
         order_date = o['order_date'] if isinstance(o, dict) else o[7]
         if hasattr(order_date, 'strftime'):
             order_date = order_date.strftime('%d %b %Y')
         else:
             order_date = str(order_date)
         
-        total = price * quantity
         
         # Brand colors
         dark_blue = colors.HexColor('#1a365d')
@@ -884,9 +913,12 @@ def admin_order_invoice(order_id):
         ]))
         
         # Line items table
-        items_data = [['Description', 'Unit Price (₹)', 'Qty', 'Amount (₹)']]
-        items_data.append(['Order Items / Services', f'{price:,.2f}', str(quantity), f'{total:,.2f}'])
-        items_table = Table(items_data, colWidths=[2.8*inch, 1.4*inch, 1*inch, 1.4*inch])
+        items_data = [
+    ['Description', 'Qty', 'Rate', 'Amount (₹)'],
+    ['Order Items / Services', str(quantity), f'{price:,.2f}', f'{total:,.2f}']
+    ]
+        items_table = Table(items_data, colWidths=[2.5*inch, 0.8*inch, 1*inch, 1.2*inch])
+
         items_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), dark_blue),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
@@ -905,16 +937,38 @@ def admin_order_invoice(order_id):
             ('LINEBELOW', (0, -1), (-1, -1), 1.5, dark_blue),
         ]))
         
-        # Total row
-        total_data = [[Paragraph('<b>Total Amount</b>', ParagraphStyle('TotalLbl', fontSize=11, fontName='Helvetica-Bold')), Paragraph(f'<b>₹{total:,.2f}</b>', ParagraphStyle('TotalVal', fontSize=12, fontName='Helvetica-Bold', alignment=2))]]
-        total_table = Table(total_data, colWidths=[4.2*inch, 1.4*inch])
-        total_table.setStyle(TableStyle([
-            ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
-            ('ALIGN', (1, 0), (-1, -1), 'RIGHT'),
-            ('TOPPADDING', (0, 0), (-1, -1), 8),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 12),
-        ]))
+        # ---------------- TAX BREAKDOWN ----------------
+        tax_data = [
+            ['Total Before Tax', f'₹{total:,.2f}'],
+            ['Add CGST (9%)', f'₹{cgst:,.2f}'],
+            ['Add SGST (9%)', f'₹{sgst:,.2f}'],
+            ['Total After Tax', f'₹{grand_total:,.2f}'],
+            ]
+        tax_table = Table(tax_data, colWidths=[4.2*inch, 1.4*inch])
+        tax_table.setStyle(TableStyle([
+            ('ALIGN', (1,0), (-1,-1), 'RIGHT'),
+            ('TOPPADDING', (0,0), (-1,-1), 8),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+            ('GRID', (0,0), (-1,-1), 0.5, border_grey),
+            ]))
+        amount_words_para = Paragraph(
+            f'<b>Amount in Words:</b> {amount_words}',
+            ParagraphStyle('AmtWords', fontSize=9, fontName='Helvetica')
+            )
+        bank_data = [
+            ['Bank Name', 'HDFC BANK'],
+            ['A/C Name', 'OM INDUSTRIES INDIA'],
+            ['A/C Number', '50200094808411'],
+            ['IFSC Code', 'HDFC0000998'],
+            ['Branch', 'LBS MARG VIKH (W)'],
+            ]
+        bank_table = Table(bank_data, colWidths=[2*inch, 3.6*inch])
+        bank_table.setStyle(TableStyle([
+            ('GRID', (0,0), (-1,-1), 0.5, border_grey),
+            ]))
+
+
+
         
         # Footer
         footer = Paragraph(
@@ -922,13 +976,45 @@ def admin_order_invoice(order_id):
             styles['FooterText']
         )
         footer_spacer = Spacer(1, 0.4*inch)
-        
+        from reportlab.lib.utils import ImageReader
+        import os
+        def add_watermark(canvas, doc):
+            canvas.saveState()
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            watermark_path = os.path.join("static", "image", "logoo.png")
+            logo = ImageReader(watermark_path)
+            page_width, page_height = A4
+            try:
+                canvas.setFillAlpha(0.08)   # very light watermark
+            except:
+                pass  # older reportlab versions may not support this
+            # Draw large centered logo
+            logo_width = 300
+            logo_height = 300
+            x = (page_width - logo_width) / 2
+            y = (page_height - logo_height) / 2
+            canvas.drawImage(
+                logo,
+                x, y,
+                width=logo_width,
+                height=logo_height,
+                mask='auto'
+                )
+            canvas.restoreState()
+
+            
+
+
         doc.build([
             header_table, tagline, spacer_md,
             info_table, spacer_md,
-            items_table, spacer_sm, total_table,
+            items_table, spacer_sm,
+            tax_table, spacer_sm,
+            amount_words_para, spacer_md,
+            bank_table,
             footer_spacer, footer
-        ])
+            ], onFirstPage=add_watermark, onLaterPages=add_watermark)
+
         
         buffer.seek(0)
         return send_file(buffer, mimetype='application/pdf', as_attachment=True, download_name=f'invoice_order_{order_id}.pdf')
@@ -969,7 +1055,6 @@ def admin_service_add():
         division = next((d['name'] for d in DIVISIONS if d['id'] == division_id), division_id.upper().replace('-', ' '))
         short_desc = request.form.get('short_desc', '').strip()
         description = request.form.get('description', '').strip()
-        price = request.form.get('price', '').strip() or 'Price on Request'
         image = request.form.get('image', '').strip() or 'image/manufacture.jpg'
         
         if not name:
@@ -979,9 +1064,9 @@ def admin_service_add():
         conn = _db_connection()
         try:
             execute_query(conn, """
-                INSERT INTO services (name, slug, division, division_id, short_desc, description, price, image)
+                INSERT INTO services (name, slug, division, division_id, short_desc, description,  image)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """, (name, slug, division, division_id, short_desc or None, description or None, price, image))
+            """, (name, slug, division, division_id, short_desc or None, description or None, image))
             conn.commit()
             flash('Service added successfully!', 'success')
         except Exception as e:
@@ -1015,7 +1100,6 @@ def admin_service_edit(service_id):
         division = next((d['name'] for d in DIVISIONS if d['id'] == division_id), division_id.upper().replace('-', ' '))
         short_desc = request.form.get('short_desc', '').strip()
         description = request.form.get('description', '').strip()
-        price = request.form.get('price', '').strip() or 'Price on Request'
         image = request.form.get('image', '').strip() or 'image/manufacture.jpg'
         
         if not name:
@@ -1025,9 +1109,9 @@ def admin_service_edit(service_id):
         conn = _db_connection()
         try:
             execute_query(conn, """
-                UPDATE services SET name=?, slug=?, division=?, division_id=?, short_desc=?, description=?, price=?, image=?
+                UPDATE services SET name=?, slug=?, division=?, division_id=?, short_desc=?, description=?, image=?
                 WHERE id = ?
-            """, (name, slug, division, division_id, short_desc or None, description or None, price, image, service_id))
+            """, (name, slug, division, division_id, short_desc or None, description or None,image, service_id))
             conn.commit()
             flash('Service updated successfully!', 'success')
         except Exception as e:

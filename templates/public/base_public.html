@@ -41,13 +41,14 @@
       href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"
     />
 
-    <!-- Animations -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-    />
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-  </head>
+  <!-- Animations -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+ 
+  <!-- Chatbot CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+
+</head>
 
   <body>
     {% include "public/components/header_public.html" %}
