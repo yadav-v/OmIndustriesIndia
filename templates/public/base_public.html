@@ -75,5 +75,34 @@
     </script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
     <script src="{{ url_for('static', filename='js/search.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+
+    <!-- Chatbot Widget -->
+    <div id="chatbot-icon" class="chatbot-icon" onclick="toggleChatbot()">
+      <i class="fas fa-comments"></i>
+    </div>
+
+    <div id="chatbot-container" class="chatbot-container" style="display:none;">
+      <div class="chatbot-header">
+        <span>OM Industries Chat</span>
+        <button class="chatbot-close" onclick="toggleChatbot()">✕</button>
+      </div>
+      <div id="chatbot-messages" class="chatbot-messages">
+        <div class="chatbot-message bot-message">
+          <p>Hello! 👋 How can I help you today?</p>
+        </div>
+      </div>
+      <div class="chatbot-input-group">
+        <input 
+          type="text" 
+          id="chatbot-input" 
+          placeholder="Ask me anything..." 
+          onkeypress="handleChatKeypress(event)"
+        >
+        <button class="chatbot-send" onclick="sendChatMessage()">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
   </body>
 </html>
