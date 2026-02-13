@@ -201,7 +201,6 @@ def init_db():
             address TEXT NOT NULL,
             phone VARCHAR(50) NOT NULL,
             email VARCHAR(255) NOT NULL,
-            price DECIMAL(12,2) NOT NULL,
             quantity INTEGER NOT NULL DEFAULT 1,
             order_date DATE NOT NULL,
             status VARCHAR(50) DEFAULT 'process',
@@ -229,7 +228,6 @@ def init_db():
             division_id VARCHAR(100) NOT NULL,
             short_desc TEXT,
             description TEXT,
-            price VARCHAR(100) NOT NULL,
             image VARCHAR(500) DEFAULT 'image/manufacture.jpg',
             sort_order INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -308,7 +306,6 @@ def init_db():
             address TEXT NOT NULL,
             phone TEXT NOT NULL,
             email TEXT NOT NULL,
-            price REAL NOT NULL,
             quantity INTEGER NOT NULL DEFAULT 1,
             order_date TEXT NOT NULL,
             status TEXT DEFAULT 'process',
@@ -336,7 +333,6 @@ def init_db():
             division_id TEXT NOT NULL,
             short_desc TEXT,
             description TEXT,
-            price TEXT NOT NULL,
             image TEXT DEFAULT 'image/manufacture.jpg',
             sort_order INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -353,9 +349,9 @@ def init_db():
         try:
             for slug, p in PRODUCTS.items():
                 execute_query(conn, """
-                    INSERT INTO services (name, slug, division, division_id, short_desc, description, price, image)
+                    INSERT INTO services (name, slug, division, division_id, short_desc, description,  image)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """, (p['name'], p['slug'], p['division'], p['division_id'], p['short_desc'], p['description'], p['price'], p['image']))
+                """, (p['name'], p['slug'], p['division'], p['division_id'], p['short_desc'], p['description'], p['image']))
             conn.commit()
             print("   Seeded services from products_data")
         except Exception as e:
@@ -696,7 +692,6 @@ def admin_order_add():
         address = request.form.get('address', '').strip()
         phone = request.form.get('phone', '').strip()
         email = request.form.get('email', '').strip()
-        price = request.form.get('price', '0')
         quantity = request.form.get('quantity', '1')
         order_date = request.form.get('order_date', '')
         status = request.form.get('status', 'process')
@@ -706,10 +701,10 @@ def admin_order_add():
             return redirect(url_for('admin_order_add'))
         
         try:
-            price_val = float(price)
+           
             quantity_val = int(quantity)
         except (ValueError, TypeError):
-            flash('Invalid price or quantity.', 'error')
+            flash('Invalid  quantity.', 'error')
             return redirect(url_for('admin_order_add'))
         
         if not order_date:
@@ -718,16 +713,16 @@ def admin_order_add():
         conn = _db_connection()
         if USE_POSTGRES:
             cursor = execute_query(conn, """
-                INSERT INTO orders (name, address, phone, email, price, quantity, order_date, status)
+                INSERT INTO orders (name, address, phone, email,  quantity, order_date, status)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s) RETURNING id
-            """, (name, address, phone, email, price_val, quantity_val, order_date, status))
+            """, (name, address, phone, email, quantity_val, order_date, status))
             row = cursor.fetchone()
             order_id = row['id'] if isinstance(row, dict) else row[0]
         else:
             cursor = execute_query(conn, """
-                INSERT INTO orders (name, address, phone, email, price, quantity, order_date, status)
+                INSERT INTO orders (name, address, phone, email,  quantity, order_date, status)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """, (name, address, phone, email, price_val, quantity_val, order_date, status))
+            """, (name, address, phone, email, quantity_val, order_date, status))
             order_id = cursor.lastrowid if hasattr(cursor, 'lastrowid') else conn.execute("SELECT last_insert_rowid()").fetchone()[0]
         
         # Log initial status
@@ -813,7 +808,6 @@ def admin_order_invoice(order_id):
         address = o['address'] if isinstance(o, dict) else o[2]
         phone = o['phone'] if isinstance(o, dict) else o[3]
         email = o['email'] if isinstance(o, dict) else o[4]
-        price = float(o['price'] if isinstance(o, dict) else o[5])
         quantity = int(o['quantity'] if isinstance(o, dict) else o[6])
         order_date = o['order_date'] if isinstance(o, dict) else o[7]
         if hasattr(order_date, 'strftime'):
@@ -821,7 +815,6 @@ def admin_order_invoice(order_id):
         else:
             order_date = str(order_date)
         
-        total = price * quantity
         
         # Brand colors
         dark_blue = colors.HexColor('#1a365d')
@@ -883,8 +876,8 @@ def admin_order_invoice(order_id):
         ]))
         
         # Line items table
-        items_data = [['Description', 'Unit Price (₹)', 'Qty', 'Amount (₹)']]
-        items_data.append(['Order Items / Services', f'{price:,.2f}', str(quantity), f'{total:,.2f}'])
+        items_data = [['Description', 'Qty', 'Amount (₹)']]
+        items_data.append(['Order Items / Services', str(quantity), f'{total:,.2f}'])
         items_table = Table(items_data, colWidths=[2.8*inch, 1.4*inch, 1*inch, 1.4*inch])
         items_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), dark_blue),
@@ -968,7 +961,6 @@ def admin_service_add():
         division = next((d['name'] for d in DIVISIONS if d['id'] == division_id), division_id.upper().replace('-', ' '))
         short_desc = request.form.get('short_desc', '').strip()
         description = request.form.get('description', '').strip()
-        price = request.form.get('price', '').strip() or 'Price on Request'
         image = request.form.get('image', '').strip() or 'image/manufacture.jpg'
         
         if not name:
@@ -978,9 +970,9 @@ def admin_service_add():
         conn = _db_connection()
         try:
             execute_query(conn, """
-                INSERT INTO services (name, slug, division, division_id, short_desc, description, price, image)
+                INSERT INTO services (name, slug, division, division_id, short_desc, description,  image)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """, (name, slug, division, division_id, short_desc or None, description or None, price, image))
+            """, (name, slug, division, division_id, short_desc or None, description or None, image))
             conn.commit()
             flash('Service added successfully!', 'success')
         except Exception as e:
@@ -1014,7 +1006,6 @@ def admin_service_edit(service_id):
         division = next((d['name'] for d in DIVISIONS if d['id'] == division_id), division_id.upper().replace('-', ' '))
         short_desc = request.form.get('short_desc', '').strip()
         description = request.form.get('description', '').strip()
-        price = request.form.get('price', '').strip() or 'Price on Request'
         image = request.form.get('image', '').strip() or 'image/manufacture.jpg'
         
         if not name:
@@ -1024,9 +1015,9 @@ def admin_service_edit(service_id):
         conn = _db_connection()
         try:
             execute_query(conn, """
-                UPDATE services SET name=?, slug=?, division=?, division_id=?, short_desc=?, description=?, price=?, image=?
+                UPDATE services SET name=?, slug=?, division=?, division_id=?, short_desc=?, description=?, image=?
                 WHERE id = ?
-            """, (name, slug, division, division_id, short_desc or None, description or None, price, image, service_id))
+            """, (name, slug, division, division_id, short_desc or None, description or None,image, service_id))
             conn.commit()
             flash('Service updated successfully!', 'success')
         except Exception as e:
