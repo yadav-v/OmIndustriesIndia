@@ -1177,9 +1177,9 @@ def search_results():
     if q:
         conn = _db_connection()
         try:
-            # Search in services (products) table
+            # Search in services (products) table - include image field
             cursor = execute_query(conn, 
-                "SELECT id, name, slug, short_desc, description FROM services WHERE LOWER(name) LIKE ? OR LOWER(short_desc) LIKE ? OR LOWER(description) LIKE ? ORDER BY name",
+                "SELECT id, name, slug, short_desc, description, image FROM services WHERE LOWER(name) LIKE ? OR LOWER(short_desc) LIKE ? OR LOWER(description) LIKE ? ORDER BY name",
                 (f"%{q.lower()}%", f"%{q.lower()}%", f"%{q.lower()}%")
             )
             
