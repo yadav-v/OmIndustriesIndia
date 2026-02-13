@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, abort
+from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, abort, jsonify
 import sqlite3
 from products_data import PRODUCTS, DIVISIONS
 from io import BytesIO
@@ -1135,6 +1135,69 @@ def admin_service_delete(service_id):
     flash('Service deleted.', 'success')
     return redirect(url_for('admin_services'))
 
+@app.route("/search")
+def search():
+    """API endpoint for dropdown live search - returns JSON"""
+    q = request.args.get("q", "").strip()
+    
+    if not q:
+        return jsonify([])
+
+    results = []
+    conn = _db_connection()
+    
+    try:
+        # Search in services (products) table by name, short_desc, or description
+        cursor = execute_query(conn, 
+            "SELECT id, name, slug, short_desc FROM services WHERE LOWER(name) LIKE ? OR LOWER(short_desc) LIKE ? OR LOWER(description) LIKE ? ORDER BY name LIMIT 20",
+            (f"%{q.lower()}%", f"%{q.lower()}%", f"%{q.lower()}%")
+        )
+        
+        rows = cursor.fetchall()
+        for row in rows:
+            r = dict(row) if not isinstance(row, dict) else row
+            results.append({
+                "id": r.get('id'),
+                "name": r.get('name'),
+                "slug": r.get('slug')
+            })
+    except Exception as e:
+        print(f"Search error: {e}")
+    finally:
+        conn.close()
+    
+    return jsonify(results)
+
+@app.route("/search-results")
+def search_results():
+    """Full page search results"""
+    q = request.args.get("q", "").strip()
+    results = []
+    
+    if q:
+        conn = _db_connection()
+        try:
+            # Search in services (products) table
+            cursor = execute_query(conn, 
+                "SELECT id, name, slug, short_desc, description FROM services WHERE LOWER(name) LIKE ? OR LOWER(short_desc) LIKE ? OR LOWER(description) LIKE ? ORDER BY name",
+                (f"%{q.lower()}%", f"%{q.lower()}%", f"%{q.lower()}%")
+            )
+            
+            rows = cursor.fetchall()
+            for row in rows:
+                r = dict(row) if not isinstance(row, dict) else row
+                results.append(r)
+        except Exception as e:
+            print(f"Search error: {e}")
+        finally:
+            conn.close()
+    
+    return render_template("public/pages/search_results.html", 
+                         title=f"Search Results - Om Industries",
+                         query=q,
+                         results=results,
+                         now=datetime.now())
+
 # Initialize DB tables when app loads (for gunicorn / Railway)
 init_db()
 
@@ -1143,24 +1206,4 @@ if __name__ == "__main__":
     # For local development:
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
-
-
-
-from flask import request, jsonify
-
-@app.route("/search")
-def search():
-    q = request.args.get("q", "").lower()
-
-    results = []
-
-    for division in divisions:
-        for product in products_by_division.get(division["id"], []):
-            if q in product["name"].lower() or q in product["short_desc"].lower():
-                results.append({
-                    "name": product["name"],
-                    "slug": product["slug"]
-                })
-
-    return jsonify(results)
 

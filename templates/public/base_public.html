@@ -74,30 +74,6 @@
       });
     </script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-    <script>
-      function searchNow() {
-        const query = document
-          .getElementById("searchInput")
-          .value.trim()
-          .toLowerCase();
-        console.log("Clicked! Query:", query);
-
-        if (!query) {
-          alert("Type something to search");
-          return;
-        }
-
-        fetch(`/search?q=${query}`)
-          .then((res) => res.json())
-          .then((data) => {
-            let html = "";
-            data.forEach((item) => {
-              html += `<a href="/services/product/${item.slug}" class="result-item">${item.name}</a>`;
-            });
-            document.getElementById("searchResults").innerHTML = html;
-          })
-          .catch((err) => console.error(err));
-      }
-    </script>
+    <script src="{{ url_for('static', filename='js/search.js') }}"></script>
   </body>
 </html>
