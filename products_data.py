@@ -9,7 +9,7 @@ PRODUCTS = {
         "division_id": "hydrotest",
         "short_desc": "Complete CNG cylinder testing plant — hydropump, water jacket, ultrasonic roller, fire stand, degassing stand, trolley, control panel & more.",
         "description": "We provide complete CNG cylinder testing equipments including: Hydropump, Water Jacket, Ultrasonic Roller Machine, Fire Stand, Cylinder Vice, Oil Remove Stand, Hot Air Blower, Degassing Stand with Vent Pipe & Accessories, Trolley, Control Panel with 2 Pressure Gauges, Paint Stand Ring, Air Compressor 90L, Metal Writing Machine, and Weighing Machine. CYLINDER TYPE: CNG | USAGE: TESTING | INSPECTION TYPE: INTERNAL AND EXTERNAL VISUAL INSPECTION | PRODUCT TYPE: CNG CYLINDER | TESTING METHOD: WATER JACKET TYPE | INSPECTION STANDARD: ISO.",
-        "price": "₹10,00,000/Piece",
+       
         "image": "image/cngmanufacture.jpg",
     },
     "cylinder-testing-jacket-24": {
