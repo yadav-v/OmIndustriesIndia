@@ -799,6 +799,9 @@ def admin_order_invoice(order_id):
         from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer
         from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
         from reportlab.lib.units import inch
+        from reportlab.platypus import Image
+        from reportlab.lib.utils import ImageReader
+
         
         buffer = BytesIO()
         doc = SimpleDocTemplate(buffer, pagesize=A4, rightMargin=45, leftMargin=45, topMargin=40, bottomMargin=40)
@@ -809,6 +812,39 @@ def admin_order_invoice(order_id):
         phone = o['phone'] if isinstance(o, dict) else o[3]
         email = o['email'] if isinstance(o, dict) else o[4]
         quantity = int(o['quantity'] if isinstance(o, dict) else o[6])
+        price = float(o['price'] if isinstance(o, dict) else o[5])
+        total = price * quantity
+        # ---------------- GST AUTO DETECTION ----------------
+        company_state = "Maharashtra"
+        customer_state = address.lower()
+        if "maharashtra" in customer_state:
+            cgst = total * 0.09
+            sgst = total * 0.09
+            igst = 0
+            grand_total = total + cgst + sgst
+            tax_rows = [
+                ['Total Before Tax', f'₹{total:,.2f}'],
+                ['Add CGST (9%)', f'₹{cgst:,.2f}'],
+                ['Add SGST (9%)', f'₹{sgst:,.2f}'],
+                ['Total After Tax', f'₹{grand_total:,.2f}'],
+                ]
+        else:
+            igst = total * 0.18
+            cgst = sgst = 0
+            grand_total = total + igst
+            tax_rows = [
+                ['Total Before Tax', f'₹{total:,.2f}'],
+                ['Add IGST (18%)', f'₹{igst:,.2f}'],
+                ['Total After Tax', f'₹{grand_total:,.2f}'],
+                ]
+        # GST Calculation
+        cgst = total * 0.09
+        sgst = total * 0.09
+        grand_total = total + cgst + sgst
+        # Amount in words
+        from num2words import num2words
+        amount_words = num2words(grand_total, lang='en_IN').title() + " Rupees Only"
+
         order_date = o['order_date'] if isinstance(o, dict) else o[7]
         if hasattr(order_date, 'strftime'):
             order_date = order_date.strftime('%d %b %Y')
@@ -876,9 +912,12 @@ def admin_order_invoice(order_id):
         ]))
         
         # Line items table
-        items_data = [['Description', 'Qty', 'Amount (₹)']]
-        items_data.append(['Order Items / Services', str(quantity), f'{total:,.2f}'])
-        items_table = Table(items_data, colWidths=[2.8*inch, 1.4*inch, 1*inch, 1.4*inch])
+        items_data = [
+    ['Description', 'Qty', 'Rate', 'Amount (₹)'],
+    ['Order Items / Services', str(quantity), f'{price:,.2f}', f'{total:,.2f}']
+    ]
+        items_table = Table(items_data, colWidths=[2.5*inch, 0.8*inch, 1*inch, 1.2*inch])
+
         items_table.setStyle(TableStyle([
             ('BACKGROUND', (0, 0), (-1, 0), dark_blue),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
@@ -897,16 +936,38 @@ def admin_order_invoice(order_id):
             ('LINEBELOW', (0, -1), (-1, -1), 1.5, dark_blue),
         ]))
         
-        # Total row
-        total_data = [[Paragraph('<b>Total Amount</b>', ParagraphStyle('TotalLbl', fontSize=11, fontName='Helvetica-Bold')), Paragraph(f'<b>₹{total:,.2f}</b>', ParagraphStyle('TotalVal', fontSize=12, fontName='Helvetica-Bold', alignment=2))]]
-        total_table = Table(total_data, colWidths=[4.2*inch, 1.4*inch])
-        total_table.setStyle(TableStyle([
-            ('ALIGN', (0, 0), (0, -1), 'RIGHT'),
-            ('ALIGN', (1, 0), (-1, -1), 'RIGHT'),
-            ('TOPPADDING', (0, 0), (-1, -1), 8),
-            ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
-            ('RIGHTPADDING', (0, 0), (-1, -1), 12),
-        ]))
+        # ---------------- TAX BREAKDOWN ----------------
+        tax_data = [
+            ['Total Before Tax', f'₹{total:,.2f}'],
+            ['Add CGST (9%)', f'₹{cgst:,.2f}'],
+            ['Add SGST (9%)', f'₹{sgst:,.2f}'],
+            ['Total After Tax', f'₹{grand_total:,.2f}'],
+            ]
+        tax_table = Table(tax_data, colWidths=[4.2*inch, 1.4*inch])
+        tax_table.setStyle(TableStyle([
+            ('ALIGN', (1,0), (-1,-1), 'RIGHT'),
+            ('TOPPADDING', (0,0), (-1,-1), 8),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 8),
+            ('GRID', (0,0), (-1,-1), 0.5, border_grey),
+            ]))
+        amount_words_para = Paragraph(
+            f'<b>Amount in Words:</b> {amount_words}',
+            ParagraphStyle('AmtWords', fontSize=9, fontName='Helvetica')
+            )
+        bank_data = [
+            ['Bank Name', 'HDFC BANK'],
+            ['A/C Name', 'OM INDUSTRIES INDIA'],
+            ['A/C Number', '50200094808411'],
+            ['IFSC Code', 'HDFC0000998'],
+            ['Branch', 'LBS MARG VIKH (W)'],
+            ]
+        bank_table = Table(bank_data, colWidths=[2*inch, 3.6*inch])
+        bank_table.setStyle(TableStyle([
+            ('GRID', (0,0), (-1,-1), 0.5, border_grey),
+            ]))
+
+
+
         
         # Footer
         footer = Paragraph(
@@ -914,13 +975,45 @@ def admin_order_invoice(order_id):
             styles['FooterText']
         )
         footer_spacer = Spacer(1, 0.4*inch)
-        
+        from reportlab.lib.utils import ImageReader
+        import os
+        def add_watermark(canvas, doc):
+            canvas.saveState()
+            base_dir = os.path.dirname(os.path.abspath(__file__))
+            watermark_path = os.path.join("static", "image", "logoo.png")
+            logo = ImageReader(watermark_path)
+            page_width, page_height = A4
+            try:
+                canvas.setFillAlpha(0.08)   # very light watermark
+            except:
+                pass  # older reportlab versions may not support this
+            # Draw large centered logo
+            logo_width = 300
+            logo_height = 300
+            x = (page_width - logo_width) / 2
+            y = (page_height - logo_height) / 2
+            canvas.drawImage(
+                logo,
+                x, y,
+                width=logo_width,
+                height=logo_height,
+                mask='auto'
+                )
+            canvas.restoreState()
+
+            
+
+
         doc.build([
             header_table, tagline, spacer_md,
             info_table, spacer_md,
-            items_table, spacer_sm, total_table,
+            items_table, spacer_sm,
+            tax_table, spacer_sm,
+            amount_words_para, spacer_md,
+            bank_table,
             footer_spacer, footer
-        ])
+            ], onFirstPage=add_watermark, onLaterPages=add_watermark)
+
         
         buffer.seek(0)
         return send_file(buffer, mimetype='application/pdf', as_attachment=True, download_name=f'invoice_order_{order_id}.pdf')
