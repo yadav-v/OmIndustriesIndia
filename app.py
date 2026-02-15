@@ -1159,7 +1159,8 @@ def search():
             results.append({
                 "id": r.get('id'),
                 "name": r.get('name'),
-                "slug": r.get('slug')
+                "slug": r.get('slug'),
+                "short_desc": r.get('short_desc') or ''
             })
     except Exception as e:
         print(f"Search error: {e}")

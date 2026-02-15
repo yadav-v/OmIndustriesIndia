@@ -103,19 +103,26 @@
           </li>
         </ul>
     </div>
+
     <div class="box" style="position:relative;">
-  <input
-    type="text"
-    id="searchInput"
-    placeholder="Search products..."
-  >
-
-  <button class="search-btn" type="button" onclick="searchNow()">
-    <i class="fas fa-search"></i>
-  </button>
-
-  <div id="searchResults" class="search-results"></div>
-</div>
+      <form class="d-flex align-items-center" onsubmit="event.preventDefault(); searchNow();">
+        <div class="search-box" style="position:relative;">
+          <input
+            type="search"
+            id="searchInput"
+            name="q"
+            class="form-control"
+            placeholder="Search products..."
+            autocomplete="off"
+            aria-label="Search products"
+          />
+          <button class="search-btn btn btn-primary ms-2" type="button" onclick="searchNow()">
+            <i class="fas fa-search"></i>
+          </button>
+          <div id="searchResults" class="search-results" style="position:absolute; z-index:2000; width:100%; display:none;"></div>
+        </div>
+      </form>
+    </div>
 
   </nav>
 </header>

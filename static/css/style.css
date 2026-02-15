@@ -443,47 +443,60 @@ input[type="radio"]:checked ~ label i {
 }
 .box {
   position: relative;
-  width: 45px;
-  height: 40px;
-  transition: 0.5s;
+  max-width: 400px;
+  width: 100%;
 }
-
-.box input {
+# Legacy compact search box (override below)
+.box .search-box{
+  position: relative;
+  max-width: 50px;
+  margin: auto;
+  height: 40px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  border-radius: 25px;
+  transition: all 0.5s ease;
+}
+#search:checked ~ .search-box {
+  max-width:380px;
+}
+.search-box input {
+  position: relative;
   width: 100%;
   height: 100%;
   border-radius: 20px;
   border: none;
   outline: none;
-  padding: 0 40px 0 12px;
+  padding-left: 20px;
   opacity: 0;
   transition: 0.5s;
   background: #f1f1f1;
+  font-size: 10px;
 }
-
-.box .search-btn {
+.search-box .icon{
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: none;
-  background: #0d6efd;
-  color: #fff;
-  cursor: pointer;
-  transition: 0.5s;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-attachment: #ffffff;
+  height: 100%;
+  text-align: center;
+  line-height: 40px;
+  color: #333;
+  font-size: 18px;
+  border-radius: 25px;
 }
-
-.box:hover {
-  width: 220px;
-}
-
-.box:hover input {
+/* Legacy: legacy checkbox toggle - no-op in our layout */
+/* kept for backward compatibility but input will be shown by modern rules */
+#search:checked ~ .search-box input {
+  background: #2622ff;
+  color:#00b3ff;
+  width: 60px;
+  border-radius: 0 25px 25px 0;
   opacity: 1;
+  padding-left: 40px;
 }
-
-.box:hover .search-btn {
-  background: #333;
+#search{
+  display: none;
 }
 .search-results {
   position: absolute;
@@ -506,4 +519,104 @@ input[type="radio"]:checked ~ label i {
 .result-item:hover {
   background: #f1f1f1;
 }
+.box .search-box { max-width: 100% !important; }
+.box .search-box input.form-control { opacity: 1 !important; background: #fff !important; width: calc(100% - 56px) !important; }
+.box .search-box .search-btn { flex: 0 0 48px; }
+
+
+/* NEW: Modernized search input & dropdown (overrides older styles) */
+.box {
+  position: relative;
+  max-width: 420px;
+  width: 100%;
+}
+
+.box .search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.box .search-box input.form-control {
+  width: 100%;
+  height: 44px;
+  padding: 8px 14px;
+  border-radius: 28px;
+  border: 1px solid #e9eef6;
+  box-shadow: 0 4px 14px rgba(16,49,85,0.06);
+  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+  font-size: 14px;
+}
+
+.box .search-box input.form-control:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 6px 24px rgba(0,179,255,0.08);
+}
+
+.box .search-btn {
+  height: 44px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#searchResults {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(16,49,85,0.12);
+  z-index: 2000;
+  display: none; /* shown by JS */
+  max-height: 340px;
+  overflow: auto;
+}
+
+#searchResults .list-group {
+  margin: 0;
+  border-radius: 8px;
+}
+
+#searchResults .list-group-item {
+  border: none;
+  padding: 12px 14px;
+  cursor: pointer;
+  border-bottom: 1px solid #f4f6fb;
+}
+
+#searchResults .list-group-item:last-child {
+  border-bottom: none;
+}
+
+#searchResults .list-group-item.active,
+#searchResults .list-group-item:hover {
+  background: linear-gradient(90deg, rgba(0,179,255,0.06), rgba(8,61,160,0.02));
+  color: var(--dark-color);
+}
+
+#searchResults .list-group-item strong {
+  display: block;
+  font-weight: 700;
+}
+
+#searchResults .list-group-item small {
+  display: block;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .box { max-width: 260px; }
+  .box .search-box input.form-control { height: 40px; font-size: 13px; }
+  #searchResults { top: calc(100% + 6px); max-height: 260px; }
+}
+
+/* ensure older legacy rules don't hide our modern input */
+.search-box input { opacity: 1 !important; background: transparent !important; }
 
