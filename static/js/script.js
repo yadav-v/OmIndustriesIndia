@@ -109,16 +109,20 @@ document.addEventListener('DOMContentLoaded', function() {
 $(document).ready(function () {
   if ($('.equipment-showcase').length) {
     $('.equipment-showcase').slick({
-      slidesToShow: 3,
+      slidesToShow: 4,
       slidesToScroll: 1,
       autoplay: true,
-      autoplaySpeed: 2000,
+      autoplaySpeed: 3000,
       dots: false,
       arrows: false,  // disable default arrows
       infinite: true,
       responsive: [
         {
-          breakpoint: 992,
+          breakpoint: 1200,
+          settings: { slidesToShow: 3 }
+        },
+        {
+          breakpoint: 768,
           settings: { slidesToShow: 2 }
         },
         {

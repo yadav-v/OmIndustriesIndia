@@ -29,6 +29,7 @@ Suggested filenames:
 - warehouse_shed.jpg
 - factory_blue_shed.jpg
 - ultrasonic_flaw_detector.jpg
+-cngbracket.jpeg
 
 In services.html, change: filename='image/manufacture.jpg'
 To: filename='image/products/your_image.jpg'

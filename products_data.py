@@ -50,7 +50,7 @@ PRODUCTS = {
         "short_desc": "Mild Steel, Blue, Polished. Cylinder tilting rack drying & oil removal stand.",
         "description": "Upgrade your workshop with our Cylinder Tilting Rack Drying and Oil Removal Stand. Features adjustable tilting mechanism for optimal drying and effective oil removal. Material: Mild Steel | Color: Blue | Finishing: Polished | Use: Cylinder Bracket.",
         
-        "image": "image/cylinderbracket.jpg",
+        "image": "image/cngbracket.jpeg",
     },
     "eot-cranes": {
         "name": "Single Girder EOT Cranes",
@@ -90,7 +90,7 @@ PRODUCTS = {
         "short_desc": "5 HP, Air Cooled, Industrial. High-volume air for tools & machinery.",
         "description": "Powerful machine to compress and deliver high volumes of air for manufacturing, construction, and automotive industries. Motor Power: 5 HP | Cooling: Air Cooled | Usage: Industrial | Rust Proof: Yes.",
         "price": "₹55,000/Piece",
-        "image": "image/manufacture.jpg",
+        "image": "image/90lindustrialair.webp",
     },
     "hydraulic-pressure-machine": {
         "name": "Hydraulic Pressure Machine",

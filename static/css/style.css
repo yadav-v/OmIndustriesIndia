@@ -620,3 +620,106 @@ input[type="radio"]:checked ~ label i {
 /* ensure older legacy rules don't hide our modern input */
 .search-box input { opacity: 1 !important; background: transparent !important; }
 
+/* Product Showcase Carousel Styles */
+.equipment-showcase {
+  display: flex;
+  gap: 20px;
+}
+
+.equipment-showcase > div {
+  flex: 0 0 calc(25% - 15px);
+  min-height: 280px;
+}
+
+.product-card {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: flex-end;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2) !important;
+}
+
+.product-card .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);
+  z-index: 1;
+}
+
+.product-card .card-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 20px;
+}
+
+.product-card h5 {
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+}
+
+.product-card .btn {
+  font-size: 0.85rem;
+  padding: 6px 12px;
+}
+
+/* Slick Carousel Adjustments */
+.slick-slide {
+  outline: none;
+}
+
+.slick-list {
+  outline: none;
+}
+
+.equipment-showcase-wrapper .slick-arrow {
+  outline: none;
+  background: var(--primary-color) !important;
+  opacity: 0.8;
+}
+
+.equipment-showcase-wrapper .slick-arrow:hover {
+  opacity: 1;
+  background: var(--secondary-color) !important;
+}
+
+/* Mobile carousel */
+@media (max-width: 1200px) {
+  .equipment-showcase > div {
+    flex: 0 0 calc(33.333% - 14px);
+  }
+}
+
+@media (max-width: 768px) {
+  .equipment-showcase > div {
+    flex: 0 0 calc(50% - 10px);
+    min-height: 220px;
+  }
+  .equipment-showcase-wrapper {
+    padding: 0 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .equipment-showcase > div {
+    flex: 0 0 calc(100% - 0px);
+    min-height: 250px;
+  }
+  .equipment-showcase-wrapper {
+    padding: 0 20px;
+  }
+}
