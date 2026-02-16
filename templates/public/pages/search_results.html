@@ -1,0 +1,160 @@
+{% extends "public/base_public.html" %}
+
+{% block content %}
+<section class="py-5 bg-light">
+  <div class="container">
+    <div class="row mb-4">
+      <div class="col-12">
+        <h2><i class="fas fa-search me-2"></i>Search Results</h2>
+        <p class="text-muted">
+          {% if query %}
+            Showing results for: <strong>"{{ query }}"</strong>
+          {% else %}
+            Please enter a search term
+          {% endif %}
+        </p>
+      </div>
+    </div>
+
+    <div class="row">
+      {% if results|length > 0 %}
+        <h4 class="mb-4">Found {{ results|length }} result(s)</h4>
+        {% for product in results %}
+          <div class="col-12 mb-4">
+            <div class="card shadow-sm hover-shadow transition h-100">
+              <div class="card-body p-0">
+                <div class="row g-0 h-100">
+                  <!-- Product Image -->
+                  <div class="col-md-3">
+                    <div class="product-image-container">
+                      <img 
+                        src="{{ url_for('static', filename=product.image or 'image/manufacture.jpg') }}" 
+                        alt="{{ product.name }}"
+                        class="img-fluid"
+                        style="height: 200px; width: 100%; object-fit: cover; border-radius: 8px 0 0 8px;"
+                      >
+                    </div>
+                  </div>
+
+                  <!-- Product Info -->
+                  <div class="col-md-9 d-flex flex-column">
+                    <div class="card-body flex-grow-1">
+                      <h5 class="card-title mb-2">
+                        <i class="fas fa-cube text-primary me-2"></i>
+                        <span id="highlight-{{ loop.index }}" class="product-name">{{ product.name }}</span>
+                      </h5>
+                      <p class="card-text text-muted small mb-3">
+                        <span id="desc-{{ loop.index }}" class="product-desc">
+                          {{ product.short_desc }}
+                        </span>
+                      </p>
+                    </div>
+
+                    <!-- View Button -->
+                    <div class="card-footer bg-white border-0 p-3 pt-0">
+                      <a href="{{ url_for('product_detail', slug=product.slug) }}" class="btn btn-primary btn-sm">
+                        <i class="fas fa-arrow-right me-1"></i>View Details
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="col-12">
+          <div class="alert alert-info text-center py-5">
+            <h4><i class="fas fa-exclamation-circle me-2"></i>No Results Found</h4>
+            <p class="mb-3">We couldn't find any products matching your search.</p>
+            {% if query %}
+              <p class="text-muted small mb-3">Try with different keywords or browse our <a href="{{ url_for('services') }}">full product catalog</a>.</p>
+            {% else %}
+              <p class="text-muted small">Please enter a search term above to get started.</p>
+            {% endif %}
+            <a href="{{ url_for('services') }}" class="btn btn-outline-primary">
+              <i class="fas fa-list me-1"></i>Browse All Products
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<style>
+.hover-shadow {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15) !important;
+}
+
+.product-image-container {
+  background: #f8f9fa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.highlight {
+  background-color: #fff3cd;
+  color: #000;
+  padding: 2px 4px;
+  border-radius: 3px;
+  font-weight: 600;
+}
+
+.card-footer {
+  display: flex;
+  gap: 10px;
+}
+</style>
+
+<script>
+  // Highlight search query in results
+  document.addEventListener('DOMContentLoaded', function() {
+    highlightSearchText('{{ query }}');
+  });
+
+  // Function to highlight search text in results
+  function highlightSearchText(query) {
+    if (!query || query.trim() === '') return;
+
+    const highlightClass = 'highlight';
+    const searchTerms = query.trim().toLowerCase().split(/\s+/);
+
+    // Highlight in product names
+    document.querySelectorAll('.product-name').forEach(element => {
+      let text = element.textContent;
+      let highlightedText = text;
+
+      searchTerms.forEach(term => {
+        if (term.length > 0) {
+          const regex = new RegExp(`(${term})`, 'gi');
+          highlightedText = highlightedText.replace(regex, '<span class="highlight">$1</span>');
+        }
+      });
+
+      element.innerHTML = highlightedText;
+    });
+
+    // Highlight in descriptions
+    document.querySelectorAll('.product-desc').forEach(element => {
+      let text = element.textContent;
+      let highlightedText = text;
+
+      searchTerms.forEach(term => {
+        if (term.length > 0) {
+          const regex = new RegExp(`(${term})`, 'gi');
+          highlightedText = highlightedText.replace(regex, '<span class="highlight">$1</span>');
+        }
+      });
+
+      element.innerHTML = highlightedText;
+    });
+  }
+</script>
+{% endblock %}

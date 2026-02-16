@@ -9,7 +9,7 @@ PRODUCTS = {
         "division_id": "hydrotest",
         "short_desc": "Complete CNG cylinder testing plant — hydropump, water jacket, ultrasonic roller, fire stand, degassing stand, trolley, control panel & more.",
         "description": "We provide complete CNG cylinder testing equipments including: Hydropump, Water Jacket, Ultrasonic Roller Machine, Fire Stand, Cylinder Vice, Oil Remove Stand, Hot Air Blower, Degassing Stand with Vent Pipe & Accessories, Trolley, Control Panel with 2 Pressure Gauges, Paint Stand Ring, Air Compressor 90L, Metal Writing Machine, and Weighing Machine. CYLINDER TYPE: CNG | USAGE: TESTING | INSPECTION TYPE: INTERNAL AND EXTERNAL VISUAL INSPECTION | PRODUCT TYPE: CNG CYLINDER | TESTING METHOD: WATER JACKET TYPE | INSPECTION STANDARD: ISO.",
-        "price": "₹10,00,000/Piece",
+        
         "image": "image/cngmanufacture.jpg",
     },
     "cylinder-testing-jacket-24": {
@@ -19,7 +19,7 @@ PRODUCTS = {
         "division_id": "hydrotest",
         "short_desc": "Mild Steel, Industrial use, Polished. Protective casing for pressure testing.",
         "description": "A 24-inch cylinder testing jacket is a protective casing designed to encase cylindrical specimens during pressure testing. It ensures uniform pressure distribution and safeguards against potential hazards during the testing process. Material: Mild Steel | Usage: Industrial | Color: Green | Surface: Polished | Rust Proof: Yes.",
-        "price": "₹1,25,000/Piece",
+        
         "image": "image/waterjacket.jpg",
     },
     "ms-cylinder-vice": {
@@ -29,7 +29,7 @@ PRODUCTS = {
         "division_id": "hydrotest",
         "short_desc": "Sturdy clamping tool for cylindrical objects. Mild Steel, Blue, Rust Proof.",
         "description": "An MS (mild steel) cylinder vice is a sturdy clamping tool designed to securely hold cylindrical objects during machining or assembly. Its robust construction ensures stability and precision. Usage: Industrial | Color: Blue | Rust Proof: Yes | Water Resistance: Yes | Material: Mild Steel.",
-        "price": "₹25,000/Piece",
+        
         "image": "image/manufacture.jpg",
     },
     "hydraulic-rolling-machine": {
@@ -39,7 +39,7 @@ PRODUCTS = {
         "division_id": "hydrotest",
         "short_desc": "20 Ton capacity, Mild Steel, Industrial. Precision metal forming.",
         "description": "A hydrosonic rolling machine utilizes high-pressure water jets to shape and form materials with precision. Capacity: 20 Ton | Material: Mild Steel | Surface: Polished | Usage: Industrial | Rust Proof: Yes.",
-        "price": "₹55,000/Piece",
+        
         "image": "image/roller.jpeg",
     },
     "cng-cylinder-bracket": {
@@ -49,7 +49,7 @@ PRODUCTS = {
         "division_id": "hydrotest",
         "short_desc": "Mild Steel, Blue, Polished. Cylinder tilting rack drying & oil removal stand.",
         "description": "Upgrade your workshop with our Cylinder Tilting Rack Drying and Oil Removal Stand. Features adjustable tilting mechanism for optimal drying and effective oil removal. Material: Mild Steel | Color: Blue | Finishing: Polished | Use: Cylinder Bracket.",
-        "price": "₹875/Piece",
+        
         "image": "image/cylinderbracket.jpg",
     },
     "eot-cranes": {
@@ -59,7 +59,7 @@ PRODUCTS = {
         "division_id": "hydrotest",
         "short_desc": "10 Ton capacity, Mild Steel, I-beam and pillar setup for CNG facilities.",
         "description": "Single Phase Crane with robust I-beam and pillar setup for superior load handling. Ideal for CNG testing facilities. Capacity: 10 Ton | Color: Yellow | Material: Mild Steel | Rust proof: Yes.",
-        "price": "₹75,000/Piece",
+        
         "image": "image/manufacture.jpg",
     },
     "ms-cng-cylinder-stand": {
@@ -69,7 +69,7 @@ PRODUCTS = {
         "division_id": "hydrotest",
         "short_desc": "Gas cylinder stand, Mild Steel, secure storage for CNG cylinders.",
         "description": "CNG Stand designed for secure and stable storage of CNG cylinders. Material: Mild Steel | Color: Blue | Rust Proof: Yes | Water Resistance: Yes.",
-        "price": "₹1,500/Piece",
+        
         "image": "image/cylinderbracket.jpg",
     },
     "hydraulic-testing-station": {
@@ -79,7 +79,7 @@ PRODUCTS = {
         "division_id": "hydrotest",
         "short_desc": "CNG, MS, 7 HP, Water jacket type. Complete testing station.",
         "description": "Specialized equipment to evaluate performance and integrity of hydraulic cylinders. Gas Type: CNG | Material: MS | Power: 7 HP | Test Method: Water jacket type.",
-        "price": "₹12,50,000/Piece",
+        
         "image": "image/cnghydro.jpeg",
     },
     "air-compressor-90l": {
