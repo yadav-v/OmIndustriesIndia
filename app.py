@@ -419,26 +419,7 @@ def product_detail(slug):
                          product=product,
                          now=datetime.now())
 
-# about water jacket 
-@app.route('/water-jacket-testing-machine')
-def water_jacket_detail():
-    return render_template('public/water_jacket_detail.html', now=datetime.now())
-#cylinder wise details
-@app.route('/cylinder-wise-testing-machine')
-def cylinder_wise_detail():
-    return render_template('public/cylinder_wise_detail.html', now=datetime.now())
-#hydro-pump
-@app.route('/hydro-pump-machine')
-def hydro_pump():
-    return render_template('public/hydro_pump.html', now=datetime.now())
 
-@app.route('/degassing')
-def degassing():
-    return render_template('public/degassing.html', now=datetime.now())
-
-@app.route('/oil-removal')
-def oil_removal():
-    return render_template('public/oil_removal.html', now=datetime.now())
 
 @app.route("/contact", methods=['GET', 'POST'])
 def contact():
