@@ -76,6 +76,12 @@ body {
 .slick-slide {
   height: 100%;
 }
+.slick-slide {
+  padding: 0 8px;
+}
+.heroSlider .slick-list {
+  margin: 0 -8px;
+}
 /* IMPORTANT: allow vh to work */
 html, body {
   height: 100%;
@@ -106,6 +112,12 @@ html, body {
   align-items: center;
   justify-content: center;
   position: relative;
+  margin: 0 10px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.heroSlider .slick-list {
+  padding: 0 10px;
 }
 
 /* Overlay */
@@ -241,9 +253,28 @@ html, body {
 
 /* Product Cards */
 .product-card {
-  height: 300px;
+  position: relative;
+  height: 450px;
   border-radius: var(--border-radius);
   transition: var(--transition);
+  background-repeat: no-repeat;
+  background-size: cover!important;
+  background-position: center;
+  background-color: #111;
+  overflow: hidden;
+}
+
+.product-card .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 2;
+  transition: background-color 0.25s ease, transform 0.35s ease;
+  transform: scale(1);
+}
+.product-card:hover .overlay {
+  background: rgba(0, 0, 0, 0.65);
+  transform: scale(1.02);
 }
 
 .product-card .card-content {
@@ -253,6 +284,11 @@ html, body {
   width: 100%;
   padding: 30px;
   z-index: 5;
+  transition: transform 0.25s ease, bottom 0.25s ease;
+}
+.product-card:hover .card-content {
+  bottom: 12px;
+  transform: translateY(-6px);
 }
 
 /* Equipment Showcase Slider Navigation */
@@ -446,7 +482,7 @@ input[type="radio"]:checked ~ label i {
   max-width: 400px;
   width: 100%;
 }
-# Legacy compact search box (override below)
+/* Legacy compact search box (override below) */
 .box .search-box{
   position: relative;
   max-width: 50px;
