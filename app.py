@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file, abort, jsonify
 import sqlite3
+import json
 from products_data import PRODUCTS, DIVISIONS
 from io import BytesIO
 import smtplib
@@ -230,6 +231,7 @@ def init_db():
             short_desc TEXT,
             description TEXT,
             image VARCHAR(500) DEFAULT 'image/manufacture.jpg',
+            gallery_images TEXT,
             sort_order INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
@@ -335,10 +337,20 @@ def init_db():
             short_desc TEXT,
             description TEXT,
             image TEXT DEFAULT 'image/manufacture.jpg',
+            gallery_images TEXT,
             sort_order INTEGER DEFAULT 0,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
         """)
+
+        # Migrate services table if gallery_images missing
+        cursor.execute("PRAGMA table_info(services)")
+        service_cols = [row[1] for row in cursor.fetchall()]
+        if 'gallery_images' not in service_cols:
+            try:
+                cursor.execute("ALTER TABLE services ADD COLUMN gallery_images TEXT")
+            except sqlite3.OperationalError:
+                pass
     
     conn.commit()  # Ensure tables exist before seed
     # Seed services from products_data if empty
@@ -350,9 +362,12 @@ def init_db():
         try:
             for slug, p in PRODUCTS.items():
                 execute_query(conn, """
-                    INSERT INTO services (name, slug, division, division_id, short_desc, description,  image)
+                    INSERT INTO services (name, slug, division, division_id, short_desc, description, image, gallery_images)
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """, (p['name'], p['slug'], p['division'], p['division_id'], p['short_desc'], p['description'], p['image']))
+                """, (
+                    p.get('name'), p.get('slug'), p.get('division'), p.get('division_id'),
+                    p.get('short_desc'), p.get('description'), p.get('image'), p.get('gallery_images')
+                ))
             conn.commit()
             print("   Seeded services from products_data")
         except Exception as e:
@@ -414,9 +429,22 @@ def product_detail(slug):
     if not row:
         abort(404)
     product = dict(row) if not isinstance(row, dict) else row
+    gallery_images = [product.get('image')] if product.get('image') else []
+    if product.get('gallery_images'):
+        try:
+            images = json.loads(product.get('gallery_images'))
+            if isinstance(images, list) and images:
+                gallery_images = images
+        except Exception:
+            # fallback: comma-separated values
+            if isinstance(product.get('gallery_images'), str):
+                images = [i.strip() for i in product.get('gallery_images').split(',') if i.strip()]
+                if images:
+                    gallery_images = images
     return render_template("public/pages/product_detail.html",
                          title=f"{product['name']} - Om Industries India",
                          product=product,
+                         gallery_images=gallery_images,
                          now=datetime.now())
 
 # about water jacket 
@@ -1056,6 +1084,7 @@ def admin_service_add():
         short_desc = request.form.get('short_desc', '').strip()
         description = request.form.get('description', '').strip()
         image = request.form.get('image', '').strip() or 'image/manufacture.jpg'
+        gallery_images = request.form.get('gallery_images', '').strip() or None
         
         if not name:
             flash('Service name is required.', 'error')
@@ -1064,9 +1093,9 @@ def admin_service_add():
         conn = _db_connection()
         try:
             execute_query(conn, """
-                INSERT INTO services (name, slug, division, division_id, short_desc, description,  image)
+                INSERT INTO services (name, slug, division, division_id, short_desc, description, image, gallery_images)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            """, (name, slug, division, division_id, short_desc or None, description or None, image))
+            """, (name, slug, division, division_id, short_desc or None, description or None, image, gallery_images))
             conn.commit()
             flash('Service added successfully!', 'success')
         except Exception as e:
@@ -1101,6 +1130,7 @@ def admin_service_edit(service_id):
         short_desc = request.form.get('short_desc', '').strip()
         description = request.form.get('description', '').strip()
         image = request.form.get('image', '').strip() or 'image/manufacture.jpg'
+        gallery_images = request.form.get('gallery_images', '').strip() or None
         
         if not name:
             flash('Service name is required.', 'error')
@@ -1109,9 +1139,9 @@ def admin_service_edit(service_id):
         conn = _db_connection()
         try:
             execute_query(conn, """
-                UPDATE services SET name=?, slug=?, division=?, division_id=?, short_desc=?, description=?, image=?
+                UPDATE services SET name=?, slug=?, division=?, division_id=?, short_desc=?, description=?, image=?, gallery_images=?
                 WHERE id = ?
-            """, (name, slug, division, division_id, short_desc or None, description or None,image, service_id))
+            """, (name, slug, division, division_id, short_desc or None, description or None, image, gallery_images, service_id))
             conn.commit()
             flash('Service updated successfully!', 'success')
         except Exception as e:

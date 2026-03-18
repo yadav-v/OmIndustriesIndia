@@ -20,7 +20,7 @@ PRODUCTS = {
         "short_desc": "Mild Steel, Industrial use, Polished. Protective casing for pressure testing.",
         "description": "A 24-inch cylinder testing jacket is a protective casing designed to encase cylindrical specimens during pressure testing. It ensures uniform pressure distribution and safeguards against potential hazards during the testing process. Material: Mild Steel | Usage: Industrial | Color: Green | Surface: Polished | Rust Proof: Yes.",
         
-        "image": "image/waterjacket.jpg",
+        "image": "image/waterjacket.jpg,image/cngmanufacture.jpg",
     },
     "ms-cylinder-vice": {
         "name": "MS Cylinder Vice",
