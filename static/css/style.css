@@ -24,6 +24,7 @@ body {
   font-family: 'Inter', sans-serif;
   color: var(--text-dark);
   line-height: 1.6;
+  padding-top: 80px; /* For fixed header */
 }
 /* Modern Header & Nav */
 .bg-dark {
